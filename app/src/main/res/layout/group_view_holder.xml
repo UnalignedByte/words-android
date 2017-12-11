@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/groupViewHolder"
+                android:layout_width="match_parent"
+                android:layout_height="60dp">
+
+    <TextView
+        android:id="@+id/groupViewHolderName"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:padding="8dp"
+        android:text="Group Name"
+        android:textSize="18sp"
+        tools:text="Group Name"/>
+
+    <TextView
+        android:id="@+id/groupViewHolderWordsCountText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:gravity="end"
+        android:padding="8dp"
+        android:text="Words Count"
+        android:textSize="12dp"
+        tools:text="Words Count"/>
+</FrameLayout>
