@@ -11,6 +11,13 @@ import android.view.ViewGroup;
 
 public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
 {
+    private WordsDataSource dataSource;
+
+    public GroupsListAdapter(WordsDataSource dataSource)
+    {
+        this.dataSource = dataSource;
+    }
+
     @Override
     public GroupViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
@@ -20,13 +27,15 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(GroupViewHolder holder, int position)
+    public void onBindViewHolder(GroupViewHolder viewHolder, int position)
     {
+        Group group = dataSource.getGroups().get(position);
+        viewHolder.setGroup(group);
     }
 
     @Override
     public int getItemCount()
     {
-        return 5;
+        return dataSource.getGroups().size();
     }
 }
