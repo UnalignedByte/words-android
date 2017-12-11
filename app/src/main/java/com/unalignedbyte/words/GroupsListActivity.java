@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.View;
 
 /**
@@ -14,6 +15,7 @@ import android.view.View;
 public class GroupsListActivity extends Activity
 {
     private WordsDataSource dataSource;
+    private View contentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -22,17 +24,11 @@ public class GroupsListActivity extends Activity
 
         dataSource = new WordsDataSource(this);
 
-        Group tst1 = new Group("Test 1", "en");
-        Group tst2 = new Group("Test 2", "en");
-        Group tst3 = new Group("Test 3", "en");
-        dataSource.addGroup(tst1);
-        dataSource.addGroup(tst2);
-        dataSource.addGroup(tst3);
-
         setContentView(R.layout.activity_groups_list);
         RecyclerView groupsListView = (RecyclerView)findViewById(R.id.groupsListView);
         groupsListView.setLayoutManager(new LinearLayoutManager(this));
         groupsListView.setAdapter(new GroupsListAdapter(dataSource));
+        contentView = groupsListView;
 
         FloatingActionButton addGroupButton = (FloatingActionButton)findViewById(R.id.addGroupButton);
         addGroupButton.setOnClickListener(new View.OnClickListener() {
@@ -46,5 +42,7 @@ public class GroupsListActivity extends Activity
 
     private void showEditGroupActivity()
     {
+        EditGroupPopupWindow popup = new EditGroupPopupWindow(this, dataSource);
+        popup.showAtLocation(contentView, Gravity.TOP, 0, 0);
     }
 }

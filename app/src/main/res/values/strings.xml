@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Words</string>
+    <string name="group_name">Group Name</string>
+    <string name="group_language">Group Language</string>
+    <string name="add_group">Add Group</string>
+    <string name="cancel">Cancel</string>
 </resources>

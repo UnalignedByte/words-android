@@ -44,6 +44,17 @@ public class WordsDataSource extends SQLiteOpenHelper
         onCreate(db);
     }
 
+    public List<Language> getLanguages()
+    {
+        List<Language> languageCodes = new LinkedList<Language>();
+        languageCodes.add(new Language("cn", "Chinese"));
+        languageCodes.add(new Language("gn", "Generic"));
+
+        return languageCodes;
+    }
+
+
+
     public void addGroup(Group group)
     {
         ContentValues values = new ContentValues();
