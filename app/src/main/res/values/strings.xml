@@ -3,6 +3,7 @@
     <string name="group_name">Group Name</string>
     <string name="group_language">Group Language</string>
     <string name="add_group">Add Group</string>
+    <string name="save_group">Save</string>
     <string name="cancel">Cancel</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>

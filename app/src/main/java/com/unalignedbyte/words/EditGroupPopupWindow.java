@@ -21,10 +21,11 @@ import android.widget.SpinnerAdapter;
 public class EditGroupPopupWindow extends PopupWindow
 {
     private WordsDataSource dataSource;
+    private Group group;
     private EditText nameEdit;
     private Spinner countryCodeSpinner;
 
-    public EditGroupPopupWindow(Context context, WordsDataSource dataSource)
+    public EditGroupPopupWindow(Context context, WordsDataSource dataSource, Group group)
     {
         super(LayoutInflater.from(context).inflate(R.layout.edit_group, null),
               RecyclerView.LayoutParams.MATCH_PARENT,
@@ -32,11 +33,12 @@ public class EditGroupPopupWindow extends PopupWindow
         setFocusable(true);
 
         this.dataSource = dataSource;
+        this.group = group;
 
         View view = getContentView();
 
         final Button addGroupButton = (Button)view.findViewById(R.id.addGroupButton);
-        addGroupButton.setEnabled(false);
+        addGroupButton.setEnabled(group != null);
         addGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -80,14 +82,26 @@ public class EditGroupPopupWindow extends PopupWindow
                 R.layout.language_name_layout,
                 dataSource.getLanguages());
         countryCodeSpinner.setAdapter(languageCodesAdapter);
+
+        if(group != null) {
+            nameEdit.setText(group.getName());
+            countryCodeSpinner.setVisibility(View.INVISIBLE);
+
+            addGroupButton.setText(R.string.save_group);
+        }
     }
 
     private void onAddGroup()
     {
-        String name = nameEdit.getText().toString();
-        Language language = (Language)countryCodeSpinner.getSelectedItem();
-        Group group = new Group(name, language.getCode());
-        dataSource.addGroup(group);
+        if(group == null) {
+            String name = nameEdit.getText().toString();
+            Language language = (Language) countryCodeSpinner.getSelectedItem();
+            Group group = new Group(name, language);
+            dataSource.addGroup(group);
+        } else {
+            group.setName(nameEdit.getText().toString());
+            dataSource.updateGroup(group);
+        }
         dismiss();
     }
 }

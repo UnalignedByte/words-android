@@ -6,13 +6,30 @@ package com.unalignedbyte.words;
 
 public class Group
 {
+    private int id;
     private String name;
-    private String languageCode;
+    private Language language;
 
-    public Group(String name, String languageCode)
+    public Group(String name, Language language)
     {
+        this(-1, name, language);
+    }
+
+    public Group(int id, String name, Language language)
+    {
+        this.id = id;
         this.name = name;
-        this.languageCode = languageCode;
+        this.language = language;
+    }
+
+    public int getId()
+    {
+        return id;
+    }
+
+    public void setId(int id)
+    {
+        this.id = id;
     }
 
     public String getName()
@@ -25,13 +42,13 @@ public class Group
         this.name = name;
     }
 
-    public String getLanguageCode()
+    public Language getLanguage()
     {
-        return languageCode;
+        return language;
     }
 
-    public void setLanguageCode(String languageCode)
+    public void setLanguageCode(Language language)
     {
-        this.languageCode = languageCode;
+        this.language = language;
     }
 }
