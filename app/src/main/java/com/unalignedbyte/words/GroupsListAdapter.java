@@ -1,5 +1,7 @@
 package com.unalignedbyte.words;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,18 +13,18 @@ import android.view.ViewGroup;
 
 public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
 {
-    private WordsDataSource dataSource;
+    private Context context;
     private Group selectedGroup;
 
-    public GroupsListAdapter(WordsDataSource dataSource)
+    public GroupsListAdapter(Context context)
     {
-        this.dataSource = dataSource;
+        this.context = context;
     }
 
     @Override
     public GroupViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.group_view_holder, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.group_view_holder, parent, false);
         GroupViewHolder viewHolder = new GroupViewHolder(view);
 
         return viewHolder;
@@ -31,8 +33,16 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
     @Override
     public void onBindViewHolder(GroupViewHolder viewHolder, int position)
     {
-        final Group group = dataSource.getGroups().get(position);
+        final Group group = WordsDataSource.get(context).getGroups().get(position);
         viewHolder.setGroup(group);
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(context, WordsListActivity.class);
+                intent.putExtra("groupId", group.getId());
+                context.startActivity(intent);
+            }
+        });
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -45,7 +55,7 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
     @Override
     public int getItemCount()
     {
-        return dataSource.getGroups().size();
+        return WordsDataSource.get(context).getGroups().size();
     }
 
     public Group getSelectedGroup()

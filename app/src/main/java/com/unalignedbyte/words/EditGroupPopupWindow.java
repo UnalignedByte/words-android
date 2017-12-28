@@ -20,19 +20,19 @@ import android.widget.SpinnerAdapter;
 
 public class EditGroupPopupWindow extends PopupWindow
 {
-    private WordsDataSource dataSource;
+    private Context context;
     private Group group;
     private EditText nameEdit;
     private Spinner countryCodeSpinner;
 
-    public EditGroupPopupWindow(Context context, WordsDataSource dataSource, Group group)
+    public EditGroupPopupWindow(Context context, Group group)
     {
         super(LayoutInflater.from(context).inflate(R.layout.edit_group, null),
               RecyclerView.LayoutParams.MATCH_PARENT,
               RecyclerView.LayoutParams.MATCH_PARENT);
         setFocusable(true);
 
-        this.dataSource = dataSource;
+        this.context = context;
         this.group = group;
 
         View view = getContentView();
@@ -80,7 +80,7 @@ public class EditGroupPopupWindow extends PopupWindow
         countryCodeSpinner = (Spinner)view.findViewById(R.id.groupLanguageSpinner);
         SpinnerAdapter languageCodesAdapter = new ArrayAdapter<Language>(context,
                 R.layout.language_name_layout,
-                dataSource.getLanguages());
+                WordsDataSource.get(context).getLanguages());
         countryCodeSpinner.setAdapter(languageCodesAdapter);
 
         if(group != null) {
@@ -97,10 +97,10 @@ public class EditGroupPopupWindow extends PopupWindow
             String name = nameEdit.getText().toString();
             Language language = (Language) countryCodeSpinner.getSelectedItem();
             Group group = new Group(name, language);
-            dataSource.addGroup(group);
+            WordsDataSource.get(context).addGroup(group);
         } else {
             group.setName(nameEdit.getText().toString());
-            dataSource.updateGroup(group);
+            WordsDataSource.get(context).updateGroup(group);
         }
         dismiss();
     }

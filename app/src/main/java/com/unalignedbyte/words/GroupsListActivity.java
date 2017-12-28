@@ -17,7 +17,6 @@ import android.widget.Toast;
 
 public class GroupsListActivity extends Activity
 {
-    private WordsDataSource dataSource;
     private View contentView;
     private GroupsListAdapter adapter;
 
@@ -25,30 +24,39 @@ public class GroupsListActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        dataSource = new WordsDataSource(this);
-
         setContentView(R.layout.activity_groups_list);
+
+        setupGroupsList();
+        setupAddButton();
+    }
+
+    private void setupGroupsList()
+    {
+        adapter = new GroupsListAdapter(this);
+
         RecyclerView groupsListView = (RecyclerView)findViewById(R.id.groupsListView);
         groupsListView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new GroupsListAdapter(dataSource);
         groupsListView.setAdapter(adapter);
+
         registerForContextMenu(groupsListView);
         contentView = groupsListView;
+    }
 
+    private void setupAddButton()
+    {
         FloatingActionButton addGroupButton = (FloatingActionButton)findViewById(R.id.addGroupButton);
         addGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
             {
-                showEditGroupActivity(null);
+                showEditGroupPopup(null);
             }
         });
     }
 
-    private void showEditGroupActivity(Group group)
+    private void showEditGroupPopup(Group group)
     {
-        EditGroupPopupWindow popup = new EditGroupPopupWindow(this, dataSource, group);
+        EditGroupPopupWindow popup = new EditGroupPopupWindow(this, group);
         popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -62,10 +70,10 @@ public class GroupsListActivity extends Activity
     public boolean onMenuItemSelected(int featureId, MenuItem item)
     {
         if(item.getTitle().equals(getResources().getString(R.string.menu_edit))) {
-            showEditGroupActivity(adapter.getSelectedGroup());
+            showEditGroupPopup(adapter.getSelectedGroup());
             return true;
         } else if(item.getTitle().equals(getResources().getString(R.string.menu_delete))) {
-            dataSource.deleteGroup(adapter.getSelectedGroup());
+            WordsDataSource.get(this).deleteGroup(adapter.getSelectedGroup());
             adapter.notifyDataSetChanged();
             return true;
         }

@@ -16,6 +16,7 @@ import java.util.List;
 
 public class WordsDataSource extends SQLiteOpenHelper
 {
+    private static WordsDataSource instance;
     private static final String DB_NAME = "words.db";
     private static final int DB_VERSION = 1;
     private static final String TABLE_GROUPS = "groups";
@@ -23,9 +24,17 @@ public class WordsDataSource extends SQLiteOpenHelper
     private static final String GROUP_NAME = "group_name";
     private static final String LANGUAGE_CODE = "language_code";
 
-    public WordsDataSource(Context context)
+    private WordsDataSource(Context context)
     {
         super(context, DB_NAME, null, DB_VERSION);
+    }
+
+    public static WordsDataSource get(Context context)
+    {
+        if(instance == null)
+            instance = new WordsDataSource(context);
+
+        return instance;
     }
 
     @Override
@@ -107,5 +116,23 @@ public class WordsDataSource extends SQLiteOpenHelper
         }
 
         return groups;
+    }
+
+    public Group getGroup(int groupId)
+    {
+        return null;
+    }
+
+    public List<Word> getWords(Group group)
+    {
+        List<Word> words = new LinkedList();
+
+        words.add(new Word("Word A", "Translation A", group));
+        words.add(new Word("Word B", "Translation B", group));
+        words.add(new Word("Word C", "Translation C", group));
+        words.add(new Word("Word D", "Translation D", group));
+        words.add(new Word("Word E", "Translation E", group));
+
+        return words;
     }
 }
