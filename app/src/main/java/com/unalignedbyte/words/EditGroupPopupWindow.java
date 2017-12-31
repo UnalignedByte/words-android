@@ -98,6 +98,18 @@ public class EditGroupPopupWindow extends PopupWindow
             Language language = (Language) countryCodeSpinner.getSelectedItem();
             Group group = new Group(name, language);
             WordsDataSource.get(context).addGroup(group);
+
+            Word word1 = new Word("Word " + group.getName() + " 1",
+                    "Translation " + group.getName() + " 1", group);
+            WordsDataSource.get(context).addWord(word1);
+
+            Word word2 = new Word("Word " + group.getName() + " 2",
+                    "Translation " + group.getName() + " 2", group);
+            WordsDataSource.get(context).addWord(word2);
+
+            Word word3 = new Word("Word " + group.getName() + " 3",
+                    "Translation " + group.getName() + " 3", group);
+            WordsDataSource.get(context).addWord(word3);
         } else {
             group.setName(nameEdit.getText().toString());
             WordsDataSource.get(context).updateGroup(group);
