@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupWindow;
 
 import javax.sql.DataSource;
 
@@ -58,6 +60,15 @@ public class WordsListActivity extends Activity
 
     private void showEditWordPopup(Word word)
     {
+        EditWordPopupWindow popup = new EditWordPopupWindow(this, group, word);
+        popup.setOnDismissListener(new PopupWindow.OnDismissListener()
+        {
+            @Override
+            public void onDismiss() {
+                adapter.notifyDataSetChanged();
+            }
+        });
+        popup.showAtLocation(contentView, Gravity.TOP, 0, 0);
     }
 
     @Override
@@ -67,6 +78,8 @@ public class WordsListActivity extends Activity
             showEditWordPopup(adapter.getSelectedWord());
             return true;
         } else if(item.getTitle().equals(getResources().getString(R.string.menu_delete))) {
+            WordsDataSource.get(this).deleteWord(adapter.getSelectedWord());
+            adapter.notifyDataSetChanged();
             return true;
         }
 
