@@ -34,7 +34,7 @@ public class GroupViewHolder extends RecyclerView.ViewHolder
         } else if(wordsCount == 1) {
             wordsCountText.setText("1 Word");
         } else {
-            wordsCountText.setText(Integer.toString(wordsCount) + "Words");
+            wordsCountText.setText(Integer.toString(wordsCount) + " Words");
         }
     }
 

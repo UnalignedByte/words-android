@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,6 +30,14 @@ public class GroupsListActivity extends Activity
         setupGroupsList();
         setupAddButton();
     }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        adapter.notifyDataSetChanged();
+    }
+
 
     private void setupGroupsList()
     {
