@@ -15,6 +15,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     private Context context;
     private Group group;
     private Word selectedWord;
+    private int config = 0;
 
     public WordsListAdapter(Context context, Group group)
     {
@@ -35,6 +36,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     {
         final Word word = WordsDataSource.get(context).getWords(group).get(position);
         viewHolder.setWord(word);
+        viewHolder.setConfig(config);
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
@@ -53,5 +55,10 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     public Word getSelectedWord()
     {
         return selectedWord;
+    }
+
+    public void setConfig(int config)
+    {
+        this.config = config;
     }
 }

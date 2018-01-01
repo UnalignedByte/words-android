@@ -2,20 +2,23 @@
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
-    android:orientation="vertical"
-    android:background="?android:attr/selectableItemBackground">
-    
+    android:layout_height="70dp"
+    android:background="?android:attr/selectableItemBackground"
+    android:gravity="center_vertical"
+    android:orientation="vertical">
+
     <TextView
         android:id="@+id/word_view_holder_wordText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:textSize="22sp"/>
 
     <TextView
         android:id="@+id/word_view_holder_translationText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
         android:textSize="22sp"/>
 
 </LinearLayout>

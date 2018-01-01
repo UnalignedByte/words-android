@@ -29,6 +29,24 @@ public class WordViewHolder extends RecyclerView.ViewHolder
         translationText.setText(word.getTranslation());
     }
 
+    public void setConfig(int config)
+    {
+        switch(config) {
+            case 0:
+                wordText.setVisibility(View.VISIBLE);
+                translationText.setVisibility(View.VISIBLE);
+                break;
+            case 1:
+                wordText.setVisibility(View.VISIBLE);
+                translationText.setVisibility(View.GONE);
+                break;
+            case 2:
+                wordText.setVisibility(View.GONE);
+                translationText.setVisibility(View.VISIBLE);
+                break;
+        }
+    }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo contextMenuInfo)
     {

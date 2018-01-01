@@ -4,8 +4,10 @@ package com.unalignedbyte.words;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +35,7 @@ public class WordsListActivity extends Activity
 
         setupWordsList();
         setupAddButton();
+        setupTabBar();
     }
 
     private void setupWordsList()
@@ -54,6 +57,29 @@ public class WordsListActivity extends Activity
             @Override
             public void onClick(View view) {
                 showEditWordPopup(null);
+            }
+        });
+    }
+
+    private void setupTabBar()
+    {
+        TabLayout tabBar = (TabLayout)findViewById(R.id.words_list_tabBar);
+        tabBar.addTab(tabBar.newTab().setText(R.string.both));
+        tabBar.addTab(tabBar.newTab().setText(R.string.word));
+        tabBar.addTab(tabBar.newTab().setText(R.string.translation));
+        tabBar.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                adapter.setConfig(tab.getPosition());
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
             }
         });
     }

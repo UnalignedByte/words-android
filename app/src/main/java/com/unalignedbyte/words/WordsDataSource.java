@@ -77,7 +77,6 @@ public class WordsDataSource extends SQLiteOpenHelper
     public List<Language> getLanguages()
     {
         List<Language> languageCodes = new LinkedList<Language>();
-        languageCodes.add(new Language("cn", "Chinese"));
         languageCodes.add(new Language("gn", "Generic"));
 
         return languageCodes;

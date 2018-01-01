@@ -3,11 +3,13 @@
     <string name="group_name">Group Name</string>
     <string name="group_language">Group Language</string>
     <string name="add_group">Add Group</string>
-    <string name="word">Word</string>
-    <string name="translation">Translation</string>
     <string name="add_word">Add Word</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
+
+    <string name="both">Both</string>
+    <string name="word">Word</string>
+    <string name="translation">Translation</string>
 </resources>
