@@ -7,11 +7,11 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupWindow;
+import android.support.v7.widget.Toolbar;
 
 import javax.sql.DataSource;
 
@@ -35,7 +35,8 @@ public class WordsListActivity extends Activity
 
         setupWordsList();
         setupAddButton();
-        setupTabBar();
+        setupToolbar();
+        setupTab();
     }
 
     private void setupWordsList()
@@ -61,7 +62,13 @@ public class WordsListActivity extends Activity
         });
     }
 
-    private void setupTabBar()
+    private void setupToolbar()
+    {
+        Toolbar toolbar = (Toolbar)findViewById(R.id.words_list_toolbar);
+        toolbar.setTitle(group.getName() + " (" + WordsDataSource.get(this).getWords(group).size() + ")");
+    }
+
+    private void setupTab()
     {
         TabLayout tabBar = (TabLayout)findViewById(R.id.words_list_tabBar);
         tabBar.addTab(tabBar.newTab().setText(R.string.both));
