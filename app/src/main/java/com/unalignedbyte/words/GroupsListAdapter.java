@@ -34,7 +34,8 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
     public void onBindViewHolder(GroupViewHolder viewHolder, int position)
     {
         final Group group = WordsDataSource.get(context).getGroups().get(position);
-        viewHolder.setGroup(group);
+        int wordsCount = WordsDataSource.get(context).getWords(group).size();
+        viewHolder.setGroup(group, wordsCount);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

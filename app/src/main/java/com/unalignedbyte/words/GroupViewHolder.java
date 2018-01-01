@@ -26,9 +26,16 @@ public class GroupViewHolder extends RecyclerView.ViewHolder
         view.setOnCreateContextMenuListener(this);
     }
 
-    public void setGroup(Group group)
+    public void setGroup(Group group, int wordsCount)
     {
         nameText.setText(group.getName());
+        if(wordsCount == 0) {
+            wordsCountText.setText("No Words");
+        } else if(wordsCount == 1) {
+            wordsCountText.setText("1 Word");
+        } else {
+            wordsCountText.setText(Integer.toString(wordsCount) + "Words");
+        }
     }
 
     @Override
