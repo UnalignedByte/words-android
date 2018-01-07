@@ -98,6 +98,7 @@ public class WordsListActivity extends Activity
             @Override
             public void onDismiss() {
                 adapter.notifyDataSetChanged();
+                setupToolbar();
             }
         });
         popup.showAtLocation(contentView, Gravity.TOP, 0, 0);
@@ -113,6 +114,7 @@ public class WordsListActivity extends Activity
             case R.id.menu_delete:
                 WordsDataSource.get(this).deleteWord(adapter.getSelectedWord());
                 adapter.notifyDataSetChanged();
+                setupToolbar();
                 return true;
         }
         return false;
