@@ -1,8 +1,8 @@
 package com.unalignedbyte.words;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 /**
@@ -10,17 +10,22 @@ import android.widget.TextView;
  */
 
 public class WordViewHolder extends RecyclerView.ViewHolder
-    implements View.OnCreateContextMenuListener
 {
     private TextView wordText;
     private TextView translationText;
+    private Button menuButton;
 
     public WordViewHolder(View view)
     {
         super(view);
         wordText = (TextView)view.findViewById(R.id.word_view_holder_wordText);
         translationText = (TextView)view.findViewById(R.id.word_view_holder_translationText);
-        view.setOnCreateContextMenuListener(this);
+        menuButton = (Button)itemView.findViewById(R.id.word_view_holder_menuButton);
+    }
+
+    public Button getMenuButton()
+    {
+        return menuButton;
     }
 
     public void setWord(Word word)
@@ -45,12 +50,5 @@ public class WordViewHolder extends RecyclerView.ViewHolder
                 translationText.setVisibility(View.VISIBLE);
                 break;
         }
-    }
-
-    @Override
-    public void onCreateContextMenu(ContextMenu menu, View view, ContextMenu.ContextMenuInfo contextMenuInfo)
-    {
-        menu.add(R.string.menu_edit);
-        menu.add(R.string.menu_delete);
     }
 }

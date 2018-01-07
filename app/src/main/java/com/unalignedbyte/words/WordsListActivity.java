@@ -10,16 +10,16 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.support.v7.widget.Toolbar;
-
-import javax.sql.DataSource;
 
 /**
  * Created by rafal on 20/12/2017.
  */
 
 public class WordsListActivity extends Activity
+    implements PopupMenu.OnMenuItemClickListener
 {
     private View contentView;
     private WordsListAdapter adapter;
@@ -41,13 +41,12 @@ public class WordsListActivity extends Activity
 
     private void setupWordsList()
     {
-        adapter = new WordsListAdapter(this, group);
+        adapter = new WordsListAdapter(this, group, this);
 
         RecyclerView wordsListView = (RecyclerView)findViewById(R.id.words_list_wordsRecyclerView);
         wordsListView.setLayoutManager(new LinearLayoutManager(this));
         wordsListView.setAdapter(adapter);
 
-        registerForContextMenu(wordsListView);
         contentView = wordsListView;
     }
 
@@ -105,17 +104,17 @@ public class WordsListActivity extends Activity
     }
 
     @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item)
+    public boolean onMenuItemClick(MenuItem menuItem)
     {
-        if(item.getTitle().equals(getResources().getString(R.string.menu_edit))) {
-            showEditWordPopup(adapter.getSelectedWord());
-            return true;
-        } else if(item.getTitle().equals(getResources().getString(R.string.menu_delete))) {
-            WordsDataSource.get(this).deleteWord(adapter.getSelectedWord());
-            adapter.notifyDataSetChanged();
-            return true;
+        switch(menuItem.getItemId()) {
+            case R.id.menu_edit:
+                showEditWordPopup(adapter.getSelectedWord());
+                return true;
+            case R.id.menu_delete:
+                WordsDataSource.get(this).deleteWord(adapter.getSelectedWord());
+                adapter.notifyDataSetChanged();
+                return true;
         }
-
         return false;
     }
 }

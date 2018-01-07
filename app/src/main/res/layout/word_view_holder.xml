@@ -1,24 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="70dp"
-    android:background="?android:attr/selectableItemBackground"
-    android:gravity="center_vertical"
-    android:orientation="vertical">
+    android:background="?android:attr/selectableItemBackground">
 
-    <TextView
-        android:id="@+id/word_view_holder_wordText"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="22sp"/>
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/word_view_holder_translationText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:textSize="22sp"/>
+        <TextView
+            android:id="@+id/word_view_holder_wordText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="22sp"/>
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/word_view_holder_translationText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="22sp"/>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/word_view_holder_menuButton"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:textSize="22sp"
+        android:text="⋮"
+        android:background="?android:attr/selectableItemBackground"/>
+
+</FrameLayout>

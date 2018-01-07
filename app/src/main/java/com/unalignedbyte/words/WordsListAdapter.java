@@ -1,6 +1,8 @@
 package com.unalignedbyte.words;
 
 import android.content.Context;
+import android.view.Gravity;
+import android.widget.PopupMenu;
 import android.view.View;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,11 +18,13 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     private Group group;
     private Word selectedWord;
     private int config = 0;
+    private PopupMenu.OnMenuItemClickListener menuListener;
 
-    public WordsListAdapter(Context context, Group group)
+    public WordsListAdapter(Context context, Group group, PopupMenu.OnMenuItemClickListener menuListener)
     {
         this.context = context;
         this.group = group;
+        this.menuListener = menuListener;
     }
 
     @Override
@@ -32,7 +36,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(WordViewHolder viewHolder, int position)
+    public void onBindViewHolder(final WordViewHolder viewHolder, int position)
     {
         final Word word = WordsDataSource.get(context).getWords(group).get(position);
         viewHolder.setWord(word);
@@ -40,8 +44,15 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
-                selectedWord = word;
+                //selectedWord = word;
                 return false;
+            }
+        });
+        viewHolder.getMenuButton().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                selectedWord = word;
+                showPopupMenu(viewHolder.getMenuButton());
             }
         });
     }
@@ -60,5 +71,13 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     public void setConfig(int config)
     {
         this.config = config;
+    }
+
+    private void showPopupMenu(View view)
+    {
+        PopupMenu menu = new PopupMenu(context, view, Gravity.BOTTOM);
+        menu.inflate(R.menu.edit_delete_menu);
+        menu.setOnMenuItemClickListener(menuListener);
+        menu.show();
     }
 }
