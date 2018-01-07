@@ -5,18 +5,18 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.PopupMenu;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 /**
  * Created by rafal on 10/12/2017.
  */
 
 public class GroupsListActivity extends Activity
+    implements PopupMenu.OnMenuItemClickListener
 {
     private View contentView;
     private GroupsListAdapter adapter;
@@ -41,7 +41,7 @@ public class GroupsListActivity extends Activity
 
     private void setupGroupsList()
     {
-        adapter = new GroupsListAdapter(this);
+        adapter = new GroupsListAdapter(this, this);
 
         RecyclerView groupsListView = (RecyclerView)findViewById(R.id.groupsListView);
         groupsListView.setLayoutManager(new LinearLayoutManager(this));
@@ -76,17 +76,17 @@ public class GroupsListActivity extends Activity
     }
 
     @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item)
+    public boolean onMenuItemClick(MenuItem menuItem)
     {
-        if(item.getTitle().equals(getResources().getString(R.string.menu_edit))) {
-            showEditGroupPopup(adapter.getSelectedGroup());
-            return true;
-        } else if(item.getTitle().equals(getResources().getString(R.string.menu_delete))) {
-            WordsDataSource.get(this).deleteGroup(adapter.getSelectedGroup());
-            adapter.notifyDataSetChanged();
-            return true;
+        switch(menuItem.getItemId()) {
+            case R.id.menu_edit:
+                showEditGroupPopup(adapter.getSelectedGroup());
+                return true;
+            case R.id.menu_delete:
+                WordsDataSource.get(this).deleteGroup(adapter.getSelectedGroup());
+                adapter.notifyDataSetChanged();
+                return true;
         }
-
         return false;
     }
 }

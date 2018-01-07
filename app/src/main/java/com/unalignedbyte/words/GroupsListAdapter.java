@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 /**
  * Created by rafal on 10/12/2017.
@@ -15,10 +16,12 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
 {
     private Context context;
     private Group selectedGroup;
+    private PopupMenu.OnMenuItemClickListener menuListener;
 
-    public GroupsListAdapter(Context context)
+    public GroupsListAdapter(Context context, PopupMenu.OnMenuItemClickListener menuListener)
     {
         this.context = context;
+        this.menuListener = menuListener;
     }
 
     @Override
@@ -26,12 +29,11 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
     {
         View view = LayoutInflater.from(context).inflate(R.layout.group_view_holder, parent, false);
         GroupViewHolder viewHolder = new GroupViewHolder(view);
-
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(GroupViewHolder viewHolder, int position)
+    public void onBindViewHolder(final GroupViewHolder viewHolder, int position)
     {
         final Group group = WordsDataSource.get(context).getGroups().get(position);
         int wordsCount = WordsDataSource.get(context).getWords(group).size();
@@ -44,11 +46,11 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
                 context.startActivity(intent);
             }
         });
-        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+        viewHolder.getMenuButton().setOnClickListener(new View.OnClickListener() {
             @Override
-            public boolean onLongClick(View v) {
+            public void onClick(View view) {
                 selectedGroup = group;
-                return false;
+                showPopupMenu(viewHolder.getMenuButton());
             }
         });
     }
@@ -62,5 +64,13 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
     public Group getSelectedGroup()
     {
         return selectedGroup;
+    }
+
+    private void showPopupMenu(View view)
+    {
+        PopupMenu menu = new PopupMenu(context, view);
+        menu.inflate(R.menu.edit_delete_menu);
+        menu.setOnMenuItemClickListener(menuListener);
+        menu.show();
     }
 }
