@@ -6,6 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.PopupWindow;
@@ -27,7 +28,6 @@ public class EditWordPopupWindow extends PopupWindow
         super(LayoutInflater.from(context).inflate(R.layout.edit_word, null),
                 RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.MATCH_PARENT);
-        setFocusable(true);
 
         this.context = context;
         this.group = group;
@@ -91,6 +91,9 @@ public class EditWordPopupWindow extends PopupWindow
             translationEdit.setText(word.getTranslation());
             addWordButton.setText(R.string.save);
         }
+
+        setFocusable(true);
+        setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     private void onAddWord()

@@ -6,7 +6,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,7 +30,6 @@ public class EditGroupPopupWindow extends PopupWindow
         super(LayoutInflater.from(context).inflate(R.layout.edit_group, null),
               RecyclerView.LayoutParams.MATCH_PARENT,
               RecyclerView.LayoutParams.MATCH_PARENT);
-        setFocusable(true);
 
         this.context = context;
         this.group = group;
@@ -89,6 +88,9 @@ public class EditGroupPopupWindow extends PopupWindow
 
             addGroupButton.setText(R.string.save);
         }
+
+        setFocusable(true);
+        setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
     private void onAddGroup()
