@@ -3,7 +3,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:id="@+id/groupViewHolder"
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
+                android:layout_height="60dp"
                 android:background="?android:attr/selectableItemBackground">
 
     <TextView
@@ -16,29 +16,14 @@
         android:textSize="18sp"
         tools:text="Group Name"/>
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <TextView
+        android:id="@+id/groupViewHolderWordsCountText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="end|bottom">
-
-        <TextView
-            android:id="@+id/groupViewHolderWordsCountText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="bottom"
-            android:padding="8dp"
-            android:text="Words Count"
-            android:textSize="12dp"
-            tools:text="Words Count"/>
-
-        <Button
-            android:id="@+id/group_view_holder_menuButton"
-            android:layout_width="30dp"
-            android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:text="⋮"
-            android:background="?android:attr/selectableItemBackground"/>
-
-    </LinearLayout>
-
+        android:layout_gravity="bottom"
+        android:gravity="end"
+        android:padding="8dp"
+        android:text="Words Count"
+        android:textSize="12dp"
+        tools:text="Words Count"/>
 </FrameLayout>

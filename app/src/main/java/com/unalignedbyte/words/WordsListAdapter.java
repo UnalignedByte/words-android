@@ -44,6 +44,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View view) {
+                //selectedWord = word;
                 return false;
             }
         });
@@ -74,7 +75,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
 
     private void showPopupMenu(View view)
     {
-        PopupMenu menu = new PopupMenu(context, view);
+        PopupMenu menu = new PopupMenu(context, view, Gravity.BOTTOM);
         menu.inflate(R.menu.edit_delete_menu);
         menu.setOnMenuItemClickListener(menuListener);
         menu.show();
