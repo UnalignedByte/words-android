@@ -1,13 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:id="@+id/groupViewHolder"
-                android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:background="?android:attr/selectableItemBackground">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/groupViewHolder"
+    android:layout_width="match_parent"
+    android:layout_height="60dp"
+    android:background="@android:color/white"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:elevation="1dp"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp">
 
     <TextView
-        android:id="@+id/groupViewHolderName"
+        android:id="@+id/group_view_holder_nameText"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_vertical"
@@ -23,7 +30,7 @@
         android:layout_gravity="end">
 
         <TextView
-            android:id="@+id/groupViewHolderWordsCountText"
+            android:id="@+id/group_view_holder_wordsCountText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"

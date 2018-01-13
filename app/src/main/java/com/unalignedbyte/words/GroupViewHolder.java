@@ -2,9 +2,6 @@ package com.unalignedbyte.words;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.ContextMenu;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
 
@@ -17,14 +14,14 @@ public class GroupViewHolder extends RecyclerView.ViewHolder
 {
     private TextView nameText;
     private TextView wordsCountText;
-    private View reorderView;
+    private View reorderText;
 
     public GroupViewHolder(View view)
     {
         super(view);
-        nameText = (TextView)view.findViewById(R.id.groupViewHolderName);
-        wordsCountText = (TextView)view.findViewById(R.id.groupViewHolderWordsCountText);
-        reorderView = view.findViewById(R.id.group_view_holder_reorderText);
+        nameText = (TextView)view.findViewById(R.id.group_view_holder_nameText);
+        wordsCountText = (TextView)view.findViewById(R.id.group_view_holder_wordsCountText);
+        reorderText= view.findViewById(R.id.group_view_holder_reorderText);
         view.setOnCreateContextMenuListener(this);
     }
 
@@ -49,6 +46,6 @@ public class GroupViewHolder extends RecyclerView.ViewHolder
 
     public View getReorderView()
     {
-        return reorderView;
+        return reorderText;
     }
 }
