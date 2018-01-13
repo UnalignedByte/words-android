@@ -17,12 +17,14 @@ public class GroupViewHolder extends RecyclerView.ViewHolder
 {
     private TextView nameText;
     private TextView wordsCountText;
+    private View reorderView;
 
     public GroupViewHolder(View view)
     {
         super(view);
         nameText = (TextView)view.findViewById(R.id.groupViewHolderName);
         wordsCountText = (TextView)view.findViewById(R.id.groupViewHolderWordsCountText);
+        reorderView = view.findViewById(R.id.group_view_holder_reorderText);
         view.setOnCreateContextMenuListener(this);
     }
 
@@ -43,5 +45,10 @@ public class GroupViewHolder extends RecyclerView.ViewHolder
     {
         menu.add(R.string.menu_edit);
         menu.add(R.string.menu_delete);
+    }
+
+    public View getReorderView()
+    {
+        return reorderView;
     }
 }

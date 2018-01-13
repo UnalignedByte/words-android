@@ -5,12 +5,10 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.PopupWindow;
-import android.widget.Toast;
 
 /**
  * Created by rafal on 10/12/2017.
@@ -41,9 +39,9 @@ public class GroupsListActivity extends Activity
 
     private void setupGroupsList()
     {
-        adapter = new GroupsListAdapter(this);
-
         RecyclerView groupsListView = (RecyclerView)findViewById(R.id.groupsListView);
+        adapter = new GroupsListAdapter(this, groupsListView);
+
         groupsListView.setLayoutManager(new LinearLayoutManager(this));
         groupsListView.setAdapter(adapter);
 

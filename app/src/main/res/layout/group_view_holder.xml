@@ -16,14 +16,30 @@
         android:textSize="18sp"
         tools:text="Group Name"/>
 
-    <TextView
-        android:id="@+id/groupViewHolderWordsCountText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom"
-        android:gravity="end"
-        android:padding="8dp"
-        android:text="Words Count"
-        android:textSize="12dp"
-        tools:text="Words Count"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="end">
+
+        <TextView
+            android:id="@+id/groupViewHolderWordsCountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:padding="8dp"
+            android:text="Words Count"
+            android:textSize="12dp"
+            tools:text="Words Count"/>
+
+        <TextView
+            android:id="@+id/group_view_holder_reorderText"
+            android:layout_width="30dp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:text="☰"
+            android:textSize="22sp"/>
+
+    </LinearLayout>
+
 </FrameLayout>
