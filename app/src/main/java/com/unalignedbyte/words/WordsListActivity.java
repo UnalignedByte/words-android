@@ -28,7 +28,7 @@ public class WordsListActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.words_list);
+        setContentView(R.layout.words_list_activity);
 
         int groupId = getIntent().getIntExtra("groupId", -1);
         group = WordsDataSource.get(this).getGroup(groupId);
@@ -43,7 +43,7 @@ public class WordsListActivity extends Activity
     {
         adapter = new WordsListAdapter(this, group, this);
 
-        RecyclerView wordsListView = (RecyclerView)findViewById(R.id.words_list_wordsRecyclerView);
+        RecyclerView wordsListView = (RecyclerView)findViewById(R.id.words_list_activity_recyclerView);
         wordsListView.setLayoutManager(new LinearLayoutManager(this));
         wordsListView.setAdapter(adapter);
 
@@ -52,7 +52,7 @@ public class WordsListActivity extends Activity
 
     private void setupAddButton()
     {
-        FloatingActionButton addWordButton = (FloatingActionButton)findViewById(R.id.words_list_addWordButton);
+        FloatingActionButton addWordButton = (FloatingActionButton)findViewById(R.id.words_list_activity_addWordButton);
         addWordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -63,13 +63,13 @@ public class WordsListActivity extends Activity
 
     private void setupToolbar()
     {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.words_list_toolbar);
+        Toolbar toolbar = (Toolbar)findViewById(R.id.words_list_activity_toolbar);
         toolbar.setTitle(group.getName() + " (" + WordsDataSource.get(this).getWords(group).size() + ")");
     }
 
     private void setupTab()
     {
-        TabLayout tabBar = (TabLayout)findViewById(R.id.words_list_tabBar);
+        TabLayout tabBar = (TabLayout)findViewById(R.id.words_list_activity_tabBar);
         tabBar.addTab(tabBar.newTab().setText(R.string.both));
         tabBar.addTab(tabBar.newTab().setText(R.string.word));
         tabBar.addTab(tabBar.newTab().setText(R.string.translation));

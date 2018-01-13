@@ -23,7 +23,7 @@ public class GroupsListActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_groups_list);
+        setContentView(R.layout.groups_list_activity);
 
         setupGroupsList();
         setupAddButton();
@@ -39,7 +39,7 @@ public class GroupsListActivity extends Activity
 
     private void setupGroupsList()
     {
-        RecyclerView groupsListView = (RecyclerView)findViewById(R.id.groupsListView);
+        RecyclerView groupsListView = (RecyclerView)findViewById(R.id.groups_list_activity_recyclerView);
         adapter = new GroupsListAdapter(this, groupsListView);
 
         groupsListView.setLayoutManager(new LinearLayoutManager(this));
@@ -51,7 +51,7 @@ public class GroupsListActivity extends Activity
 
     private void setupAddButton()
     {
-        FloatingActionButton addGroupButton = (FloatingActionButton)findViewById(R.id.addGroupButton);
+        FloatingActionButton addGroupButton = (FloatingActionButton)findViewById(R.id.groups_list_activity_addButton);
         addGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
