@@ -1,4 +1,4 @@
-package com.unalignedbyte.words;
+package com.unalignedbyte.words.model;
 
 /**
  * Created by rafal on 11/12/2017.

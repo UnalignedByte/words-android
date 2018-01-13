@@ -8,6 +8,8 @@ import android.support.v7.widget.*;
 import android.support.v7.widget.Toolbar;
 import android.support.design.widget.*;
 
+import com.unalignedbyte.words.model.*;
+
 /**
  * Created by rafal on 10/12/2017.
  */

@@ -6,6 +6,8 @@ import android.widget.*;
 import android.text.*;
 import android.support.v7.widget.*;
 
+import com.unalignedbyte.words.model.*;
+
 /**
  * Created by rafal on 31/12/2017.
  */

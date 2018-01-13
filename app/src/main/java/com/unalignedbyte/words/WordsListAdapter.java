@@ -5,6 +5,8 @@ import android.view.*;
 import android.widget.PopupMenu;
 import android.support.v7.widget.*;
 
+import com.unalignedbyte.words.model.*;
+
 /**
  * Created by rafal on 27/12/2017.
  */

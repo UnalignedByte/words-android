@@ -1,4 +1,4 @@
-package com.unalignedbyte.words;
+package com.unalignedbyte.words.model;
 
 import java.util.*;
 import android.content.*;
