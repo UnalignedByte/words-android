@@ -1,9 +1,8 @@
 package com.unalignedbyte.words;
 
-import android.support.v7.widget.RecyclerView;
-import android.view.ContextMenu;
-import android.view.View;
-import android.widget.TextView;
+import android.view.*;
+import android.widget.*;
+import android.support.v7.widget.*;
 
 /**
  * Created by rafal on 10/12/2017.

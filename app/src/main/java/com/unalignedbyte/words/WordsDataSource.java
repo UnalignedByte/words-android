@@ -1,14 +1,9 @@
 package com.unalignedbyte.words;
 
-
-import android.content.ContentValues;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
-
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
+import android.content.*;
+import android.database.*;
+import android.database.sqlite.*;
 
 /**
  * Created by rafal on 11/12/2017.

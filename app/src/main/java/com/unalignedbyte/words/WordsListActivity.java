@@ -1,18 +1,13 @@
 package com.unalignedbyte.words;
 
-
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.TabLayout;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.View;
+import android.app.*;
+import android.os.*;
+import android.view.*;
+import android.widget.*;
 import android.widget.PopupMenu;
-import android.widget.PopupWindow;
+import android.support.v7.widget.*;
 import android.support.v7.widget.Toolbar;
+import android.support.design.widget.*;
 
 /**
  * Created by rafal on 20/12/2017.

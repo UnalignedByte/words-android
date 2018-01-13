@@ -1,15 +1,10 @@
 package com.unalignedbyte.words;
 
-import android.content.Context;
-import android.support.v7.widget.RecyclerView;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.PopupWindow;
+import android.content.*;
+import android.view.*;
+import android.widget.*;
+import android.text.*;
+import android.support.v7.widget.*;
 
 /**
  * Created by rafal on 31/12/2017.

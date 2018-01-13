@@ -1,13 +1,9 @@
 package com.unalignedbyte.words;
 
-import android.content.Context;
-import android.content.Intent;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
-import android.view.View;
-import android.view.ViewGroup;
+import android.content.*;
+import android.view.*;
+import android.support.v7.widget.*;
+import android.support.v7.widget.helper.*;
 
 /**
  * Created by rafal on 10/12/2017.

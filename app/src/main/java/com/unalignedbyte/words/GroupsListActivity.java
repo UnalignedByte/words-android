@@ -1,12 +1,12 @@
 package com.unalignedbyte.words;
 
-import android.app.Activity;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.*;
-import android.support.v7.widget.Toolbar;
+import android.app.*;
+import android.os.*;
 import android.view.*;
 import android.widget.*;
+import android.support.v7.widget.*;
+import android.support.v7.widget.Toolbar;
+import android.support.design.widget.*;
 
 /**
  * Created by rafal on 10/12/2017.

@@ -1,12 +1,9 @@
 package com.unalignedbyte.words;
 
-import android.content.Context;
-import android.view.Gravity;
+import android.content.*;
+import android.view.*;
 import android.widget.PopupMenu;
-import android.view.View;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
+import android.support.v7.widget.*;
 
 /**
  * Created by rafal on 27/12/2017.
