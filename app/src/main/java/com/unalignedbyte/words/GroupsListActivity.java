@@ -3,12 +3,10 @@ package com.unalignedbyte.words;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.Gravity;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.PopupWindow;
+import android.support.v7.widget.*;
+import android.support.v7.widget.Toolbar;
+import android.view.*;
+import android.widget.*;
 
 /**
  * Created by rafal on 10/12/2017.
@@ -25,6 +23,7 @@ public class GroupsListActivity extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.groups_list_activity);
 
+        setupToolbar();
         setupGroupsList();
         setupAddButton();
     }
@@ -34,6 +33,12 @@ public class GroupsListActivity extends Activity
     {
         super.onResume();
         adapter.notifyDataSetChanged();
+    }
+
+    private void setupToolbar()
+    {
+        Toolbar toolbar = (Toolbar)findViewById(R.id.groups_list_activity_toolbar);
+        toolbar.setTitle(R.string.app_name);
     }
 
 
