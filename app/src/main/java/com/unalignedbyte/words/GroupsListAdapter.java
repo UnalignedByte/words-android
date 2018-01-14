@@ -7,6 +7,8 @@ import android.support.v7.widget.helper.*;
 
 import com.unalignedbyte.words.model.*;
 
+import java.util.List;
+
 /**
  * Created by rafal on 10/12/2017.
  */
@@ -82,8 +84,10 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                   RecyclerView.ViewHolder target) {
-                GroupsListAdapter.this.notifyItemMoved(viewHolder.getAdapterPosition(),
-                        target.getAdapterPosition());
+                int sourceIndex = viewHolder.getAdapterPosition();
+                int targetIndex = target.getAdapterPosition();
+                moveGroup(sourceIndex, targetIndex);
+                GroupsListAdapter.this.notifyItemMoved(sourceIndex, targetIndex);
                 return true;
             }
 
@@ -105,5 +109,23 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
     public Group getSelectedGroup()
     {
         return selectedGroup;
+    }
+
+    private void moveGroup(int sourceIndex, int targetIndex)
+    {
+        if(sourceIndex == targetIndex)
+            return;
+
+        List<Group> groups = WordsDataSource.get(context).getGroups();
+
+        Group updatedGroup = groups.remove(sourceIndex);
+        groups.add(targetIndex, updatedGroup);
+
+        for(int order=groups.size(); order>0; order--) {
+            int index = groups.size() - order;
+            Group group = groups.get(index);
+            group.setOrder(order);
+            WordsDataSource.get(context).updateGroup(group);
+        }
     }
 }

@@ -19,6 +19,7 @@ public class WordsDataSource extends SQLiteOpenHelper
     private static final String GROUPS_ID = "id";
     private static final String GROUPS_NAME = "group_name";
     private static final String GROUPS_LANGUAGE_CODE = "language_code";
+    private static final String GROUPS_ORDER = "position";
 
     private static final String TABLE_WORDS = "words";
     private static final String WORDS_ID = "id";
@@ -44,6 +45,7 @@ public class WordsDataSource extends SQLiteOpenHelper
     {
         String createGroupsTable = "create table " + TABLE_GROUPS + " (" +
                 GROUPS_ID + " integer primary key," +
+                GROUPS_ORDER + " integer," +
                 GROUPS_NAME + " text," +
                 GROUPS_LANGUAGE_CODE + " text)";
         db.execSQL(createGroupsTable);
@@ -79,7 +81,11 @@ public class WordsDataSource extends SQLiteOpenHelper
 
     public void addGroup(Group group)
     {
+        int order = maxOrderForGroup(group) + 1;
+        group.setOrder(order);
+
         ContentValues values = new ContentValues();
+        values.put(GROUPS_ORDER, group.getOrder());
         values.put(GROUPS_NAME, group.getName());
         values.put(GROUPS_LANGUAGE_CODE, group.getLanguage().getCode());
 
@@ -92,6 +98,7 @@ public class WordsDataSource extends SQLiteOpenHelper
     public void updateGroup(Group group)
     {
         ContentValues values = new ContentValues();
+        values.put(GROUPS_ORDER, group.getOrder());
         values.put(GROUPS_NAME, group.getName());
         values.put(GROUPS_LANGUAGE_CODE, group.getLanguage().getCode());
 
@@ -115,16 +122,17 @@ public class WordsDataSource extends SQLiteOpenHelper
     {
         List<Group> groups = new LinkedList();
 
-        String getGroups = "select * from " + TABLE_GROUPS;
+        String getGroups = "select * from " + TABLE_GROUPS + " order by " + GROUPS_ORDER + " desc";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(getGroups, null);
 
         if(cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(0);
-                String name = cursor.getString(1);
-                String languageCode = cursor.getString(2);
-                Group group = new Group(id, name, new Language(languageCode, languageCode));
+                int order = cursor.getInt(1);
+                String name = cursor.getString(2);
+                String languageCode = cursor.getString(3);
+                Group group = new Group(id, order, name, new Language(languageCode, languageCode));
                 groups.add(group);
             } while(cursor.moveToNext());
         }
@@ -141,9 +149,10 @@ public class WordsDataSource extends SQLiteOpenHelper
 
         if(cursor.moveToFirst()) {
             int id = cursor.getInt(0);
-            String name = cursor.getString(1);
-            String languageCode = cursor.getString(2);
-            Group group = new Group(id, name, new Language(languageCode, languageCode));
+            int order = cursor.getInt(1);
+            String name = cursor.getString(2);
+            String languageCode = cursor.getString(3);
+            Group group = new Group(id, order, name, new Language(languageCode, languageCode));
             return group;
         }
 
@@ -212,5 +221,19 @@ public class WordsDataSource extends SQLiteOpenHelper
         }
 
         return words;
+    }
+
+    private int maxOrderForGroup(Group group)
+    {
+        int maxOrder = 0;
+
+        SQLiteDatabase db = getReadableDatabase();
+        String getMaxOrder = "select max(" + GROUPS_ORDER + ") from " + TABLE_GROUPS;
+        Cursor cursor = db.rawQuery(getMaxOrder, null);
+        if(cursor.moveToFirst()) {
+            maxOrder = cursor.getInt(0);
+        }
+
+        return maxOrder;
     }
 }
