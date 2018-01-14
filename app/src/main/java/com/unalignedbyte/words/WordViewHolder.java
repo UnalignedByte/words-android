@@ -16,6 +16,7 @@ public class WordViewHolder extends RecyclerView.ViewHolder
     private TextView wordText;
     private TextView translationText;
     private Button menuButton;
+    private View isInRevisionView;
     private int config = 0;
 
     public WordViewHolder(View view)
@@ -24,6 +25,7 @@ public class WordViewHolder extends RecyclerView.ViewHolder
         wordText = (TextView)view.findViewById(R.id.word_view_holder_wordText);
         translationText = (TextView)view.findViewById(R.id.word_view_holder_translationText);
         menuButton = (Button)itemView.findViewById(R.id.word_view_holder_menuButton);
+        isInRevisionView = itemView.findViewById(R.id.word_view_holder_isInRevisionView);
 
         itemView.setOnTouchListener(this);
     }
@@ -37,6 +39,7 @@ public class WordViewHolder extends RecyclerView.ViewHolder
     {
         wordText.setText(word.getWord());
         translationText.setText(word.getTranslation());
+        isInRevisionView.setVisibility(word.getIsInReview() ? View.VISIBLE : View.INVISIBLE);
     }
 
     public void setConfig(int config)

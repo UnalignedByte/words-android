@@ -26,6 +26,7 @@ public class WordsDataSource extends SQLiteOpenHelper
     private static final String WORDS_GROUP_ID = "group_id";
     private static final String WORDS_WORD = "word";
     private static final String WORDS_TRANSLATION = "translation";
+    private static final String WORDS_IS_IN_REVIEW = "is_in_review";
 
     private WordsDataSource(Context context)
     {
@@ -53,8 +54,10 @@ public class WordsDataSource extends SQLiteOpenHelper
         String createWordsTable = "create table " + TABLE_WORDS + " (" +
                 WORDS_ID + " integer primary key," +
                 WORDS_GROUP_ID + " integer," +
+                WORDS_IS_IN_REVIEW + " integer," +
                 WORDS_WORD + " text," +
                 WORDS_TRANSLATION + " text)";
+
         db.execSQL(createWordsTable);
 
     }
@@ -163,6 +166,7 @@ public class WordsDataSource extends SQLiteOpenHelper
     {
         ContentValues values = new ContentValues();
         values.put(WORDS_GROUP_ID, word.getGroup().getId());
+        values.put(WORDS_IS_IN_REVIEW, word.getIsInReview());
         values.put(WORDS_WORD, word.getWord());
         values.put(WORDS_TRANSLATION, word.getTranslation());
 
@@ -176,6 +180,7 @@ public class WordsDataSource extends SQLiteOpenHelper
     public void updateWord(Word word)
     {
         ContentValues values = new ContentValues();
+        values.put(WORDS_IS_IN_REVIEW, word.getIsInReview());
         values.put(WORDS_WORD, word.getWord());
         values.put(WORDS_TRANSLATION, word.getTranslation());
 
@@ -213,9 +218,10 @@ public class WordsDataSource extends SQLiteOpenHelper
         if(cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(0);
-                String wordString = cursor.getString(2);
-                String translation = cursor.getString(3);
-                Word word = new Word(id, wordString, translation, group);
+                boolean isInReview = cursor.getInt(2) != 0;
+                String wordString = cursor.getString(3);
+                String translation = cursor.getString(4);
+                Word word = new Word(id, group, isInReview, wordString, translation);
                 words.add(word);
             } while(cursor.moveToNext());
         }

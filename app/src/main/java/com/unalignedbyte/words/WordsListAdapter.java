@@ -1,6 +1,11 @@
 package com.unalignedbyte.words;
 
 import android.content.*;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.util.Log;
 import android.view.*;
 import android.widget.PopupMenu;
 import android.support.v7.widget.*;
@@ -14,16 +19,19 @@ import com.unalignedbyte.words.model.*;
 public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
 {
     private Context context;
+    private RecyclerView recyclerView;
     private Group group;
     private Word selectedWord;
     private int config = 0;
     private PopupMenu.OnMenuItemClickListener menuListener;
 
-    public WordsListAdapter(Context context, Group group, PopupMenu.OnMenuItemClickListener menuListener)
+    public WordsListAdapter(Context context, RecyclerView recyclerView, Group group, PopupMenu.OnMenuItemClickListener menuListener)
     {
         this.context = context;
+        this.recyclerView =recyclerView;
         this.group = group;
         this.menuListener = menuListener;
+        setupDragging();
     }
 
     @Override
@@ -60,6 +68,75 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     public int getItemCount()
     {
         return WordsDataSource.get(context).getWords(group).size();
+    }
+
+    private void setupDragging()
+    {
+        ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
+            @Override
+            public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                return makeMovementFlags(0, ItemTouchHelper.START);
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                int position = viewHolder.getAdapterPosition();
+                Word word = WordsDataSource.get(context).getWords(group).get(position);
+                word.setIsInReview(!word.getIsInReview());
+                WordsDataSource.get(context).updateWord(word);
+                WordsListAdapter.this.notifyItemChanged(position);
+            }
+
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                    float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                if(isCurrentlyActive) {
+                    int position = viewHolder.getAdapterPosition();
+                    Word word = WordsDataSource.get(context).getWords(group).get(position);
+
+                    Paint backgroundColor = new Paint();
+                    String text;
+                    if (word.getIsInReview()) {
+                        backgroundColor.setARGB(255, 252, 70, 74);
+                        text = "Remove from review";
+                    } else {
+                        backgroundColor.setARGB(255, 154, 202, 39);
+                        text = "Add to review";
+                    }
+
+                    // Background
+                    float left = viewHolder.itemView.getRight() + dX;
+                    float right = viewHolder.itemView.getRight();
+                    float top = viewHolder.itemView.getTop();
+                    float bottom = viewHolder.itemView.getBottom();
+                    c.drawRect(left, top, right, bottom, backgroundColor);
+
+                    // Foreground
+                    Paint textPaint = new Paint();
+                    textPaint.setARGB(255, 255, 255, 255);
+                    textPaint.setFlags(Paint.HINTING_ON|Paint.FAKE_BOLD_TEXT_FLAG);
+                    float fontScale = context.getResources().getDisplayMetrics().density;
+                    textPaint.setTextSize(18 * fontScale);
+
+                    Rect textBounds = new Rect();
+                    textPaint.getTextBounds(text, 0, text.length(), textBounds);
+                    float textX = right - textBounds.width() - 8.0f * fontScale;
+                    float textY = top + (Math.abs(top - bottom) + textBounds.height())/2.0f;
+
+                    c.drawText(text, textX, textY, textPaint);
+                }
+
+                super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive);
+            }
+        };
+
+        ItemTouchHelper touchHelper = new ItemTouchHelper(callback);
+        touchHelper.attachToRecyclerView(recyclerView);
     }
 
     public Word getSelectedWord()

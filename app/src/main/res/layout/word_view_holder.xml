@@ -42,4 +42,11 @@
         android:text="⋮"
         android:background="?android:attr/selectableItemBackground"/>
 
+    <View
+        android:id="@+id/word_view_holder_isInRevisionView"
+        android:layout_height="match_parent"
+        android:layout_width="4dp"
+        android:layout_gravity="end"
+        android:background="@android:color/holo_green_light"/>
+
 </FrameLayout>

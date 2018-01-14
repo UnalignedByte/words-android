@@ -98,7 +98,7 @@ public class EditWordPopupWindow extends PopupWindow
         if(word == null) {
             String wordString = wordEdit.getText().toString();
             String translation = translationEdit.getText().toString();
-            Word word = new Word(wordString, translation, group);
+            Word word = new Word(group, wordString, translation);
             WordsDataSource.get(context).addWord(word);
         } else {
             word.setWord(wordEdit.getText().toString());

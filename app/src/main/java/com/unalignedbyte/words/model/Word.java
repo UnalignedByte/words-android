@@ -8,19 +8,21 @@ public class Word {
     private int id;
     private String word;
     private String translation;
+    private boolean isInReview;
     private Group group;
 
-    public Word(String word, String translation, Group group)
+    public Word(Group group, String word, String translation)
     {
-        this(-1, word, translation, group);
+        this(-1, group, false, word, translation);
     }
 
-    public Word(int id, String word, String translation, Group group)
+    public Word(int id, Group group, boolean isInReview, String word, String translation)
     {
         this.id = id;
+        this.group = group;
+        this.isInReview = isInReview;
         this.word = word;
         this.translation = translation;
-        this.group = group;
     }
 
     public int getId()
@@ -31,6 +33,21 @@ public class Word {
     public void setId(int id)
     {
         this.id = id;
+    }
+
+    public Group getGroup()
+    {
+        return group;
+    }
+
+    public boolean getIsInReview()
+    {
+        return isInReview;
+    }
+
+    public void setIsInReview(boolean inReview)
+    {
+        isInReview = inReview;
     }
 
     public String getWord()
@@ -51,10 +68,5 @@ public class Word {
     public void setTranslation(String translation)
     {
         this.translation = translation;
-    }
-
-    public Group getGroup()
-    {
-        return group;
     }
 }

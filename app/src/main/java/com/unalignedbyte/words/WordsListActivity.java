@@ -38,9 +38,8 @@ public class WordsListActivity extends Activity
 
     private void setupWordsList()
     {
-        adapter = new WordsListAdapter(this, group, this);
-
         RecyclerView wordsListView = (RecyclerView)findViewById(R.id.words_list_activity_recyclerView);
+        adapter = new WordsListAdapter(this, wordsListView, group, this);
         wordsListView.setLayoutManager(new LinearLayoutManager(this));
         wordsListView.setAdapter(adapter);
 
