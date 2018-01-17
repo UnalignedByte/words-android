@@ -12,4 +12,9 @@
     <string name="both">Both</string>
     <string name="word">Word</string>
     <string name="translation">Translation</string>
+
+    <string name="revision">Revision</string>
+    <string name="to_review">To Review:</string>
+    <string name="remove_from_revision">Remove From Revision</string>
+    <string name="add_to_revision">Add To Revision</string>
 </resources>

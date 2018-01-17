@@ -38,7 +38,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View view = LayoutInflater.from(context).inflate(R.layout.word_view_holder, parent, false);
-        WordViewHolder viewHolder = new WordViewHolder(view);
+        WordViewHolder viewHolder = new WordViewHolder(view, false);
         return viewHolder;
     }
 
@@ -103,10 +103,10 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
                     String text;
                     if (word.getIsInReview()) {
                         backgroundColor.setARGB(255, 252, 70, 74);
-                        text = "Remove from review";
+                        text = context.getString(R.string.remove_from_revision);
                     } else {
                         backgroundColor.setARGB(255, 154, 202, 39);
-                        text = "Add to review";
+                        text = context.getString(R.string.add_to_revision);
                     }
 
                     // Background
@@ -147,6 +147,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     public void setConfig(int config)
     {
         this.config = config;
+        notifyDataSetChanged();
     }
 
     private void showPopupMenu(View view)

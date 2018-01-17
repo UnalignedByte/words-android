@@ -82,6 +82,11 @@ public class WordsDataSource extends SQLiteOpenHelper
         return languageCodes;
     }
 
+    public Language getLanguage(String languageCode)
+    {
+        return getLanguages().get(0);
+    }
+
     public void addGroup(Group group)
     {
         int order = maxOrderForGroup(group) + 1;
@@ -198,14 +203,6 @@ public class WordsDataSource extends SQLiteOpenHelper
         db.close();;
     }
 
-    private void deleteWordsInGroup(Group group)
-    {
-        SQLiteDatabase db = getWritableDatabase();
-        String idString = Integer.toString(group.getId());
-        db.delete(TABLE_WORDS, WORDS_GROUP_ID + "=?", new String[] { idString });
-        db.close();
-    }
-
     public List<Word> getWords(Group group)
     {
         List<Word> words = new LinkedList();
@@ -227,6 +224,42 @@ public class WordsDataSource extends SQLiteOpenHelper
         }
 
         return words;
+    }
+
+    public List<Word> getWordsInRevision(Language language)
+    {
+        List<Word> words = new LinkedList();
+
+        String getWords = "select * from " + TABLE_WORDS +
+                " join " + TABLE_GROUPS + " on " +
+                WORDS_GROUP_ID + "=" + TABLE_GROUPS + "." + GROUPS_ID +
+                " where " + GROUPS_LANGUAGE_CODE + "=\"" + language.getCode() + "\" and " +
+                WORDS_IS_IN_REVIEW + "=1";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(getWords, null);
+
+        if(cursor.moveToFirst()) {
+            do {
+                int id = cursor.getInt(0);
+                int groupId = cursor.getInt(1);
+                Group group = getGroup(groupId);
+                boolean isInReview = cursor.getInt(2) != 0;
+                String wordString = cursor.getString(3);
+                String translation = cursor.getString(4);
+                Word word = new Word(id, group, isInReview, wordString, translation);
+                words.add(word);
+            } while(cursor.moveToNext());
+        }
+
+        return words;
+    }
+
+    private void deleteWordsInGroup(Group group)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        String idString = Integer.toString(group.getId());
+        db.delete(TABLE_WORDS, WORDS_GROUP_ID + "=?", new String[] { idString });
+        db.close();
     }
 
     private int maxOrderForGroup(Group group)

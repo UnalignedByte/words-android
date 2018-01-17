@@ -73,7 +73,6 @@ public class WordsListActivity extends Activity
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 adapter.setConfig(tab.getPosition());
-                adapter.notifyDataSetChanged();
             }
 
             @Override

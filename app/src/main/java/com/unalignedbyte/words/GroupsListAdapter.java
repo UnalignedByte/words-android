@@ -13,12 +13,15 @@ import java.util.List;
  * Created by rafal on 10/12/2017.
  */
 
-public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
+public class GroupsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private Context context;
     private RecyclerView recyclerView;
     private ItemTouchHelper touchHelper;
     private Group selectedGroup;
+
+    private static final int CELL_TYPE_NORMAL = 1;
+    private static final int CELL_TYPE_REVISION= 2;
 
     public GroupsListAdapter(Context context, RecyclerView recyclerView)
     {
@@ -28,49 +31,90 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
     }
 
     @Override
-    public GroupViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.group_view_holder, parent, false);
-        GroupViewHolder viewHolder = new GroupViewHolder(view);
+        RecyclerView.ViewHolder viewHolder;
+        if(viewType == CELL_TYPE_REVISION) {
+            View view = LayoutInflater.from(context).inflate(R.layout.revision_view_holder, parent, false);
+            viewHolder = new RevisionViewHolder(view);
+        } else {
+            View view = LayoutInflater.from(context).inflate(R.layout.group_view_holder, parent, false);
+            viewHolder = new GroupViewHolder(view);
+        }
 
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(final GroupViewHolder viewHolder, int position)
+    public void onBindViewHolder(final RecyclerView.ViewHolder viewHolder, int position)
     {
-        final Group group = WordsDataSource.get(context).getGroups().get(position);
-        int wordsCount = WordsDataSource.get(context).getWords(group).size();
-        viewHolder.setGroup(group, wordsCount);
-        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, WordsListActivity.class);
-                intent.putExtra("groupId", group.getId());
-                context.startActivity(intent);
-            }
-        });
-        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                selectedGroup = group;
-                return false;
-            }
-        });
-        viewHolder.getReorderView().setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event)
+        if(viewHolder.getItemViewType() == CELL_TYPE_REVISION) {
+            final RevisionViewHolder revisionViewHolder = (RevisionViewHolder)viewHolder;
+            int wordsCount = WordsDataSource.get(context).getWordsInRevision(getLanguage()).size();
+            revisionViewHolder.setWordsCount(wordsCount);
+            revisionViewHolder.itemView.setOnClickListener(new View.OnClickListener()
             {
-                touchHelper.startDrag(viewHolder);
-                return false;
-            }
-        });
+                @Override
+                public void onClick(View view)
+                {
+                    Intent intent = new Intent(context, RevisionActivity.class);
+                    intent.putExtra("languageCode", getLanguage().getCode());
+                    context.startActivity(intent);
+                }
+            });
+        } else {
+            if (doesContainRevision())
+                position--;
+
+            final GroupViewHolder groupViewHolder = (GroupViewHolder)viewHolder;
+
+            final Group group = WordsDataSource.get(context).getGroups().get(position);
+            int wordsCount = WordsDataSource.get(context).getWords(group).size();
+            groupViewHolder.setGroup(group, wordsCount);
+            groupViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view)
+                {
+                    Intent intent = new Intent(context, WordsListActivity.class);
+                    intent.putExtra("groupId", group.getId());
+                    context.startActivity(intent);
+                }
+            });
+            groupViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                @Override
+                public boolean onLongClick(View v)
+                {
+                    selectedGroup = group;
+                    return false;
+                }
+            });
+            groupViewHolder.getReorderView().setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event)
+                {
+                    touchHelper.startDrag(groupViewHolder);
+                    return false;
+                }
+            });
+        }
+    }
+
+    @Override
+    public int getItemViewType(int position)
+    {
+        if(position == 0 && doesContainRevision())
+            return CELL_TYPE_REVISION;
+
+        return CELL_TYPE_NORMAL;
     }
 
     @Override
     public int getItemCount()
     {
-        return WordsDataSource.get(context).getGroups().size();
+        int count = WordsDataSource.get(context).getGroups().size();
+        if(doesContainRevision())
+            count++;
+        return count;
     }
 
     private void setupDragging()
@@ -127,5 +171,16 @@ public class GroupsListAdapter extends RecyclerView.Adapter<GroupViewHolder>
             group.setOrder(order);
             WordsDataSource.get(context).updateGroup(group);
         }
+    }
+
+    private boolean doesContainRevision()
+    {
+        Language language = WordsDataSource.get(context).getLanguages().get(0);
+        return WordsDataSource.get(context).getWordsInRevision(language).size() > 0;
+    }
+
+    private Language getLanguage()
+    {
+        return WordsDataSource.get(context).getLanguages().get(0);
     }
 }
