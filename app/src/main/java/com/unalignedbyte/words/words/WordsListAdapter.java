@@ -1,15 +1,13 @@
-package com.unalignedbyte.words;
+package com.unalignedbyte.words.words;
 
 import android.content.*;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
-import android.support.v7.widget.helper.ItemTouchHelper;
-import android.util.Log;
 import android.view.*;
+import android.graphics.*;
 import android.widget.PopupMenu;
 import android.support.v7.widget.*;
+import android.support.v7.widget.helper.*;
 
+import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
 
 /**

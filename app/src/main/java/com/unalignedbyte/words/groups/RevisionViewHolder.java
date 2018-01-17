@@ -1,8 +1,10 @@
-package com.unalignedbyte.words;
+package com.unalignedbyte.words.groups;
 
 import android.view.*;
+import android.widget.*;
 import android.support.v7.widget.*;
-import android.widget.TextView;
+
+import com.unalignedbyte.words.R;
 
 /**
  * Created by rafal on 16/01/2018.

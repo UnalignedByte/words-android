@@ -1,4 +1,4 @@
-package com.unalignedbyte.words;
+package com.unalignedbyte.words.words;
 
 import android.content.*;
 import android.view.*;
@@ -6,6 +6,7 @@ import android.widget.*;
 import android.text.*;
 import android.support.v7.widget.*;
 
+import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
 
 /**

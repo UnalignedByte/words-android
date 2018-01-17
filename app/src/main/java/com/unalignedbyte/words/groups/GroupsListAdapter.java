@@ -1,13 +1,16 @@
-package com.unalignedbyte.words;
+package com.unalignedbyte.words.groups;
+
+import java.util.*;
 
 import android.content.*;
 import android.view.*;
 import android.support.v7.widget.*;
 import android.support.v7.widget.helper.*;
 
+import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
-
-import java.util.List;
+import com.unalignedbyte.words.words.RevisionActivity;
+import com.unalignedbyte.words.words.WordsListActivity;
 
 /**
  * Created by rafal on 10/12/2017.

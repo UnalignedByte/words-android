@@ -1,11 +1,12 @@
-package com.unalignedbyte.words;
+package com.unalignedbyte.words.words;
 
+import android.os.*;
 import android.app.*;
-import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v7.widget.*;
 import android.support.v7.widget.Toolbar;
+import android.support.design.widget.*;
 
+import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
 
 /**

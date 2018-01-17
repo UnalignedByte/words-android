@@ -8,13 +8,13 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".GroupsListActivity">
+        <activity android:name=".groups.GroupsListActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".WordsListActivity"/>
-        <activity android:name=".RevisionActivity"/>
+        <activity android:name=".words.WordsListActivity"/>
+        <activity android:name=".words.RevisionActivity"/>
     </application>
 </manifest>
