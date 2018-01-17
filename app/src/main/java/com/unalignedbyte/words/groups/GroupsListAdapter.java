@@ -178,12 +178,12 @@ public class GroupsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private boolean doesContainRevision()
     {
-        Language language = WordsDataSource.get(context).getLanguages().get(0);
+        Language language = Language.getLanguages().get(0);
         return WordsDataSource.get(context).getWordsInRevision(language).size() > 0;
     }
 
     private Language getLanguage()
     {
-        return WordsDataSource.get(context).getLanguages().get(0);
+        return Language.getLanguages().get(0);
     }
 }

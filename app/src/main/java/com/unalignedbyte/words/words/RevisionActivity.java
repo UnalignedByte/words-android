@@ -24,7 +24,7 @@ public class RevisionActivity extends Activity
         setContentView(R.layout.revision_activity);
 
         String languageCode = getIntent().getStringExtra("languageCode");
-        Language language = WordsDataSource.get(this).getLanguage(languageCode);
+        Language language = Language.getLanguage(languageCode);
 
         setupToolbar(language);
         setupList(language);

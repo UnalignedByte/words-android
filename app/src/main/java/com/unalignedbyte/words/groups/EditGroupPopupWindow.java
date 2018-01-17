@@ -74,7 +74,7 @@ public class EditGroupPopupWindow extends PopupWindow
         countryCodeSpinner = (Spinner)view.findViewById(R.id.groupLanguageSpinner);
         SpinnerAdapter languageCodesAdapter = new ArrayAdapter<Language>(context,
                 R.layout.language_name_layout,
-                WordsDataSource.get(context).getLanguages());
+                Language.getLanguages());
         countryCodeSpinner.setAdapter(languageCodesAdapter);
 
         if(group != null) {

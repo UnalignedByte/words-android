@@ -74,19 +74,6 @@ public class WordsDataSource extends SQLiteOpenHelper
         onCreate(db);
     }
 
-    public List<Language> getLanguages()
-    {
-        List<Language> languageCodes = new LinkedList<Language>();
-        languageCodes.add(new Language("gn", "Generic"));
-
-        return languageCodes;
-    }
-
-    public Language getLanguage(String languageCode)
-    {
-        return getLanguages().get(0);
-    }
-
     public void addGroup(Group group)
     {
         int order = maxOrderForGroup(group) + 1;
@@ -140,7 +127,7 @@ public class WordsDataSource extends SQLiteOpenHelper
                 int order = cursor.getInt(1);
                 String name = cursor.getString(2);
                 String languageCode = cursor.getString(3);
-                Group group = new Group(id, order, name, new Language(languageCode, languageCode));
+                Group group = new Group(id, order, name, Language.getLanguage(languageCode));
                 groups.add(group);
             } while(cursor.moveToNext());
         }
@@ -160,7 +147,7 @@ public class WordsDataSource extends SQLiteOpenHelper
             int order = cursor.getInt(1);
             String name = cursor.getString(2);
             String languageCode = cursor.getString(3);
-            Group group = new Group(id, order, name, new Language(languageCode, languageCode));
+            Group group = new Group(id, order, name, Language.getLanguage(languageCode));
             return group;
         }
 

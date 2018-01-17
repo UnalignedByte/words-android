@@ -1,15 +1,36 @@
 package com.unalignedbyte.words.model;
 
+import java.util.*;
+
 /**
  * Created by rafal on 11/12/2017.
  */
 
-public class Language
+public abstract class Language
 {
     private String code;
     private String name;
 
-    public Language(String code, String name)
+    public static List<Language> getLanguages()
+    {
+        List<Language> languages = new LinkedList();
+        languages.add(new LanguageGeneric());
+        //languages.add(new LanguageChinese());
+        return languages;
+    }
+
+    public static Language getLanguage(String code)
+    {
+        Language returnLanguage = null;
+        for(Language language: getLanguages())
+            if(language.getCode().equals(code)) {
+                returnLanguage = language;
+                break;
+            }
+        return returnLanguage;
+    }
+
+    protected Language(String code, String name)
     {
         this.code = code;
         this.name = name;
