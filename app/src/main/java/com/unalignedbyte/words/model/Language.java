@@ -51,4 +51,6 @@ public abstract class Language
     {
         return name;
     }
+
+    public abstract List<String> getWordConfigTitles();
 }

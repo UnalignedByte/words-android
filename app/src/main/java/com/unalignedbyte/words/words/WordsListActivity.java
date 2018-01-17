@@ -67,9 +67,9 @@ public class WordsListActivity extends Activity
     private void setupTab()
     {
         TabLayout tabBar = (TabLayout)findViewById(R.id.words_list_activity_tabBar);
-        tabBar.addTab(tabBar.newTab().setText(R.string.both));
-        tabBar.addTab(tabBar.newTab().setText(R.string.word));
-        tabBar.addTab(tabBar.newTab().setText(R.string.translation));
+        for(String title: group.getLanguage().getWordConfigTitles()) {
+            tabBar.addTab(tabBar.newTab().setText(title));
+        }
         tabBar.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {

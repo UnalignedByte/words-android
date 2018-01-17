@@ -28,7 +28,7 @@ public class RevisionActivity extends Activity
 
         setupToolbar(language);
         setupList(language);
-        setupTabBar();
+        setupTabBar(language);
     }
 
     private void setupToolbar(Language language)
@@ -47,12 +47,12 @@ public class RevisionActivity extends Activity
         listView.setAdapter(adapter);
     }
 
-    private void setupTabBar()
+    private void setupTabBar(Language language)
     {
         TabLayout tabBar = (TabLayout)findViewById(R.id.revision_activity_tabBar);
-        tabBar.addTab(tabBar.newTab().setText(R.string.both));
-        tabBar.addTab(tabBar.newTab().setText(R.string.word));
-        tabBar.addTab(tabBar.newTab().setText(R.string.translation));
+        for(String title: language.getWordConfigTitles()) {
+            tabBar.addTab(tabBar.newTab().setText(title));
+        }
         tabBar.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
