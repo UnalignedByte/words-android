@@ -9,6 +9,8 @@ import android.support.v7.widget.*;
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
 
+import java.util.*;
+
 /**
  * Created by rafal on 31/12/2017.
  */
@@ -18,8 +20,9 @@ public class EditWordPopupWindow extends PopupWindow
     private Context context;
     private Group group;
     private Word word;
-    private EditText wordEdit;
-    private EditText translationEdit;
+    private LinearLayout dataEntryLayout;
+    private Button addWordButton;
+    private List<EditText> dataEdits;
 
     public EditWordPopupWindow(Context context, Group group, Word word)
     {
@@ -30,10 +33,13 @@ public class EditWordPopupWindow extends PopupWindow
         this.context = context;
         this.group = group;
         this.word = word;
+        dataEdits = new LinkedList();
 
         View view = getContentView();
 
-        final Button addWordButton = (Button)view.findViewById(R.id.edit_word_addButton);
+        dataEntryLayout = (LinearLayout)view.findViewById(R.id.edit_word_dataEntryLayout);
+
+        addWordButton = (Button)view.findViewById(R.id.edit_word_addButton);
         addWordButton.setEnabled(word != null);
         addWordButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,60 +56,77 @@ public class EditWordPopupWindow extends PopupWindow
             }
         });
 
-        wordEdit = (EditText)view.findViewById(R.id.edit_word_wordEdit);
-        wordEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
+        setupDataEntry();
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                boolean shouldEnable = charSequence.length() > 0 && translationEdit.getText().toString().length() > 0;
-                addWordButton.setEnabled(shouldEnable);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
-        translationEdit = (EditText)view.findViewById(R.id.edit_word_translationEdit);
-        translationEdit.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                boolean shouldEnable = charSequence.length() > 0 && wordEdit.getText().toString().length() > 0;
-                addWordButton.setEnabled(shouldEnable);
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-            }
-        });
-
-        if(word != null) {
-            wordEdit.setText(word.getWordData()[0]);
-            translationEdit.setText(word.getWordData()[1]);
+        if(word != null)
             addWordButton.setText(R.string.save);
-        }
 
         setFocusable(true);
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
     }
 
+    private void setupDataEntry()
+    {
+        for(int i=0; i<group.getLanguage().getWordDataTitles().length; i++)
+        {
+            // Data Title
+            String title = group.getLanguage().getWordConfigTitles()[i+1];
+            TextView textView = new TextView(context);
+            textView.setGravity(Gravity.CENTER_HORIZONTAL);
+            textView.setText(title);
+            dataEntryLayout.addView(textView);
+
+            // Data Entry
+            EditText dataEdit = new EditText(context);
+            dataEdits.add(dataEdit);
+            dataEntryLayout.addView(dataEdit);
+            dataEdit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                    updateAddButtonStatus();
+                }
+
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                }
+            });
+            if(word != null) {
+                dataEdit.setText(word.getWordData()[i]);
+            }
+        }
+    }
+
+    private void updateAddButtonStatus()
+    {
+        for(EditText dataEdit : dataEdits) {
+            int textLenght = dataEdit.getText().length();
+            if(textLenght == 0) {
+                addWordButton.setEnabled(false);
+                return;
+            }
+        }
+
+        addWordButton.setEnabled(true);
+    }
+
     private void onAddWord()
     {
+        String[] wordData = new String[group.getLanguage().getWordDataTitles().length];
+        String[] dataTitles = group.getLanguage().getWordDataTitles();
+        for(int i=0; i<dataTitles.length; i++) {
+            EditText dataEdit = dataEdits.get(i);
+            wordData[i] = dataEdit.getText().toString();
+        }
+
         if(word == null) {
-            String wordString = wordEdit.getText().toString();
-            String translation = translationEdit.getText().toString();
-            Word word = new Word(group, new String[] {wordString, translation});
+            Word word = new Word(group, wordData);
             WordsDataSource.get(context).addWord(word);
         } else {
-            word.setWordData(new String[] {wordEdit.getText().toString(),
-                translationEdit.getText().toString()});
+            word.setWordData(wordData);
             WordsDataSource.get(context).updateWord(word);
         }
         dismiss();
