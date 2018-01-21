@@ -24,9 +24,10 @@ public class WordsDataSource extends SQLiteOpenHelper
     private static final String TABLE_WORDS = "words";
     private static final String WORDS_ID = "id";
     private static final String WORDS_GROUP_ID = "group_id";
-    private static final String WORDS_WORD = "word";
-    private static final String WORDS_TRANSLATION = "translation";
+    private static final String WORDS_WORD_DATA_ID= "words_data_id";
     private static final String WORDS_IS_IN_REVIEW = "is_in_review";
+
+    private static final String WORDS_DATA_ID = "id";
 
     private WordsDataSource(Context context)
     {
@@ -54,12 +55,22 @@ public class WordsDataSource extends SQLiteOpenHelper
         String createWordsTable = "create table " + TABLE_WORDS + " (" +
                 WORDS_ID + " integer primary key," +
                 WORDS_GROUP_ID + " integer," +
-                WORDS_IS_IN_REVIEW + " integer," +
-                WORDS_WORD + " text," +
-                WORDS_TRANSLATION + " text)";
+                WORDS_WORD_DATA_ID + " text," +
+                WORDS_IS_IN_REVIEW + " integer)";
 
         db.execSQL(createWordsTable);
 
+        for(Language language : Language.getLanguages()) {
+            String createWordsDataTable = "create table " + language.getCode() + " (" +
+                    WORDS_DATA_ID + " integer primary key";
+
+            for(String dataTitle : language.getWordDataTitles())
+                createWordsDataTable += "," + dataTitle + " text";
+
+            createWordsDataTable += ")";
+
+            db.execSQL(createWordsDataTable);
+        }
     }
 
     @Override
@@ -90,27 +101,23 @@ public class WordsDataSource extends SQLiteOpenHelper
         group.setId(newId);
     }
 
-    public void updateGroup(Group group)
+    public Group getGroup(int groupId)
     {
-        ContentValues values = new ContentValues();
-        values.put(GROUPS_ORDER, group.getOrder());
-        values.put(GROUPS_NAME, group.getName());
-        values.put(GROUPS_LANGUAGE_CODE, group.getLanguage().getCode());
+        String getGroup = "select * from " + TABLE_GROUPS +
+                " where " + GROUPS_ID + "=" + Integer.toString(groupId);
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(getGroup, null);
 
-        SQLiteDatabase db = getWritableDatabase();
-        String idString = Integer.toString(group.getId());
-        db.update(TABLE_GROUPS, values, GROUPS_ID + "=?", new String[] { idString });
-        db.close();
-    }
+        if(cursor.moveToFirst()) {
+            int id = cursor.getInt(0);
+            int order = cursor.getInt(1);
+            String name = cursor.getString(2);
+            String languageCode = cursor.getString(3);
+            Group group = new Group(id, order, name, Language.getLanguage(languageCode));
+            return group;
+        }
 
-    public void deleteGroup(Group group)
-    {
-        deleteWordsInGroup(group);
-
-        SQLiteDatabase db = getWritableDatabase();
-        String idString = Integer.toString(group.getId());
-        db.delete(TABLE_GROUPS, GROUPS_ID + " = ?", new String[] { idString });
-        db.close();
+        return null;
     }
 
     public List<Group> getGroups()
@@ -135,59 +142,43 @@ public class WordsDataSource extends SQLiteOpenHelper
         return groups;
     }
 
-    public Group getGroup(int groupId)
+    public void updateGroup(Group group)
     {
-        String getGroup = "select * from " + TABLE_GROUPS +
-                " where " + GROUPS_ID + "=" + Integer.toString(groupId);
-        SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.rawQuery(getGroup, null);
+        ContentValues values = new ContentValues();
+        values.put(GROUPS_ORDER, group.getOrder());
+        values.put(GROUPS_NAME, group.getName());
+        values.put(GROUPS_LANGUAGE_CODE, group.getLanguage().getCode());
 
-        if(cursor.moveToFirst()) {
-            int id = cursor.getInt(0);
-            int order = cursor.getInt(1);
-            String name = cursor.getString(2);
-            String languageCode = cursor.getString(3);
-            Group group = new Group(id, order, name, Language.getLanguage(languageCode));
-            return group;
-        }
+        SQLiteDatabase db = getWritableDatabase();
+        String idString = Integer.toString(group.getId());
+        db.update(TABLE_GROUPS, values, GROUPS_ID + "=?", new String[] { idString });
+        db.close();
+    }
 
-        return null;
+    public void deleteGroup(Group group)
+    {
+        deleteWordsInGroup(group);
+
+        SQLiteDatabase db = getWritableDatabase();
+        String idString = Integer.toString(group.getId());
+        db.delete(TABLE_GROUPS, GROUPS_ID + "=?", new String[] {idString});
+        db.close();
     }
 
     public void addWord(Word word)
     {
+        addWordData(word);
+
         ContentValues values = new ContentValues();
         values.put(WORDS_GROUP_ID, word.getGroup().getId());
+        values.put(WORDS_WORD_DATA_ID, word.getWordDataId());
         values.put(WORDS_IS_IN_REVIEW, word.getIsInReview());
-        values.put(WORDS_WORD, word.getWord());
-        values.put(WORDS_TRANSLATION, word.getTranslation());
 
         SQLiteDatabase db = getWritableDatabase();
-        int newId = (int)db.insert(TABLE_WORDS, null, values);
+        int wordId = (int)db.insert(TABLE_WORDS, null, values);
         db.close();
 
-        word.setId(newId);
-    }
-
-    public void updateWord(Word word)
-    {
-        ContentValues values = new ContentValues();
-        values.put(WORDS_IS_IN_REVIEW, word.getIsInReview());
-        values.put(WORDS_WORD, word.getWord());
-        values.put(WORDS_TRANSLATION, word.getTranslation());
-
-        SQLiteDatabase db = getWritableDatabase();
-        String idString = Integer.toString(word.getId());
-        db.update(TABLE_WORDS, values, WORDS_ID + "=?", new String[] { idString });
-        db.close();;
-    }
-
-    public void deleteWord(Word word)
-    {
-        SQLiteDatabase db = getWritableDatabase();
-        String idString = Integer.toString(word.getId());
-        db.delete(TABLE_WORDS, WORDS_ID + "=?", new String[] { idString });
-        db.close();;
+        word.setId(wordId);
     }
 
     public List<Word> getWords(Group group)
@@ -202,10 +193,10 @@ public class WordsDataSource extends SQLiteOpenHelper
         if(cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(0);
-                boolean isInReview = cursor.getInt(2) != 0;
-                String wordString = cursor.getString(3);
-                String translation = cursor.getString(4);
-                Word word = new Word(id, group, isInReview, wordString, translation);
+                int wordDataId = cursor.getInt(2);
+                String[] wordData = getWordData(wordDataId, group.getLanguage());
+                boolean isInReview = cursor.getInt(3) != 0;
+                Word word = new Word(id, group, wordDataId, wordData, isInReview);
                 words.add(word);
             } while(cursor.moveToNext());
         }
@@ -230,10 +221,10 @@ public class WordsDataSource extends SQLiteOpenHelper
                 int id = cursor.getInt(0);
                 int groupId = cursor.getInt(1);
                 Group group = getGroup(groupId);
-                boolean isInReview = cursor.getInt(2) != 0;
-                String wordString = cursor.getString(3);
-                String translation = cursor.getString(4);
-                Word word = new Word(id, group, isInReview, wordString, translation);
+                int wordDataId = cursor.getInt(2);
+                String[] wordData = getWordData(wordDataId, language);
+                boolean isInReview = cursor.getInt(3) != 0;
+                Word word = new Word(id, group, wordDataId, wordData, isInReview);
                 words.add(word);
             } while(cursor.moveToNext());
         }
@@ -241,11 +232,94 @@ public class WordsDataSource extends SQLiteOpenHelper
         return words;
     }
 
+    public void updateWord(Word word)
+    {
+        updateWordData(word);
+
+        ContentValues values = new ContentValues();
+        values.put(WORDS_IS_IN_REVIEW, word.getIsInReview());
+
+        SQLiteDatabase db = getWritableDatabase();
+        String idString = Integer.toString(word.getId());
+        db.update(TABLE_WORDS, values, WORDS_ID + "=?", new String[] { idString });
+        db.close();;
+    }
+
+    public void deleteWord(Word word)
+    {
+        deleteWordData(word);
+
+        SQLiteDatabase db = getWritableDatabase();
+        String idString = Integer.toString(word.getId());
+        db.delete(TABLE_WORDS, WORDS_ID + "=?", new String[] { idString });
+        db.close();;
+    }
+
     private void deleteWordsInGroup(Group group)
     {
         SQLiteDatabase db = getWritableDatabase();
         String idString = Integer.toString(group.getId());
         db.delete(TABLE_WORDS, WORDS_GROUP_ID + "=?", new String[] { idString });
+        db.close();
+    }
+
+    private void addWordData(Word word)
+    {
+        ContentValues values = new ContentValues();
+        for(int i=0; i<word.getGroup().getLanguage().getWordDataTitles().length; i++) {
+            String field = word.getGroup().getLanguage().getWordDataTitles()[i];
+            values.put(field, word.getWordData()[i]);
+        }
+
+        SQLiteDatabase db = getWritableDatabase();
+        int dataId = (int)db.insert(word.getGroup().getLanguage().getCode(), null, values);
+        db.close();
+
+        word.setWordDataId(dataId);
+    }
+
+    private String[] getWordData(int wordDataId, Language language)
+    {
+        String getWordData = "select * from " + language.getCode() +
+                " where " + WORDS_DATA_ID + "=" + Integer.toString(wordDataId);
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(getWordData, null);
+
+        if(cursor.moveToFirst()) {
+            String[] wordData = new String[language.getWordDataTitles().length];
+
+            for(int i=0; i<language.getWordDataTitles().length; i++) {
+                String data = cursor.getString(i+1);
+                wordData[i] = data;
+            }
+
+            return wordData;
+        }
+
+        return null;
+    }
+
+    private void updateWordData(Word word)
+    {
+        ContentValues values = new ContentValues();
+        for(int i=0; i<word.getGroup().getLanguage().getWordDataTitles().length; i++) {
+            String wordDataTitle = word.getGroup().getLanguage().getWordDataTitles()[i];
+            values.put(wordDataTitle, word.getWordData()[i]);
+        }
+
+        SQLiteDatabase db = getWritableDatabase();
+        String idString = Integer.toString(word.getWordDataId());
+        db.update(word.getGroup().getLanguage().getCode(), values,
+                WORDS_DATA_ID + "=?", new String[] { idString });
+        db.close();
+    }
+
+    private void deleteWordData(Word word)
+    {
+        SQLiteDatabase db = getWritableDatabase();
+        String idString = Integer.toString(word.getWordDataId());
+        db.delete(word.getGroup().getLanguage().getCode(), WORDS_DATA_ID + "=?",
+                new String[] {idString});
         db.close();
     }
 

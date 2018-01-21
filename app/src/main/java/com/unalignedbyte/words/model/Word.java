@@ -6,23 +6,23 @@ package com.unalignedbyte.words.model;
 
 public class Word {
     private int id;
-    private String word;
-    private String translation;
-    private boolean isInReview;
     private Group group;
+    private int wordDataId;
+    private String[] wordData;
+    private boolean isInReview;
 
-    public Word(Group group, String word, String translation)
+    public Word(Group group, String[] wordData)
     {
-        this(-1, group, false, word, translation);
+        this(-1, group, -1, wordData, false);
     }
 
-    public Word(int id, Group group, boolean isInReview, String word, String translation)
+    public Word(int id, Group group, int wordDataId, String[] wordData, boolean isInReview)
     {
         this.id = id;
         this.group = group;
+        this.wordDataId = wordDataId;
+        this.wordData = wordData;
         this.isInReview = isInReview;
-        this.word = word;
-        this.translation = translation;
     }
 
     public int getId()
@@ -40,6 +40,26 @@ public class Word {
         return group;
     }
 
+    public int getWordDataId()
+    {
+        return wordDataId;
+    }
+
+    public void setWordDataId(int wordDataId)
+    {
+        this.wordDataId = wordDataId;
+    }
+
+    public String[] getWordData()
+    {
+        return wordData;
+    }
+
+    public void setWordData(String[] wordData)
+    {
+        this.wordData = wordData;
+    }
+
     public boolean getIsInReview()
     {
         return isInReview;
@@ -48,25 +68,5 @@ public class Word {
     public void setIsInReview(boolean inReview)
     {
         isInReview = inReview;
-    }
-
-    public String getWord()
-    {
-        return word;
-    }
-
-    public void setWord(String word)
-    {
-        this.word = word;
-    }
-
-    public String getTranslation()
-    {
-        return translation;
-    }
-
-    public void setTranslation(String translation)
-    {
-        this.translation = translation;
     }
 }

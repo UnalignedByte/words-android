@@ -43,8 +43,8 @@ public class WordViewHolder extends RecyclerView.ViewHolder
 
     public void setWord(Word word)
     {
-        wordText.setText(word.getWord());
-        translationText.setText(word.getTranslation());
+        wordText.setText(word.getWordData()[0]);
+        translationText.setText(word.getWordData()[1]);
         isInRevisionView.setVisibility(word.getIsInReview() && !this.isInRevision ? View.VISIBLE : View.INVISIBLE);
     }
 

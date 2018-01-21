@@ -15,12 +15,14 @@ public class LanguageGeneric extends Language
     }
 
     @Override
-    public List<String> getWordConfigTitles()
+    public String[] getWordConfigTitles()
     {
-        List<String> titles = new LinkedList();
-        titles.add("Both");
-        titles.add("Word");
-        titles.add("Translation");
-        return titles;
+        return new String[] {"Both", "Word", "Translation"};
+    }
+
+    @Override
+    public String[] getWordDataTitles()
+    {
+        return new String[] {"word", "translation"};
     }
 }

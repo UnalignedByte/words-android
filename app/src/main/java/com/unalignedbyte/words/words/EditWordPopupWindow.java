@@ -85,8 +85,8 @@ public class EditWordPopupWindow extends PopupWindow
         });
 
         if(word != null) {
-            wordEdit.setText(word.getWord());
-            translationEdit.setText(word.getTranslation());
+            wordEdit.setText(word.getWordData()[0]);
+            translationEdit.setText(word.getWordData()[1]);
             addWordButton.setText(R.string.save);
         }
 
@@ -99,11 +99,11 @@ public class EditWordPopupWindow extends PopupWindow
         if(word == null) {
             String wordString = wordEdit.getText().toString();
             String translation = translationEdit.getText().toString();
-            Word word = new Word(group, wordString, translation);
+            Word word = new Word(group, new String[] {wordString, translation});
             WordsDataSource.get(context).addWord(word);
         } else {
-            word.setWord(wordEdit.getText().toString());
-            word.setTranslation(translationEdit.getText().toString());
+            word.setWordData(new String[] {wordEdit.getText().toString(),
+                translationEdit.getText().toString()});
             WordsDataSource.get(context).updateWord(word);
         }
         dismiss();
