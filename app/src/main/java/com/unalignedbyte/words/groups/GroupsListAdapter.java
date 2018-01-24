@@ -15,7 +15,7 @@ import com.unalignedbyte.words.words.WordsListActivity;
 /**
  * Created by rafal on 10/12/2017.
  */
-
+/*
 public class GroupsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private Context context;
@@ -186,4 +186,4 @@ public class GroupsListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHol
     {
         return Language.getLanguages().get(0);
     }
-}
+}*/

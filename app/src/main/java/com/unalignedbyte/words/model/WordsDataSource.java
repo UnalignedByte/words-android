@@ -120,11 +120,13 @@ public class WordsDataSource extends SQLiteOpenHelper
         return null;
     }
 
-    public List<Group> getGroups()
+    public List<Group> getGroups(Language language)
     {
         List<Group> groups = new LinkedList();
 
-        String getGroups = "select * from " + TABLE_GROUPS + " order by " + GROUPS_ORDER + " desc";
+        String getGroups = "select * from " + TABLE_GROUPS +
+                " where " + GROUPS_LANGUAGE_CODE + "=\"" + language.getCode() + "\"" +
+                " order by " + GROUPS_ORDER + " desc";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(getGroups, null);
 

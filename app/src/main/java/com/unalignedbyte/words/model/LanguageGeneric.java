@@ -1,8 +1,5 @@
 package com.unalignedbyte.words.model;
 
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Created by rafal on 17/01/2018.
  */

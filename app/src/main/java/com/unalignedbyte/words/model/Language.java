@@ -15,7 +15,7 @@ public abstract class Language
     {
         List<Language> languages = new LinkedList();
         languages.add(new LanguageGeneric());
-        //languages.add(new LanguageChinese());
+        languages.add(new LanguageChinese());
         return languages;
     }
 

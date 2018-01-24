@@ -3,12 +3,11 @@ package com.unalignedbyte.words.groups;
 import android.content.*;
 
 import android.support.v7.widget.RecyclerView;
-import android.view.MotionEvent;
 import android.view.View;
 
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
-import com.unalignedbyte.words.words.WordsListActivity;
+import com.unalignedbyte.words.words.*;
 
 import io.github.luizgrp.sectionedrecyclerviewadapter.*;
 
@@ -66,6 +65,8 @@ public class GroupsListSection extends StatelessSection
         int count = 0;
         if(isSelected)
             count += WordsDataSource.get(context).getGroups(language).size();
+        if(isSelected && doesContainRevision())
+            count += 1;
         return count;
     }
 
@@ -84,27 +85,53 @@ public class GroupsListSection extends StatelessSection
     @Override
     public void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, int position)
     {
-        final GroupViewHolder groupViewHolder = (GroupViewHolder)viewHolder;
+        final GroupViewHolder groupViewHolder = (GroupViewHolder) viewHolder;
 
-        final Group group = WordsDataSource.get(context).getGroups(language).get(position);
-        int wordsCount = WordsDataSource.get(context).getWords(group).size();
-        groupViewHolder.setGroup(group, wordsCount);
-        groupViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(context, WordsListActivity.class);
-                intent.putExtra("groupId", group.getId());
-                context.startActivity(intent);
-            }
-        });
-        groupViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if(listener != null)
-                    listener.selectedGroup(group);
-                return false;
-            }
-        });
+        if(position == 0 && doesContainRevision()) {
+            groupViewHolder.showRevisionView(true);
+
+            int wordsCount = WordsDataSource.get(context).getWordsInRevision(language).size();
+            groupViewHolder.setRevisionWordsCount(wordsCount);
+
+            groupViewHolder.itemView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    Intent intent = new Intent(context, RevisionActivity.class);
+                    intent.putExtra("languageCode", language.getCode());
+                    context.startActivity(intent);
+                }
+            });
+        } else {
+            groupViewHolder.showRevisionView(false);
+
+            if(doesContainRevision())
+                position--;
+
+            final Group group = WordsDataSource.get(context).getGroups(language).get(position);
+            int wordsCount = WordsDataSource.get(context).getWords(group).size();
+            groupViewHolder.setGroup(group, wordsCount);
+            groupViewHolder.itemView.setOnClickListener(new View.OnClickListener()
+            {
+                @Override
+                public void onClick(View view)
+                {
+                    Intent intent = new Intent(context, WordsListActivity.class);
+                    intent.putExtra("groupId", group.getId());
+                    context.startActivity(intent);
+                }
+            });
+            groupViewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener()
+            {
+                @Override
+                public boolean onLongClick(View v)
+                {
+                    if (listener != null)
+                        listener.selectedGroup(group);
+                    return false;
+                }
+            });
         /*groupViewHolder.getReorderView().setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event)
@@ -113,6 +140,7 @@ public class GroupsListSection extends StatelessSection
                 return false;
             }
         });*/
+        }
     }
 
     @Override
@@ -120,5 +148,10 @@ public class GroupsListSection extends StatelessSection
     {
         GroupHeaderViewHolder headerViewHolder = (GroupHeaderViewHolder)viewHolder;
         headerViewHolder.setLanguage(language);
+    }
+
+    private boolean doesContainRevision()
+    {
+        return WordsDataSource.get(context).getWordsInRevision(language).size() > 0;
     }
 }
