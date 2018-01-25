@@ -57,7 +57,7 @@ public class GroupsListActivity extends Activity
         adapter = new SectionedRecyclerViewAdapter();
 
         for(Language language : Language.getLanguages()) {
-            GroupsListSection section = new GroupsListSection(this, adapter, language,true);
+            GroupsListSection section = new GroupsListSection(this, adapter, groupsListView, language,true);
             section.setListener(this);
             adapter.addSection(section);
         }
