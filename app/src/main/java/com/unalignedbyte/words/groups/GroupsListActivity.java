@@ -57,7 +57,7 @@ public class GroupsListActivity extends Activity
         adapter = new SectionedRecyclerViewAdapter();
 
         for(Language language : Language.getLanguages()) {
-            GroupsListSection section = new GroupsListSection(this, adapter, groupsListView, language,true);
+            GroupsListSection section = new GroupsListSection(this, adapter, groupsListView, language,false);
             section.setListener(this);
             adapter.addSection(section);
         }
@@ -132,5 +132,16 @@ public class GroupsListActivity extends Activity
     public void selectedGroup(Group group)
     {
         this.selectedGroup = group;
+    }
+
+    @Override
+    public void selectedSection(Language language)
+    {
+        Collection<Section> sections = adapter.getSectionsMap().values();
+        for(Section section : sections) {
+            GroupsListSection groupsListSection = (GroupsListSection)section;
+            boolean isSelected = groupsListSection.getLanguage() == language;
+            groupsListSection.setIsSelected(isSelected);
+        }
     }
 }

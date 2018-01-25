@@ -21,6 +21,7 @@ public class GroupsListSection extends StatelessSection
 {
     public interface Listener {
         void selectedGroup(Group group);
+        void selectedSection(Language language);
     }
 
     private Context context;
@@ -43,6 +44,11 @@ public class GroupsListSection extends StatelessSection
         this.language = language;
         this.isSelected = isSelected;
         setupDragging();
+    }
+
+    public Language getLanguage()
+    {
+        return language;
     }
 
     public boolean getIsSelected()
@@ -192,6 +198,12 @@ public class GroupsListSection extends StatelessSection
     {
         GroupHeaderViewHolder headerViewHolder = (GroupHeaderViewHolder)viewHolder;
         headerViewHolder.setLanguage(language);
+        headerViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.selectedSection(isSelected ? null : language);
+            }
+        });
     }
 
     private boolean doesContainRevision()
