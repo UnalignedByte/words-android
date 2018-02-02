@@ -26,6 +26,7 @@ public class WordsDataSource extends SQLiteOpenHelper
     private static final String WORDS_GROUP_ID = "group_id";
     private static final String WORDS_WORD_DATA_ID= "words_data_id";
     private static final String WORDS_IS_IN_REVIEW = "is_in_review";
+    private static final String WORDS_ORDER = "position";
 
     private static final String WORDS_DATA_ID = "id";
 
@@ -56,7 +57,8 @@ public class WordsDataSource extends SQLiteOpenHelper
                 WORDS_ID + " integer primary key," +
                 WORDS_GROUP_ID + " integer," +
                 WORDS_WORD_DATA_ID + " text," +
-                WORDS_IS_IN_REVIEW + " integer)";
+                WORDS_IS_IN_REVIEW + " integer," +
+                WORDS_ORDER + " integer)";
 
         db.execSQL(createWordsTable);
 
@@ -176,10 +178,14 @@ public class WordsDataSource extends SQLiteOpenHelper
     {
         addWordData(word);
 
+        int order = maxOrderForWord(word) + 1;
+        word.setOrder(order);
+
         ContentValues values = new ContentValues();
         values.put(WORDS_GROUP_ID, word.getGroup().getId());
         values.put(WORDS_WORD_DATA_ID, word.getWordDataId());
         values.put(WORDS_IS_IN_REVIEW, word.getIsInReview());
+        values.put(WORDS_ORDER, word.getOrder());
 
         SQLiteDatabase db = getWritableDatabase();
         int wordId = (int)db.insert(TABLE_WORDS, null, values);
@@ -193,7 +199,8 @@ public class WordsDataSource extends SQLiteOpenHelper
         List<Word> words = new LinkedList();
 
         String getWords = "select * from " + TABLE_WORDS +
-                " where " + WORDS_GROUP_ID + "=" + Integer.toString(group.getId());
+                " where " + WORDS_GROUP_ID + "=" + Integer.toString(group.getId()) +
+                " order by " + WORDS_ORDER + " desc";
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(getWords, null);
 
@@ -203,7 +210,8 @@ public class WordsDataSource extends SQLiteOpenHelper
                 int wordDataId = cursor.getInt(2);
                 String[] wordData = getWordData(wordDataId, group.getLanguage());
                 boolean isInReview = cursor.getInt(3) != 0;
-                Word word = new Word(id, group, wordDataId, wordData, isInReview);
+                int order = cursor.getInt(4);
+                Word word = new Word(id, group, wordDataId, wordData, isInReview, order);
                 words.add(word);
             } while(cursor.moveToNext());
         }
@@ -233,7 +241,8 @@ public class WordsDataSource extends SQLiteOpenHelper
                 int wordDataId = cursor.getInt(2);
                 String[] wordData = getWordData(wordDataId, language);
                 boolean isInReview = cursor.getInt(3) != 0;
-                Word word = new Word(id, group, wordDataId, wordData, isInReview);
+                int order = cursor.getInt(4);
+                Word word = new Word(id, group, wordDataId, wordData, isInReview, order);
                 words.add(word);
             } while(cursor.moveToNext());
         }
@@ -249,6 +258,7 @@ public class WordsDataSource extends SQLiteOpenHelper
 
         ContentValues values = new ContentValues();
         values.put(WORDS_IS_IN_REVIEW, word.getIsInReview());
+        values.put(WORDS_ORDER, word.getOrder());
 
         SQLiteDatabase db = getWritableDatabase();
         String idString = Integer.toString(word.getId());
@@ -343,6 +353,25 @@ public class WordsDataSource extends SQLiteOpenHelper
 
         SQLiteDatabase db = getReadableDatabase();
         String getMaxOrder = "select max(" + GROUPS_ORDER + ") from " + TABLE_GROUPS;
+        Cursor cursor = db.rawQuery(getMaxOrder, null);
+        if(cursor.moveToFirst()) {
+            maxOrder = cursor.getInt(0);
+        }
+
+        db.close();
+
+        return maxOrder;
+    }
+
+    private int maxOrderForWord(Word word)
+    {
+        int maxOrder = 0;
+
+        String groupIdString = Integer.toString(word.getGroup().getId());
+
+        SQLiteDatabase db = getReadableDatabase();
+        String getMaxOrder = "select max(" + WORDS_ORDER + ") from " + TABLE_WORDS +
+                " where " + WORDS_GROUP_ID + "=" + groupIdString;
         Cursor cursor = db.rawQuery(getMaxOrder, null);
         if(cursor.moveToFirst()) {
             maxOrder = cursor.getInt(0);

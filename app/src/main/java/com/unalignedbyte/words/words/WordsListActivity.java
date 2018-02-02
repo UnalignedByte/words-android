@@ -1,5 +1,7 @@
 package com.unalignedbyte.words.words;
 
+import java.util.*;
+
 import android.os.*;
 import android.app.*;
 import android.view.*;
@@ -62,6 +64,17 @@ public class WordsListActivity extends Activity
     {
         Toolbar toolbar = (Toolbar)findViewById(R.id.words_list_activity_toolbar);
         toolbar.setTitle(group.getName() + " (" + WordsDataSource.get(this).getWords(group).size() + ")");
+        toolbar.inflateMenu(R.menu.words_list_toolbar_menu);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getItemId() == R.id.menu_shuffle) {
+                    shuffleWords();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
     private void setupTab()
@@ -114,5 +127,18 @@ public class WordsListActivity extends Activity
                 return true;
         }
         return false;
+    }
+
+    private void shuffleWords()
+    {
+        List<Word> words = WordsDataSource.get(this).getWords(group);
+
+        for(Word word : words) {
+            int order = (int)(Math.random() * 1000 + 1);
+            word.setOrder(order);
+            WordsDataSource.get(this).updateWord(word);
+        }
+
+        adapter.notifyDataSetChanged();
     }
 }

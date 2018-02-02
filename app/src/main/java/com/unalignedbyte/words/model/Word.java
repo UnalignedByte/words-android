@@ -10,19 +10,21 @@ public class Word {
     private int wordDataId;
     private String[] wordData;
     private boolean isInReview;
+    private int order;
 
     public Word(Group group, String[] wordData)
     {
-        this(-1, group, -1, wordData, false);
+        this(-1, group, -1, wordData, false, -1);
     }
 
-    public Word(int id, Group group, int wordDataId, String[] wordData, boolean isInReview)
+    public Word(int id, Group group, int wordDataId, String[] wordData, boolean isInReview, int order)
     {
         this.id = id;
         this.group = group;
         this.wordDataId = wordDataId;
         this.wordData = wordData;
         this.isInReview = isInReview;
+        this.order = order;
     }
 
     public int getId()
@@ -68,5 +70,15 @@ public class Word {
     public void setIsInReview(boolean inReview)
     {
         isInReview = inReview;
+    }
+
+    public int getOrder()
+    {
+        return order;
+    }
+
+    public void setOrder(int order)
+    {
+        this.order = order;
     }
 }

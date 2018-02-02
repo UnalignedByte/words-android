@@ -18,6 +18,7 @@ public class EditGroupPopupWindow extends PopupWindow
     private Context context;
     private Group group;
     private EditText nameEdit;
+    private TextView countryCodeTitleText;
     private Spinner countryCodeSpinner;
 
     public EditGroupPopupWindow(Context context, Group group)
@@ -31,7 +32,7 @@ public class EditGroupPopupWindow extends PopupWindow
 
         View view = getContentView();
 
-        final Button addGroupButton = (Button)view.findViewById(R.id.addGroupButton);
+        final Button addGroupButton = (Button)view.findViewById(R.id.edit_group_addButton);
         addGroupButton.setEnabled(group != null);
         addGroupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,7 +43,7 @@ public class EditGroupPopupWindow extends PopupWindow
         });
 
 
-        Button cancelButton = (Button)view.findViewById(R.id.cancelButton);
+        Button cancelButton = (Button)view.findViewById(R.id.edit_group_cancelButton);
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view)
@@ -51,7 +52,7 @@ public class EditGroupPopupWindow extends PopupWindow
             }
         });
 
-        nameEdit = (EditText)view.findViewById(R.id.groupNameEdit);
+        nameEdit = (EditText)view.findViewById(R.id.edit_group_nameEdit);
         nameEdit.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -71,16 +72,17 @@ public class EditGroupPopupWindow extends PopupWindow
             }
         });
 
-        countryCodeSpinner = (Spinner)view.findViewById(R.id.groupLanguageSpinner);
+        countryCodeTitleText = (TextView)view.findViewById(R.id.edit_group_languageTitleText);
+        countryCodeSpinner = (Spinner)view.findViewById(R.id.edit_group_languageSpinner);
         SpinnerAdapter languageCodesAdapter = new ArrayAdapter<Language>(context,
-                R.layout.language_name_layout,
+                R.layout.language_spinner,
                 Language.getLanguages());
         countryCodeSpinner.setAdapter(languageCodesAdapter);
 
         if(group != null) {
             nameEdit.setText(group.getName());
-            countryCodeSpinner.setVisibility(View.INVISIBLE);
-
+            countryCodeTitleText.setVisibility(View.GONE);
+            countryCodeSpinner.setVisibility(View.GONE);
             addGroupButton.setText(R.string.save);
         }
 

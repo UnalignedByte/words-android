@@ -17,34 +17,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="@string/group_name"/>
+        android:text="@string/group_name"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <EditText
-        android:id="@+id/groupNameEdit"
+        android:id="@+id/edit_group_nameEdit"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:textSize="18dp"/>
 
     <TextView
+        android:id="@+id/edit_group_languageTitleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="@string/group_language"/>
+        android:text="@string/group_language"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
 
     <Spinner
-        android:id="@+id/groupLanguageSpinner"
-        android:layout_width="match_parent"
+        android:id="@+id/edit_group_languageSpinner"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        />
+        android:layout_gravity="center_horizontal"
+        android:textSize="18sp"/>
 
     <Button
-        android:id="@+id/addGroupButton"
+        android:id="@+id/edit_group_addButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:text="@string/add_group"/>
 
     <Button
-        android:id="@+id/cancelButton"
+        android:id="@+id/edit_group_cancelButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
