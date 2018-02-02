@@ -107,7 +107,11 @@ public class GroupsListActivity extends Activity
 
         Collection<Section> sections = adapter.getSectionsMap().values();
         for(Section section : sections) {
-            ((GroupsListSection)section).setHasHeader(hasHeader);
+            GroupsListSection groupsListSection = (GroupsListSection)section;
+            groupsListSection.setHasHeader(hasHeader);
+
+            boolean isSelected = languagesWithWords == 1;
+            groupsListSection.setIsSelected(isSelected);
         }
     }
 
