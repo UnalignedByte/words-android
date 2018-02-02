@@ -48,9 +48,9 @@ public class WordsDataSource extends SQLiteOpenHelper
     {
         String createGroupsTable = "create table " + TABLE_GROUPS + " (" +
                 GROUPS_ID + " integer primary key," +
-                GROUPS_ORDER + " integer," +
                 GROUPS_NAME + " text," +
-                GROUPS_LANGUAGE_CODE + " text)";
+                GROUPS_LANGUAGE_CODE + " text," +
+                GROUPS_ORDER + " integer)";
         db.execSQL(createGroupsTable);
 
         String createWordsTable = "create table " + TABLE_WORDS + " (" +
@@ -93,9 +93,9 @@ public class WordsDataSource extends SQLiteOpenHelper
         group.setOrder(order);
 
         ContentValues values = new ContentValues();
-        values.put(GROUPS_ORDER, group.getOrder());
         values.put(GROUPS_NAME, group.getName());
         values.put(GROUPS_LANGUAGE_CODE, group.getLanguage().getCode());
+        values.put(GROUPS_ORDER, group.getOrder());
 
         SQLiteDatabase db = getWritableDatabase();
         int newId = (int)db.insert(TABLE_GROUPS, null, values);
@@ -112,10 +112,10 @@ public class WordsDataSource extends SQLiteOpenHelper
 
         if(cursor.moveToFirst()) {
             int id = cursor.getInt(0);
-            int order = cursor.getInt(1);
-            String name = cursor.getString(2);
-            String languageCode = cursor.getString(3);
-            Group group = new Group(id, order, name, Language.getLanguage(languageCode));
+            String name = cursor.getString(1);
+            String languageCode = cursor.getString(2);
+            int order = cursor.getInt(3);
+            Group group = new Group(id, name, Language.getLanguage(languageCode), order);
             db.close();
             return group;
         }
@@ -138,10 +138,10 @@ public class WordsDataSource extends SQLiteOpenHelper
         if(cursor.moveToFirst()) {
             do {
                 int id = cursor.getInt(0);
-                int order = cursor.getInt(1);
-                String name = cursor.getString(2);
-                String languageCode = cursor.getString(3);
-                Group group = new Group(id, order, name, Language.getLanguage(languageCode));
+                String name = cursor.getString(1);
+                String languageCode = cursor.getString(2);
+                int order = cursor.getInt(3);
+                Group group = new Group(id, name, Language.getLanguage(languageCode), order);
                 groups.add(group);
             } while(cursor.moveToNext());
         }
@@ -154,9 +154,9 @@ public class WordsDataSource extends SQLiteOpenHelper
     public void updateGroup(Group group)
     {
         ContentValues values = new ContentValues();
-        values.put(GROUPS_ORDER, group.getOrder());
         values.put(GROUPS_NAME, group.getName());
         values.put(GROUPS_LANGUAGE_CODE, group.getLanguage().getCode());
+        values.put(GROUPS_ORDER, group.getOrder());
 
         SQLiteDatabase db = getWritableDatabase();
         String idString = Integer.toString(group.getId());

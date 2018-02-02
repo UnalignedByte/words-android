@@ -13,15 +13,15 @@ public class Group
 
     public Group(String name, Language language)
     {
-        this(-1, -1, name, language);
+        this(-1, name, language, -1);
     }
 
-    public Group(int id, int order, String name, Language language)
+    public Group(int id, String name, Language language, int order)
     {
         this.id = id;
-        this.order = order;
         this.name = name;
         this.language = language;
+        this.order = order;
     }
 
     public int getId()
@@ -32,16 +32,6 @@ public class Group
     public void setId(int id)
     {
         this.id = id;
-    }
-
-    public int getOrder()
-    {
-        return order;
-    }
-
-    public void setOrder(int order)
-    {
-        this.order = order;
     }
 
     public String getName()
@@ -59,8 +49,13 @@ public class Group
         return language;
     }
 
-    public void setLanguageCode(Language language)
+    public int getOrder()
     {
-        this.language = language;
+        return order;
+    }
+
+    public void setOrder(int order)
+    {
+        this.order = order;
     }
 }
