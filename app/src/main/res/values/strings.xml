@@ -8,6 +8,8 @@
     <string name="cancel">Cancel</string>
     <string name="menu_edit">Edit</string>
     <string name="menu_delete">Delete</string>
+    <string name="menu_import">Import</string>
+    <string name="menu_export">Export</string>
 
     <string name="both">Both</string>
     <string name="word">Word</string>

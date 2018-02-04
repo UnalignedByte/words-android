@@ -52,6 +52,18 @@ public class GroupsListActivity extends Activity
     {
         Toolbar toolbar = (Toolbar)findViewById(R.id.groups_list_activity_toolbar);
         toolbar.setTitle(R.string.app_name);
+        toolbar.inflateMenu(R.menu.groups_list_toolbar_menu);
+        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                if(item.getItemId() == R.id.groups_list_toolbar_menu_import) {
+                    return true;
+                } else if(item.getItemId() == R.id.groups_list_toolbar_menu_export) {
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 
 

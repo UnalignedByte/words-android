@@ -5,6 +5,6 @@
     <item
         android:id="@+id/menu_shuffle"
         android:title="↻"
-        app:showAsAction="always"/>
+        app:showAsAction="ifRoom"/>
 
 </menu>
