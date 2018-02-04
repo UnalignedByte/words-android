@@ -57,6 +57,7 @@ public class GroupsListActivity extends Activity
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 if(item.getItemId() == R.id.groups_list_toolbar_menu_import) {
+                    WordsImporter.get(GroupsListActivity.this).importAllWords();
                     return true;
                 } else if(item.getItemId() == R.id.groups_list_toolbar_menu_export) {
                     return true;
