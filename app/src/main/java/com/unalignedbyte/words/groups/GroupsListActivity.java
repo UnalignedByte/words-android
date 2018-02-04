@@ -23,7 +23,9 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.*;
 public class GroupsListActivity extends Activity
     implements GroupsListSection.Listener
 {
-    private final static String PREF_SELECTED_LANGUAGE = "SelectedLanguage";
+    private final static String PREFS_NAME = "Words";
+    private final static String PREFS_SELECTED_LANGUAGE = "SelectedLanguage";
+
     private View contentView;
     private SectionedRecyclerViewAdapter adapter;
     private Group selectedGroup;
@@ -121,17 +123,17 @@ public class GroupsListActivity extends Activity
 
     private Language getSelectedLanguage()
     {
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
-        String selectedLanguageCode = preferences.getString(PREF_SELECTED_LANGUAGE, null);
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        String selectedLanguageCode = preferences.getString(PREFS_SELECTED_LANGUAGE, null);
         return Language.getLanguage(selectedLanguageCode);
     }
 
     private void setSelectedLanguage(Language language)
     {
         String code = language != null ? language.getCode() : null;
-        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences preferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor preferencesEditor = preferences.edit();
-        preferencesEditor.putString(PREF_SELECTED_LANGUAGE, code);
+        preferencesEditor.putString(PREFS_SELECTED_LANGUAGE, code);
         preferencesEditor.apply();
     }
 

@@ -15,6 +15,9 @@ import com.unalignedbyte.words.model.*;
 
 public class EditGroupPopupWindow extends PopupWindow
 {
+    private final static String PREFS_NAME = "Words";
+    private final static String PREFS_ADD_LANGUAGE = "AddLanguage";
+
     private Context context;
     private Group group;
     private EditText nameEdit;
@@ -79,6 +82,12 @@ public class EditGroupPopupWindow extends PopupWindow
                 Language.getLanguages());
         countryCodeSpinner.setAdapter(languageCodesAdapter);
 
+        Language selectedLanguage = getAddLanguage();
+        if(selectedLanguage != null) {
+            int index = Language.getLanguages().indexOf(selectedLanguage);
+            countryCodeSpinner.setSelection(index);
+        }
+
         if(group != null) {
             nameEdit.setText(group.getName());
             countryCodeTitleText.setVisibility(View.GONE);
@@ -95,6 +104,7 @@ public class EditGroupPopupWindow extends PopupWindow
         if(group == null) {
             String name = nameEdit.getText().toString();
             Language language = (Language) countryCodeSpinner.getSelectedItem();
+            setAddLanguage(language);
             Group group = new Group(name, language);
             WordsDataSource.get(context).addGroup(group);
         } else {
@@ -102,5 +112,21 @@ public class EditGroupPopupWindow extends PopupWindow
             WordsDataSource.get(context).updateGroup(group);
         }
         dismiss();
+    }
+
+    private Language getAddLanguage()
+    {
+        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        String selectedLanguageCode = preferences.getString(PREFS_ADD_LANGUAGE, null);
+        return Language.getLanguage(selectedLanguageCode);
+    }
+
+    private void setAddLanguage(Language language)
+    {
+        String code = language != null ? language.getCode() : null;
+        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor preferencesEditor = preferences.edit();
+        preferencesEditor.putString(PREFS_ADD_LANGUAGE, code);
+        preferencesEditor.apply();
     }
 }
