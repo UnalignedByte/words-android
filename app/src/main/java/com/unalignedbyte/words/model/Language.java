@@ -52,6 +52,16 @@ public abstract class Language
         return name;
     }
 
+    @Override
+    public boolean equals(Object obj)
+    {
+        if(obj instanceof Language) {
+            return getCode() == ((Language)obj).getCode();
+        }
+
+        return false;
+    }
+
     public abstract String[] getWordConfigTitles();
     public abstract String[] getWordDataTitles();
 }

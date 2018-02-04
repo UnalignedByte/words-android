@@ -2,6 +2,7 @@ package com.unalignedbyte.words.groups;
 
 import java.util.*;
 
+import android.content.SharedPreferences;
 import android.os.*;
 import android.app.*;
 import android.view.*;
@@ -22,6 +23,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.*;
 public class GroupsListActivity extends Activity
     implements GroupsListSection.Listener
 {
+    private final static String PREF_SELECTED_LANGUAGE = "SelectedLanguage";
     private View contentView;
     private SectionedRecyclerViewAdapter adapter;
     private Group selectedGroup;
@@ -110,9 +112,27 @@ public class GroupsListActivity extends Activity
             GroupsListSection groupsListSection = (GroupsListSection)section;
             groupsListSection.setHasHeader(hasHeader);
 
-            boolean isSelected = languagesWithWords == 1;
+            boolean isSelected = true;
+            if(languagesWithWords > 1)
+                isSelected = groupsListSection.getLanguage().equals(getSelectedLanguage());
             groupsListSection.setIsSelected(isSelected);
         }
+    }
+
+    private Language getSelectedLanguage()
+    {
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        String selectedLanguageCode = preferences.getString(PREF_SELECTED_LANGUAGE, null);
+        return Language.getLanguage(selectedLanguageCode);
+    }
+
+    private void setSelectedLanguage(Language language)
+    {
+        String code = language != null ? language.getCode() : null;
+        SharedPreferences preferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor preferencesEditor = preferences.edit();
+        preferencesEditor.putString(PREF_SELECTED_LANGUAGE, code);
+        preferencesEditor.apply();
     }
 
     @Override
@@ -141,6 +161,8 @@ public class GroupsListActivity extends Activity
     @Override
     public void selectedSection(Language language)
     {
+        setSelectedLanguage(language);
+
         Collection<Section> sections = adapter.getSectionsMap().values();
         for(Section section : sections) {
             GroupsListSection groupsListSection = (GroupsListSection)section;
