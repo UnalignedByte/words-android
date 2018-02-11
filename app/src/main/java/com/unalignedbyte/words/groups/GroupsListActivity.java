@@ -58,6 +58,8 @@ public class GroupsListActivity extends Activity
             public boolean onMenuItemClick(MenuItem item) {
                 if(item.getItemId() == R.id.groups_list_toolbar_menu_import) {
                     WordsImporter.get(GroupsListActivity.this).importAllWords();
+                    updateSectionHeaders();
+                    adapter.notifyDataSetChanged();
                     return true;
                 } else if(item.getItemId() == R.id.groups_list_toolbar_menu_export) {
                     return true;
