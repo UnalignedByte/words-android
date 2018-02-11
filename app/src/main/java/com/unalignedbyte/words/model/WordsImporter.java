@@ -123,36 +123,42 @@ public class WordsImporter
 
     private Word readWord(XmlPullParser parser, Group group) throws Exception
     {
-        parser.require(XmlPullParser.START_TAG, null, "dict");
+        String key = null;
 
-        List<String> data = new LinkedList();
+        String word = null;
+        String translation = null;
+        String pinyin = null;
+
+        parser.require(XmlPullParser.START_TAG, null, "dict");
         while(parser.next() != XmlPullParser.END_TAG) {
             if(parser.getEventType() != XmlPullParser.START_TAG)
                 continue;
 
-            String name = parser.getName();
-            if(name.toLowerCase().equals("string")) {
-                String stringData = readString(parser);
-                data.add(stringData);
+            String name = parser.getName().toLowerCase();
+            if(name.equals("key")) {
+                key = readText(parser).toLowerCase();
+            } else if(name.equals("string") && key.equals("word")) {
+                word = readText(parser);
+            } else if(name.equals("string") && key.equals("translation")) {
+                translation = readText(parser);
+            } else if(name.equals("string") && key.equals("pinyin")) {
+                pinyin = readText(parser);
             } else {
                 skip(parser);
             }
         }
 
-        String[] dataArray = new String[data.size()];
-        for(int i = 0; i<dataArray.length; i++) {
-            dataArray[i] = data.get(i);
+        String[] data = new String[group.getLanguage().getWordDataTitles().length];
+        if(group.getLanguage().getCode().equals("cn")) {
+            data[0] = word;
+            data[1] = pinyin;
+            data[2] = translation;
+        } else {
+            data[0] = word;
+            data[1] = translation;
         }
-        Word word = new Word(group, dataArray);
-        return word;
-    }
 
-    private String readString(XmlPullParser parser) throws Exception
-    {
-        parser.require(XmlPullParser.START_TAG, null, "string");
-        String text = readText(parser);
-        parser.require(XmlPullParser.END_TAG, null, "string");
-        return text;
+        return new Word(group, data);
     }
 
     private String readText(XmlPullParser parser) throws Exception
