@@ -1,5 +1,6 @@
 package com.unalignedbyte.words.words;
 
+import android.content.Context;
 import android.view.*;
 import android.widget.*;
 import android.support.v7.widget.*;
@@ -16,20 +17,24 @@ import butterknife.*;
 public class WordViewHolder extends RecyclerView.ViewHolder
     implements View.OnTouchListener
 {
-    @BindView(R.id.word_view_holder_wordText)
-    TextView wordText;
-    @BindView(R.id.word_view_holder_translationText)
-    TextView translationText;
+    private int config = 0;
+    private boolean isInRevision;
+
+    private View view;
+    private TextView[] dataTexts;
+
     @BindView(R.id.word_view_holder_menuButton)
     Button menuButton;
     @BindView(R.id.word_view_holder_isInRevisionView)
     View isInRevisionView;
-    private int config = 0;
-    private boolean isInRevision;
+
 
     public WordViewHolder(View view, boolean isInRevision)
     {
         super(view);
+        ButterKnife.bind(this, view);
+
+        this.view = view;
         this.isInRevision = isInRevision;
 
         if(isInRevision)
@@ -45,8 +50,15 @@ public class WordViewHolder extends RecyclerView.ViewHolder
 
     public void setWord(Word word)
     {
-        wordText.setText(word.getWordData()[0]);
-        translationText.setText(word.getWordData()[1]);
+        dataTexts = new TextView[word.getWordData().length];
+
+        for(int i=0; i<dataTexts.length; i++) {
+            int id = R.id.word_view_holder_text_0 + i;
+            dataTexts[i] = view.findViewById(id);
+
+            dataTexts[i].setText(word.getWordData()[i]);
+        }
+
         isInRevisionView.setVisibility(word.getIsInReview() && !this.isInRevision ? View.VISIBLE : View.INVISIBLE);
     }
 
@@ -58,19 +70,11 @@ public class WordViewHolder extends RecyclerView.ViewHolder
 
     private void updateConfig(int config)
     {
-        switch(config) {
-            case 0:
-                wordText.setVisibility(View.VISIBLE);
-                translationText.setVisibility(View.VISIBLE);
-                break;
-            case 1:
-                wordText.setVisibility(View.VISIBLE);
-                translationText.setVisibility(View.GONE);
-                break;
-            case 2:
-                wordText.setVisibility(View.GONE);
-                translationText.setVisibility(View.VISIBLE);
-                break;
+        for(int i=0; i<dataTexts.length; i++) {
+            int visibility = View.VISIBLE;
+            if(config > 0)
+                visibility = (i == config-1) ? View.VISIBLE : View.GONE;
+            dataTexts[i].setVisibility(visibility);
         }
     }
 

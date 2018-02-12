@@ -18,14 +18,14 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/word_view_holder_wordText"
+            android:id="@+id/word_view_holder_text-0"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:textSize="22sp"/>
 
         <TextView
-            android:id="@+id/word_view_holder_translationText"
+            android:id="@+id/word_view_holder_text-1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
