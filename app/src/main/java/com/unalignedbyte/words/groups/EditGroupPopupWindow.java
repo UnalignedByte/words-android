@@ -9,6 +9,8 @@ import android.support.v7.widget.*;
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
 
+import butterknife.*;
+
 /**
  * Created by rafal on 11/12/2017.
  */
@@ -20,9 +22,12 @@ public class EditGroupPopupWindow extends PopupWindow
 
     private Context context;
     private Group group;
-    private EditText nameEdit;
-    private TextView countryCodeTitleText;
-    private Spinner countryCodeSpinner;
+    @BindView(R.id.edit_group_nameEdit)
+    EditText nameEdit;
+    @BindView(R.id.edit_group_languageTitleText)
+    TextView countryCodeTitleText;
+    @BindView(R.id.edit_group_languageSpinner)
+    Spinner countryCodeSpinner;
 
     public EditGroupPopupWindow(Context context, Group group)
     {
@@ -34,6 +39,7 @@ public class EditGroupPopupWindow extends PopupWindow
         this.group = group;
 
         View view = getContentView();
+        ButterKnife.bind(this, view);
 
         final Button addGroupButton = (Button)view.findViewById(R.id.edit_group_addButton);
         addGroupButton.setEnabled(group != null);
@@ -55,7 +61,6 @@ public class EditGroupPopupWindow extends PopupWindow
             }
         });
 
-        nameEdit = (EditText)view.findViewById(R.id.edit_group_nameEdit);
         nameEdit.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -75,8 +80,6 @@ public class EditGroupPopupWindow extends PopupWindow
             }
         });
 
-        countryCodeTitleText = (TextView)view.findViewById(R.id.edit_group_languageTitleText);
-        countryCodeSpinner = (Spinner)view.findViewById(R.id.edit_group_languageSpinner);
         SpinnerAdapter languageCodesAdapter = new ArrayAdapter<Language>(context,
                 R.layout.language_spinner,
                 Language.getLanguages());

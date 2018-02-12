@@ -14,6 +14,7 @@ import android.support.design.widget.*;
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
 
+import butterknife.*;
 import io.github.luizgrp.sectionedrecyclerviewadapter.*;
 
 /**
@@ -26,7 +27,8 @@ public class GroupsListActivity extends Activity
     private final static String PREFS_NAME = "Words";
     private final static String PREFS_SELECTED_LANGUAGE = "SelectedLanguage";
 
-    private View contentView;
+    @BindView(R.id.groups_list_activity_recyclerView)
+    RecyclerView groupsRecyclerView;
     private SectionedRecyclerViewAdapter adapter;
     private Group selectedGroup;
 
@@ -35,6 +37,7 @@ public class GroupsListActivity extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.groups_list_activity);
+        ButterKnife.bind(this);
 
         setupToolbar();
         setupGroupsList();
@@ -72,21 +75,19 @@ public class GroupsListActivity extends Activity
 
     private void setupGroupsList()
     {
-        RecyclerView groupsListView = (RecyclerView)findViewById(R.id.groups_list_activity_recyclerView);
         adapter = new SectionedRecyclerViewAdapter();
 
         for(Language language : Language.getLanguages()) {
-            GroupsListSection section = new GroupsListSection(this, adapter, groupsListView, language,false);
+            GroupsListSection section = new GroupsListSection(this, adapter, groupsRecyclerView, language,false);
             section.setListener(this);
             adapter.addSection(section);
         }
         updateSectionHeaders();
 
-        groupsListView.setLayoutManager(new LinearLayoutManager(this));
-        groupsListView.setAdapter(adapter);
+        groupsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        groupsRecyclerView.setAdapter(adapter);
 
-        registerForContextMenu(groupsListView);
-        contentView = groupsListView;
+        registerForContextMenu(groupsRecyclerView);
     }
 
     private void setupAddButton()
@@ -111,7 +112,7 @@ public class GroupsListActivity extends Activity
                 adapter.notifyDataSetChanged();
             }
         });
-        popup.showAtLocation(contentView, Gravity.TOP, 0, 0);
+        popup.showAtLocation(groupsRecyclerView, Gravity.TOP, 0, 0);
     }
 
     private void updateSectionHeaders()

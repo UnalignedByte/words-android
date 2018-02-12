@@ -7,18 +7,21 @@ import android.support.v7.widget.*;
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
 
+import butterknife.*;
+
 /**
  * Created by rafal on 22/01/2018.
  */
 
 public class GroupHeaderViewHolder extends RecyclerView.ViewHolder
 {
-    private TextView nameText;
+    @BindView(R.id.group_header_view_holder_nameText)
+    TextView nameText;
 
     public GroupHeaderViewHolder(View view)
     {
         super(view);
-        nameText = (TextView)view.findViewById(R.id.group_header_view_holder_nameText);
+        ButterKnife.bind(this, view);
     }
 
     public void setLanguage(Language language)
