@@ -25,9 +25,9 @@ public class EditGroupPopupWindow extends PopupWindow
     @BindView(R.id.edit_group_nameEdit)
     EditText nameEdit;
     @BindView(R.id.edit_group_languageTitleText)
-    TextView countryCodeTitleText;
+    TextView languageTitleText;
     @BindView(R.id.edit_group_languageSpinner)
-    Spinner countryCodeSpinner;
+    Spinner languageSpinner;
 
     public EditGroupPopupWindow(Context context, Group group)
     {
@@ -83,18 +83,18 @@ public class EditGroupPopupWindow extends PopupWindow
         SpinnerAdapter languageCodesAdapter = new ArrayAdapter<Language>(context,
                 R.layout.language_spinner,
                 Language.getLanguages());
-        countryCodeSpinner.setAdapter(languageCodesAdapter);
+        languageSpinner.setAdapter(languageCodesAdapter);
 
         Language selectedLanguage = getAddLanguage();
         if(selectedLanguage != null) {
             int index = Language.getLanguages().indexOf(selectedLanguage);
-            countryCodeSpinner.setSelection(index);
+            languageSpinner.setSelection(index);
         }
 
         if(group != null) {
             nameEdit.setText(group.getName());
-            countryCodeTitleText.setVisibility(View.GONE);
-            countryCodeSpinner.setVisibility(View.GONE);
+            languageTitleText.setVisibility(View.GONE);
+            languageSpinner.setVisibility(View.GONE);
             addGroupButton.setText(R.string.save);
         }
 
@@ -106,7 +106,7 @@ public class EditGroupPopupWindow extends PopupWindow
     {
         if(group == null) {
             String name = nameEdit.getText().toString();
-            Language language = (Language) countryCodeSpinner.getSelectedItem();
+            Language language = (Language) languageSpinner.getSelectedItem();
             setAddLanguage(language);
             Group group = new Group(name, language);
             WordsDataSource.get(context).addGroup(group);
