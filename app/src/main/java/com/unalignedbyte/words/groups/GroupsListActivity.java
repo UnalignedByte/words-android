@@ -27,10 +27,11 @@ public class GroupsListActivity extends Activity
     private final static String PREFS_NAME = "Words";
     private final static String PREFS_SELECTED_LANGUAGE = "SelectedLanguage";
 
-    @BindView(R.id.groups_list_activity_recyclerView)
-    RecyclerView groupsRecyclerView;
     private SectionedRecyclerViewAdapter adapter;
     private Group selectedGroup;
+
+    @BindView(R.id.groups_list_activity_recyclerView)
+    RecyclerView groupsRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)

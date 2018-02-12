@@ -14,6 +14,8 @@ import android.support.design.widget.*;
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
 
+import butterknife.*;
+
 /**
  * Created by rafal on 20/12/2017.
  */
@@ -21,14 +23,17 @@ import com.unalignedbyte.words.model.*;
 public class WordsListActivity extends Activity
     implements PopupMenu.OnMenuItemClickListener
 {
-    private View contentView;
     private WordsListAdapter adapter;
     private Group group;
+
+    @BindView(R.id.words_list_activity_recyclerView)
+    RecyclerView wordsRecyclerView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.words_list_activity);
+        ButterKnife.bind(this);
 
         int groupId = getIntent().getIntExtra("groupId", -1);
         group = WordsDataSource.get(this).getGroup(groupId);
@@ -41,12 +46,9 @@ public class WordsListActivity extends Activity
 
     private void setupWordsList()
     {
-        RecyclerView wordsListView = (RecyclerView)findViewById(R.id.words_list_activity_recyclerView);
-        adapter = new WordsListAdapter(this, wordsListView, group, this);
-        wordsListView.setLayoutManager(new LinearLayoutManager(this));
-        wordsListView.setAdapter(adapter);
-
-        contentView = wordsListView;
+        adapter = new WordsListAdapter(this, wordsRecyclerView, group, this);
+        wordsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        wordsRecyclerView.setAdapter(adapter);
     }
 
     private void setupAddButton()
@@ -110,7 +112,7 @@ public class WordsListActivity extends Activity
                 setupToolbar();
             }
         });
-        popup.showAtLocation(contentView, Gravity.TOP, 0, 0);
+        popup.showAtLocation(wordsRecyclerView, Gravity.TOP, 0, 0);
     }
 
     @Override
