@@ -42,7 +42,6 @@ public class GroupsListActivity extends Activity
 
         setupToolbar();
         setupGroupsList();
-        setupAddButton();
     }
 
     @Override
@@ -91,16 +90,10 @@ public class GroupsListActivity extends Activity
         registerForContextMenu(groupsRecyclerView);
     }
 
-    private void setupAddButton()
+    @OnClick(R.id.groups_list_activity_addButton)
+    void onAddButtonPressed(View view)
     {
-        FloatingActionButton addGroupButton = (FloatingActionButton)findViewById(R.id.groups_list_activity_addButton);
-        addGroupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                showEditGroupPopup(null);
-            }
-        });
+        showEditGroupPopup(null);
     }
 
     private void showEditGroupPopup(Group group)

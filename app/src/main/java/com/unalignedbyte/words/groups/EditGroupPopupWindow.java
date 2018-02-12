@@ -43,23 +43,6 @@ public class EditGroupPopupWindow extends PopupWindow
 
         final Button addGroupButton = (Button)view.findViewById(R.id.edit_group_addButton);
         addGroupButton.setEnabled(group != null);
-        addGroupButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                onAddGroup();
-            }
-        });
-
-
-        Button cancelButton = (Button)view.findViewById(R.id.edit_group_cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view)
-            {
-                dismiss();
-            }
-        });
 
         nameEdit.addTextChangedListener(new TextWatcher()
         {
@@ -100,6 +83,18 @@ public class EditGroupPopupWindow extends PopupWindow
 
         setFocusable(true);
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
+    @OnClick(R.id.edit_group_addButton)
+    void onAddButtonPressed(View view)
+    {
+        onAddGroup();
+    }
+
+    @OnClick(R.id.edit_group_cancelButton)
+    void onCancelButtonPressed(View view)
+    {
+        dismiss();
     }
 
     private void onAddGroup()

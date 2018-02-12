@@ -1,5 +1,7 @@
 package com.unalignedbyte.words.words;
 
+import java.util.*;
+
 import android.content.*;
 import android.view.*;
 import android.widget.*;
@@ -9,7 +11,7 @@ import android.support.v7.widget.*;
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
 
-import java.util.*;
+import butterknife.*;
 
 /**
  * Created by rafal on 31/12/2017.
@@ -20,9 +22,12 @@ public class EditWordPopupWindow extends PopupWindow
     private Context context;
     private Group group;
     private Word word;
-    private LinearLayout dataEntryLayout;
-    private Button addWordButton;
     private List<EditText> dataEdits;
+
+    @BindView(R.id.edit_word_dataEntryLayout)
+    LinearLayout dataEntryLayout;
+    @BindView(R.id.edit_word_addButton)
+    Button addWordButton;
 
     public EditWordPopupWindow(Context context, Group group, Word word)
     {
@@ -36,25 +41,9 @@ public class EditWordPopupWindow extends PopupWindow
         dataEdits = new LinkedList();
 
         View view = getContentView();
+        ButterKnife.bind(this, view);
 
-        dataEntryLayout = (LinearLayout)view.findViewById(R.id.edit_word_dataEntryLayout);
-
-        addWordButton = (Button)view.findViewById(R.id.edit_word_addButton);
         addWordButton.setEnabled(word != null);
-        addWordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onAddWord();
-            }
-        });
-
-        Button cancelButton = (Button)view.findViewById(R.id.edit_word_cancelButton);
-        cancelButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
 
         setupDataEntry();
 
@@ -63,6 +52,18 @@ public class EditWordPopupWindow extends PopupWindow
 
         setFocusable(true);
         setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE);
+    }
+
+    @OnClick(R.id.edit_word_addButton)
+    void onAddButtonPressed(View view)
+    {
+        onAddWord();
+    }
+
+    @OnClick(R.id.edit_word_cancelButton)
+    void onCancelButtonPressed(View view)
+    {
+        dismiss();
     }
 
     private void setupDataEntry()

@@ -39,7 +39,6 @@ public class WordsListActivity extends Activity
         group = WordsDataSource.get(this).getGroup(groupId);
 
         setupWordsList();
-        setupAddButton();
         setupToolbar();
         setupTab();
     }
@@ -51,15 +50,10 @@ public class WordsListActivity extends Activity
         wordsRecyclerView.setAdapter(adapter);
     }
 
-    private void setupAddButton()
+    @OnClick(R.id.words_list_activity_addWordButton)
+    void onAddButtonClick(View view)
     {
-        FloatingActionButton addWordButton = (FloatingActionButton)findViewById(R.id.words_list_activity_addWordButton);
-        addWordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showEditWordPopup(null);
-            }
-        });
+        showEditWordPopup(null);
     }
 
     private void setupToolbar()

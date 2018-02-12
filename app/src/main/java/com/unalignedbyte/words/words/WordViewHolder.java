@@ -7,6 +7,8 @@ import android.support.v7.widget.*;
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
 
+import butterknife.*;
+
 /**
  * Created by rafal on 27/12/2017.
  */
@@ -14,20 +16,20 @@ import com.unalignedbyte.words.model.*;
 public class WordViewHolder extends RecyclerView.ViewHolder
     implements View.OnTouchListener
 {
-    private TextView wordText;
-    private TextView translationText;
-    private Button menuButton;
-    private View isInRevisionView;
+    @BindView(R.id.word_view_holder_wordText)
+    TextView wordText;
+    @BindView(R.id.word_view_holder_translationText)
+    TextView translationText;
+    @BindView(R.id.word_view_holder_menuButton)
+    Button menuButton;
+    @BindView(R.id.word_view_holder_isInRevisionView)
+    View isInRevisionView;
     private int config = 0;
     private boolean isInRevision;
 
     public WordViewHolder(View view, boolean isInRevision)
     {
         super(view);
-        wordText = (TextView)view.findViewById(R.id.word_view_holder_wordText);
-        translationText = (TextView)view.findViewById(R.id.word_view_holder_translationText);
-        menuButton = (Button)itemView.findViewById(R.id.word_view_holder_menuButton);
-        isInRevisionView = itemView.findViewById(R.id.word_view_holder_isInRevisionView);
         this.isInRevision = isInRevision;
 
         if(isInRevision)
