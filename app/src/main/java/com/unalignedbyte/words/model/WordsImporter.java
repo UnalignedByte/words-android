@@ -47,6 +47,8 @@ public class WordsImporter
             } catch(Exception exception) {
                 Log.d("Exception", exception.toString());
             }
+
+            file.delete();
         }
 
         for(Group group : groups)
