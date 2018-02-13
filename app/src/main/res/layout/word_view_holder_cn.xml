@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:background="@android:color/white"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_marginLeft="4dp"
+    android:layout_marginRight="4dp"
+    android:layout_marginTop="2dp"
+    android:layout_marginBottom="2dp"
+    android:elevation="1dp">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/word_view_holder_text-0"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:gravity="center"
+            android:text="Hanzi"
+            android:textAlignment="center"
+            android:textSize="22sp"/>
+
+        <LinearLayout
+            android:id="@+id/word_view_holder_hack"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/word_view_holder_text-1"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Pinyin"
+                android:textAlignment="center"
+                android:textSize="22sp"/>
+
+            <TextView
+                android:id="@+id/word_view_holder_text-2"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_weight="0.5"
+                android:gravity="center"
+                android:text="Translation"
+                android:textAlignment="center"
+                android:textSize="22sp"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/word_view_holder_menuButton"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:textSize="22sp"
+        android:text="⋮"
+        android:background="?android:attr/selectableItemBackground"/>
+
+    <View
+        android:id="@+id/word_view_holder_isInRevisionView"
+        android:layout_height="match_parent"
+        android:layout_width="4dp"
+        android:layout_gravity="end"
+        android:background="@android:color/holo_green_light"/>
+
+</FrameLayout>

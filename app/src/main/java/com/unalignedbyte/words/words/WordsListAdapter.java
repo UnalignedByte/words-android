@@ -35,7 +35,8 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.word_view_holder, parent, false);
+        int id = viewHolderIdForLanguage(group.getLanguage());
+        View view = LayoutInflater.from(context).inflate(id, parent, false);
         WordViewHolder viewHolder = new WordViewHolder(view, false);
         return viewHolder;
     }
@@ -154,5 +155,14 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
         menu.inflate(R.menu.edit_delete_menu);
         menu.setOnMenuItemClickListener(menuListener);
         menu.show();
+    }
+
+    private int viewHolderIdForLanguage(Language language)
+    {
+        if(language.equals(Language.getLanguage("cn"))) {
+            return R.layout.word_view_holder_cn;
+        } else {
+            return R.layout.word_view_holder_gn;
+        }
     }
 }

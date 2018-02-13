@@ -89,7 +89,8 @@ public class RevisionAdapter extends RecyclerView.Adapter<WordViewHolder>
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        View view = LayoutInflater.from(context).inflate(R.layout.word_view_holder, parent, false);
+        int id = viewHolderIdForLanguage(language);
+        View view = LayoutInflater.from(context).inflate(id, parent, false);
         WordViewHolder viewHolder = new WordViewHolder(view, true);
         return viewHolder;
     }
@@ -118,5 +119,14 @@ public class RevisionAdapter extends RecyclerView.Adapter<WordViewHolder>
     {
         this.config = config;
         notifyDataSetChanged();
+    }
+
+    private int viewHolderIdForLanguage(Language language)
+    {
+        if(language.equals(Language.getLanguage("cn"))) {
+            return R.layout.word_view_holder_cn;
+        } else {
+            return R.layout.word_view_holder_gn;
+        }
     }
 }

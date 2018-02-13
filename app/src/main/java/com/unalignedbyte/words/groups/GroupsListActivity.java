@@ -64,9 +64,9 @@ public class GroupsListActivity extends Activity
                     updateSectionHeaders();
                     adapter.notifyDataSetChanged();
                     return true;
-                } else if(item.getItemId() == R.id.groups_list_toolbar_menu_export) {
+                }/* else if(item.getItemId() == R.id.groups_list_toolbar_menu_export) {
                     return true;
-                }
+                }*/
                 return false;
             }
         });

@@ -1,6 +1,7 @@
 package com.unalignedbyte.words.words;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.view.*;
 import android.widget.*;
 import android.support.v7.widget.*;
@@ -27,6 +28,8 @@ public class WordViewHolder extends RecyclerView.ViewHolder
     Button menuButton;
     @BindView(R.id.word_view_holder_isInRevisionView)
     View isInRevisionView;
+    @BindView(R.id.word_view_holder_hack)
+    @Nullable View hackView;
 
 
     public WordViewHolder(View view, boolean isInRevision)
@@ -75,6 +78,10 @@ public class WordViewHolder extends RecyclerView.ViewHolder
             if(config > 0)
                 visibility = (i == config-1) ? View.VISIBLE : View.GONE;
             dataTexts[i].setVisibility(visibility);
+        }
+
+        if(hackView != null) {
+            hackView.setVisibility(config == 1 ? View.GONE : View.VISIBLE);
         }
     }
 
