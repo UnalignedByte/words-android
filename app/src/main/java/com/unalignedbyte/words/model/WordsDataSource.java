@@ -116,10 +116,14 @@ public class WordsDataSource extends SQLiteOpenHelper
             String languageCode = cursor.getString(2);
             int order = cursor.getInt(3);
             Group group = new Group(id, name, Language.getLanguage(languageCode), order);
+
+            cursor.close();
             db.close();
+
             return group;
         }
 
+        cursor.close();
         db.close();
 
         return null;
@@ -146,6 +150,7 @@ public class WordsDataSource extends SQLiteOpenHelper
             } while(cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
 
         return groups;
@@ -216,6 +221,7 @@ public class WordsDataSource extends SQLiteOpenHelper
             } while(cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
 
         return words;
@@ -247,6 +253,7 @@ public class WordsDataSource extends SQLiteOpenHelper
             } while(cursor.moveToNext());
         }
 
+        cursor.close();
         db.close();
 
         return words;
@@ -314,10 +321,13 @@ public class WordsDataSource extends SQLiteOpenHelper
                 wordData[i] = data;
             }
 
+            cursor.close();
             db.close();
+
             return wordData;
         }
 
+        cursor.close();
         db.close();
 
         return null;
@@ -358,6 +368,7 @@ public class WordsDataSource extends SQLiteOpenHelper
             maxOrder = cursor.getInt(0);
         }
 
+        cursor.close();
         db.close();
 
         return maxOrder;
@@ -377,6 +388,7 @@ public class WordsDataSource extends SQLiteOpenHelper
             maxOrder = cursor.getInt(0);
         }
 
+        cursor.close();
         db.close();
 
         return maxOrder;
