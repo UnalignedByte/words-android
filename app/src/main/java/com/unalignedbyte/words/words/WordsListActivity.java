@@ -26,6 +26,8 @@ public class WordsListActivity extends Activity
     private WordsListAdapter adapter;
     private Group group;
 
+    @BindView(R.id.words_list_activity_toolbar)
+    Toolbar toolbar;
     @BindView(R.id.words_list_activity_recyclerView)
     RecyclerView wordsRecyclerView;
 
@@ -40,6 +42,7 @@ public class WordsListActivity extends Activity
 
         setupWordsList();
         setupToolbar();
+        updateToolbarTitle();
         setupTab();
     }
 
@@ -58,8 +61,6 @@ public class WordsListActivity extends Activity
 
     private void setupToolbar()
     {
-        Toolbar toolbar = (Toolbar)findViewById(R.id.words_list_activity_toolbar);
-        toolbar.setTitle(group.getName() + " (" + WordsDataSource.get(this).getWords(group).size() + ")");
         toolbar.inflateMenu(R.menu.words_list_toolbar_menu);
         toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
             @Override
@@ -71,6 +72,11 @@ public class WordsListActivity extends Activity
                 return false;
             }
         });
+    }
+
+    private void updateToolbarTitle()
+    {
+        toolbar.setTitle(group.getName() + " (" + WordsDataSource.get(this).getWords(group).size() + ")");
     }
 
     private void setupTab()
@@ -103,7 +109,7 @@ public class WordsListActivity extends Activity
             @Override
             public void onDismiss() {
                 adapter.notifyDataSetChanged();
-                setupToolbar();
+                updateToolbarTitle();
             }
         });
         popup.showAtLocation(wordsRecyclerView, Gravity.TOP, 0, 0);
