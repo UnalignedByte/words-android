@@ -18,6 +18,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.*;
  */
 
 public class GroupsListSection extends StatelessSection
+    implements GroupViewHolder.Listener
 {
     public interface Listener {
         void selectedGroup(Group group);
@@ -124,7 +125,10 @@ public class GroupsListSection extends StatelessSection
     @Override
     public RecyclerView.ViewHolder getItemViewHolder(View view)
     {
-        return new GroupViewHolder(view);
+        GroupViewHolder viewHolder = new GroupViewHolder(view);
+        viewHolder.setListener(this);
+
+        return viewHolder;
     }
 
     @Override
@@ -244,5 +248,12 @@ public class GroupsListSection extends StatelessSection
             group.setOrder(order);
             WordsDataSource.get(context).updateGroup(group);
         }
+    }
+
+    @Override
+    public void contextMenuShown()
+    {
+        MotionEvent event = MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0, 0, 0);
+        recyclerView.dispatchTouchEvent(event);
     }
 }

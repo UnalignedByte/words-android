@@ -16,6 +16,12 @@ import butterknife.*;
 public class GroupViewHolder extends RecyclerView.ViewHolder
     implements View.OnCreateContextMenuListener
 {
+    public interface Listener {
+        void contextMenuShown();
+    }
+
+    private Listener listener;
+
     @BindView(R.id.group_view_holder_groupViewGroup)
     ViewGroup groupViewGroup;
     @BindView(R.id.group_view_holder_groupNameText)
@@ -35,6 +41,11 @@ public class GroupViewHolder extends RecyclerView.ViewHolder
         super(view);
         ButterKnife.bind(this, view);
         view.setOnCreateContextMenuListener(this);
+    }
+
+    public void setListener(Listener listener)
+    {
+        this.listener = listener;
     }
 
     public void setGroup(Group group, int wordsCount)
@@ -71,6 +82,8 @@ public class GroupViewHolder extends RecyclerView.ViewHolder
     {
         menu.add(R.string.menu_edit);
         menu.add(R.string.menu_delete);
+        if(listener != null)
+            listener.contextMenuShown();
     }
 
     public View getReorderView()

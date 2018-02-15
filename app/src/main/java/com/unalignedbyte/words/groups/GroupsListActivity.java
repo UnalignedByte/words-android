@@ -72,7 +72,6 @@ public class GroupsListActivity extends Activity
         });
     }
 
-
     private void setupGroupsList()
     {
         adapter = new SectionedRecyclerViewAdapter();
