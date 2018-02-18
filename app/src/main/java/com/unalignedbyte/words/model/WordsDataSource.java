@@ -31,11 +31,13 @@ public class WordsDataSource extends SQLiteOpenHelper
     private static final String WORDS_DATA_ID = "id";
 
     private SQLiteDatabase db;
+    private HashMap<Integer, String[]> wordDataCache;
 
     private WordsDataSource(Context context)
     {
         super(context, DB_NAME, null, DB_VERSION);
         db = getWritableDatabase();
+        wordDataCache = new HashMap();
     }
 
     public static WordsDataSource get(Context context)
@@ -338,12 +340,16 @@ public class WordsDataSource extends SQLiteOpenHelper
 
     private String[] getWordData(int wordDataId, Language language)
     {
+        String[] wordData = wordDataCache.get(wordDataId);
+        if(wordData != null)
+            return wordData;
+
         String getWordData = "select * from " + language.getCode() +
                 " where " + WORDS_DATA_ID + "=" + Integer.toString(wordDataId);
         Cursor cursor = db.rawQuery(getWordData, null);
 
         if(cursor.moveToFirst()) {
-            String[] wordData = new String[language.getWordDataTitles().length];
+             wordData = new String[language.getWordDataTitles().length];
 
             for(int i=0; i<language.getWordDataTitles().length; i++) {
                 String data = cursor.getString(i+1);
@@ -351,6 +357,8 @@ public class WordsDataSource extends SQLiteOpenHelper
             }
 
             cursor.close();
+
+            wordDataCache.put(wordDataId, wordData);
 
             return wordData;
         }
@@ -371,6 +379,8 @@ public class WordsDataSource extends SQLiteOpenHelper
         String idString = Integer.toString(word.getWordDataId());
         db.update(word.getGroup().getLanguage().getCode(), values,
                 WORDS_DATA_ID + "=?", new String[] { idString });
+
+        wordDataCache.put(word.getWordDataId(), word.getWordData());
     }
 
     private void deleteWordData(Word word)
@@ -378,6 +388,8 @@ public class WordsDataSource extends SQLiteOpenHelper
                 String idString = Integer.toString(word.getWordDataId());
         db.delete(word.getGroup().getLanguage().getCode(), WORDS_DATA_ID + "=?",
                 new String[] {idString});
+
+        wordDataCache.remove(word.getWordDataId());
     }
 
     private int maxOrderForGroup(Group group)
