@@ -30,9 +30,12 @@ public class WordsDataSource extends SQLiteOpenHelper
 
     private static final String WORDS_DATA_ID = "id";
 
+    private SQLiteDatabase db;
+
     private WordsDataSource(Context context)
     {
         super(context, DB_NAME, null, DB_VERSION);
+        db = getWritableDatabase();
     }
 
     public static WordsDataSource get(Context context)
@@ -97,9 +100,7 @@ public class WordsDataSource extends SQLiteOpenHelper
         values.put(GROUPS_LANGUAGE_CODE, group.getLanguage().getCode());
         values.put(GROUPS_ORDER, group.getOrder());
 
-        SQLiteDatabase db = getWritableDatabase();
         int newId = (int)db.insert(TABLE_GROUPS, null, values);
-        db.close();
         group.setId(newId);
     }
 
@@ -107,7 +108,6 @@ public class WordsDataSource extends SQLiteOpenHelper
     {
         String getGroup = "select * from " + TABLE_GROUPS +
                 " where " + GROUPS_ID + "=" + Integer.toString(groupId);
-        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(getGroup, null);
 
         if(cursor.moveToFirst()) {
@@ -118,13 +118,11 @@ public class WordsDataSource extends SQLiteOpenHelper
             Group group = new Group(id, name, Language.getLanguage(languageCode), order);
 
             cursor.close();
-            db.close();
 
             return group;
         }
 
         cursor.close();
-        db.close();
 
         return null;
     }
@@ -136,7 +134,6 @@ public class WordsDataSource extends SQLiteOpenHelper
         String getGroups = "select * from " + TABLE_GROUPS +
                 " where " + GROUPS_LANGUAGE_CODE + "=\"" + language.getCode() + "\"" +
                 " order by " + GROUPS_ORDER + " desc";
-        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(getGroups, null);
 
         if(cursor.moveToFirst()) {
@@ -151,7 +148,6 @@ public class WordsDataSource extends SQLiteOpenHelper
         }
 
         cursor.close();
-        db.close();
 
         return groups;
     }
@@ -162,14 +158,12 @@ public class WordsDataSource extends SQLiteOpenHelper
 
         String getCount = "select count(*) from " + TABLE_GROUPS +
                 " where " + GROUPS_LANGUAGE_CODE + "=\"" + language.getCode() + "\"";
-        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(getCount, null);
         if(cursor.moveToFirst()) {
             count = cursor.getInt(0);
         }
 
         cursor.close();
-        db.close();
 
         return count;
     }
@@ -181,20 +175,16 @@ public class WordsDataSource extends SQLiteOpenHelper
         values.put(GROUPS_LANGUAGE_CODE, group.getLanguage().getCode());
         values.put(GROUPS_ORDER, group.getOrder());
 
-        SQLiteDatabase db = getWritableDatabase();
         String idString = Integer.toString(group.getId());
         db.update(TABLE_GROUPS, values, GROUPS_ID + "=?", new String[] { idString });
-        db.close();
     }
 
     public void deleteGroup(Group group)
     {
         deleteWordsInGroup(group);
 
-        SQLiteDatabase db = getWritableDatabase();
         String idString = Integer.toString(group.getId());
         db.delete(TABLE_GROUPS, GROUPS_ID + "=?", new String[] {idString});
-        db.close();
     }
 
     public void addWord(Word word)
@@ -210,9 +200,7 @@ public class WordsDataSource extends SQLiteOpenHelper
         values.put(WORDS_IS_IN_REVIEW, word.getIsInReview());
         values.put(WORDS_ORDER, word.getOrder());
 
-        SQLiteDatabase db = getWritableDatabase();
         int wordId = (int)db.insert(TABLE_WORDS, null, values);
-        db.close();
 
         word.setId(wordId);
     }
@@ -224,7 +212,6 @@ public class WordsDataSource extends SQLiteOpenHelper
         String getWords = "select * from " + TABLE_WORDS +
                 " where " + WORDS_GROUP_ID + "=" + Integer.toString(group.getId()) +
                 " order by " + WORDS_ORDER + " desc";
-        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(getWords, null);
 
         if(cursor.moveToFirst()) {
@@ -240,7 +227,6 @@ public class WordsDataSource extends SQLiteOpenHelper
         }
 
         cursor.close();
-        db.close();
 
         return words;
     }
@@ -252,14 +238,12 @@ public class WordsDataSource extends SQLiteOpenHelper
         String groupIdString = Integer.toString(group.getId());
         String getCount = "select count(*) from " + TABLE_WORDS +
                 " where " + WORDS_GROUP_ID + "=" + groupIdString;
-        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(getCount, null);
         if(cursor.moveToFirst()) {
             count = cursor.getInt(0);
         }
 
         cursor.close();
-        db.close();
 
         return count;
     }
@@ -273,7 +257,6 @@ public class WordsDataSource extends SQLiteOpenHelper
                 WORDS_GROUP_ID + "=" + TABLE_GROUPS + "." + GROUPS_ID +
                 " where " + GROUPS_LANGUAGE_CODE + "=\"" + language.getCode() + "\" and " +
                 WORDS_IS_IN_REVIEW + "=1";
-        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(getWords, null);
 
         if(cursor.moveToFirst()) {
@@ -291,7 +274,6 @@ public class WordsDataSource extends SQLiteOpenHelper
         }
 
         cursor.close();
-        db.close();
 
         return words;
     }
@@ -305,14 +287,12 @@ public class WordsDataSource extends SQLiteOpenHelper
                 WORDS_GROUP_ID + "=" + TABLE_GROUPS + "." + GROUPS_ID +
                 " where " + GROUPS_LANGUAGE_CODE + "=\"" + language.getCode() + "\" and " +
                 WORDS_IS_IN_REVIEW + "=1";
-        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(getCount, null);
         if(cursor.moveToFirst()) {
             count = cursor.getInt(0);
         }
 
         cursor.close();
-        db.close();
 
         return count;
     }
@@ -325,28 +305,22 @@ public class WordsDataSource extends SQLiteOpenHelper
         values.put(WORDS_IS_IN_REVIEW, word.getIsInReview());
         values.put(WORDS_ORDER, word.getOrder());
 
-        SQLiteDatabase db = getWritableDatabase();
         String idString = Integer.toString(word.getId());
         db.update(TABLE_WORDS, values, WORDS_ID + "=?", new String[] { idString });
-        db.close();;
     }
 
     public void deleteWord(Word word)
     {
         deleteWordData(word);
 
-        SQLiteDatabase db = getWritableDatabase();
         String idString = Integer.toString(word.getId());
         db.delete(TABLE_WORDS, WORDS_ID + "=?", new String[] { idString });
-        db.close();;
     }
 
     private void deleteWordsInGroup(Group group)
     {
-        SQLiteDatabase db = getWritableDatabase();
         String idString = Integer.toString(group.getId());
         db.delete(TABLE_WORDS, WORDS_GROUP_ID + "=?", new String[] { idString });
-        db.close();
     }
 
     private void addWordData(Word word)
@@ -357,9 +331,7 @@ public class WordsDataSource extends SQLiteOpenHelper
             values.put(field, word.getWordData()[i]);
         }
 
-        SQLiteDatabase db = getWritableDatabase();
         int dataId = (int)db.insert(word.getGroup().getLanguage().getCode(), null, values);
-        db.close();
 
         word.setWordDataId(dataId);
     }
@@ -368,7 +340,6 @@ public class WordsDataSource extends SQLiteOpenHelper
     {
         String getWordData = "select * from " + language.getCode() +
                 " where " + WORDS_DATA_ID + "=" + Integer.toString(wordDataId);
-        SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.rawQuery(getWordData, null);
 
         if(cursor.moveToFirst()) {
@@ -380,13 +351,11 @@ public class WordsDataSource extends SQLiteOpenHelper
             }
 
             cursor.close();
-            db.close();
 
             return wordData;
         }
 
         cursor.close();
-        db.close();
 
         return null;
     }
@@ -399,35 +368,29 @@ public class WordsDataSource extends SQLiteOpenHelper
             values.put(wordDataTitle, word.getWordData()[i]);
         }
 
-        SQLiteDatabase db = getWritableDatabase();
         String idString = Integer.toString(word.getWordDataId());
         db.update(word.getGroup().getLanguage().getCode(), values,
                 WORDS_DATA_ID + "=?", new String[] { idString });
-        db.close();
     }
 
     private void deleteWordData(Word word)
     {
-        SQLiteDatabase db = getWritableDatabase();
-        String idString = Integer.toString(word.getWordDataId());
+                String idString = Integer.toString(word.getWordDataId());
         db.delete(word.getGroup().getLanguage().getCode(), WORDS_DATA_ID + "=?",
                 new String[] {idString});
-        db.close();
     }
 
     private int maxOrderForGroup(Group group)
     {
         int maxOrder = 0;
 
-        SQLiteDatabase db = getReadableDatabase();
-        String getMaxOrder = "select max(" + GROUPS_ORDER + ") from " + TABLE_GROUPS;
+                String getMaxOrder = "select max(" + GROUPS_ORDER + ") from " + TABLE_GROUPS;
         Cursor cursor = db.rawQuery(getMaxOrder, null);
         if(cursor.moveToFirst()) {
             maxOrder = cursor.getInt(0);
         }
 
         cursor.close();
-        db.close();
 
         return maxOrder;
     }
@@ -437,8 +400,6 @@ public class WordsDataSource extends SQLiteOpenHelper
         int maxOrder = 0;
 
         String groupIdString = Integer.toString(word.getGroup().getId());
-
-        SQLiteDatabase db = getReadableDatabase();
         String getMaxOrder = "select max(" + WORDS_ORDER + ") from " + TABLE_WORDS +
                 " where " + WORDS_GROUP_ID + "=" + groupIdString;
         Cursor cursor = db.rawQuery(getMaxOrder, null);
@@ -447,7 +408,6 @@ public class WordsDataSource extends SQLiteOpenHelper
         }
 
         cursor.close();
-        db.close();
 
         return maxOrder;
     }
