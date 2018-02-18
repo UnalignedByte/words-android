@@ -76,7 +76,7 @@ public class WordsListActivity extends Activity
 
     private void updateToolbarTitle()
     {
-        toolbar.setTitle(group.getName() + " (" + WordsDataSource.get(this).getWords(group).size() + ")");
+        toolbar.setTitle(group.getName() + " (" + WordsDataSource.get(this).getWordsCount(group) + ")");
     }
 
     private void setupTab()

@@ -111,7 +111,7 @@ public class RevisionAdapter extends RecyclerView.Adapter<WordViewHolder>
     @Override
     public int getItemCount()
     {
-        int count = WordsDataSource.get(context).getWordsInRevision(language).size();
+        int count = WordsDataSource.get(context).getWordsInRevisionCount(language);
         return count;
     }
 

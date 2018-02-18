@@ -156,6 +156,24 @@ public class WordsDataSource extends SQLiteOpenHelper
         return groups;
     }
 
+    public int getGroupsCount(Language language)
+    {
+        int count = 0;
+
+        String getCount = "select count(*) from " + TABLE_GROUPS +
+                " where " + GROUPS_LANGUAGE_CODE + "=\"" + language.getCode() + "\"";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(getCount, null);
+        if(cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return count;
+    }
+
     public void updateGroup(Group group)
     {
         ContentValues values = new ContentValues();
@@ -227,6 +245,25 @@ public class WordsDataSource extends SQLiteOpenHelper
         return words;
     }
 
+    public int getWordsCount(Group group)
+    {
+        int count = 0;
+
+        String groupIdString = Integer.toString(group.getId());
+        String getCount = "select count(*) from " + TABLE_WORDS +
+                " where " + WORDS_GROUP_ID + "=" + groupIdString;
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(getCount, null);
+        if(cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return count;
+    }
+
     public List<Word> getWordsInRevision(Language language)
     {
         List<Word> words = new LinkedList();
@@ -257,6 +294,27 @@ public class WordsDataSource extends SQLiteOpenHelper
         db.close();
 
         return words;
+    }
+
+    public int getWordsInRevisionCount(Language language)
+    {
+        int count = 0;
+
+        String getCount = "select count(*) from " + TABLE_WORDS +
+                " join " + TABLE_GROUPS + " on " +
+                WORDS_GROUP_ID + "=" + TABLE_GROUPS + "." + GROUPS_ID +
+                " where " + GROUPS_LANGUAGE_CODE + "=\"" + language.getCode() + "\" and " +
+                WORDS_IS_IN_REVIEW + "=1";
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.rawQuery(getCount, null);
+        if(cursor.moveToFirst()) {
+            count = cursor.getInt(0);
+        }
+
+        cursor.close();
+        db.close();
+
+        return count;
     }
 
     public void updateWord(Word word)

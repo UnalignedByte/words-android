@@ -112,7 +112,7 @@ public class GroupsListActivity extends Activity
     {
         int languagesWithWords = 0;
         for(Language language : Language.getLanguages()) {
-            if(WordsDataSource.get(this).getGroups(language).size() > 0)
+            if(WordsDataSource.get(this).getGroupsCount(language) > 0)
                 languagesWithWords++;
         }
 

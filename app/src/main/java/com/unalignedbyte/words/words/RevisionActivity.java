@@ -34,7 +34,7 @@ public class RevisionActivity extends Activity
     private void setupToolbar(Language language)
     {
         String text = language.getName() + " - " + getString(R.string.revision) +
-                "(" + WordsDataSource.get(this).getWordsInRevision(language).size() + ")";
+                "(" + WordsDataSource.get(this).getWordsInRevisionCount(language) + ")";
         Toolbar toolbar = (Toolbar)findViewById(R.id.revision_activity_toolbar);
         toolbar.setTitle(text);
     }

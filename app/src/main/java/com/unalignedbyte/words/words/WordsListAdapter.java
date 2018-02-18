@@ -66,7 +66,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     @Override
     public int getItemCount()
     {
-        return WordsDataSource.get(context).getWords(group).size();
+        return WordsDataSource.get(context).getWordsCount(group);
     }
 
     private void setupDragging()

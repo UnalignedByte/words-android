@@ -116,7 +116,7 @@ public class GroupsListSection extends StatelessSection
     {
         int count = 0;
         if(isSelected)
-            count += WordsDataSource.get(context).getGroups(language).size();
+            count += WordsDataSource.get(context).getGroupsCount(language);
         if(isSelected && doesContainRevision())
             count += 1;
         return count;
@@ -149,7 +149,7 @@ public class GroupsListSection extends StatelessSection
         if(position == 0 && doesContainRevision()) {
             groupViewHolder.showRevisionView(true);
 
-            int wordsCount = WordsDataSource.get(context).getWordsInRevision(language).size();
+            int wordsCount = WordsDataSource.get(context).getWordsInRevisionCount(language);
             groupViewHolder.setRevisionWordsCount(wordsCount);
 
             groupViewHolder.itemView.setOnClickListener(new View.OnClickListener()
@@ -169,7 +169,7 @@ public class GroupsListSection extends StatelessSection
                 position--;
 
             final Group group = WordsDataSource.get(context).getGroups(language).get(position);
-            int wordsCount = WordsDataSource.get(context).getWords(group).size();
+            int wordsCount = WordsDataSource.get(context).getWordsCount(group);
             groupViewHolder.setGroup(group, wordsCount);
             groupViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -212,7 +212,7 @@ public class GroupsListSection extends StatelessSection
 
     private boolean doesContainRevision()
     {
-        return WordsDataSource.get(context).getWordsInRevision(language).size() > 0;
+        return WordsDataSource.get(context).getWordsInRevisionCount(language) > 0;
     }
 
     private int getLowerPositionBounds()
@@ -225,7 +225,7 @@ public class GroupsListSection extends StatelessSection
 
     private int getUpperPositionBounds()
     {
-        int itemsCount = WordsDataSource.get(context).getGroups(language).size();
+        int itemsCount = WordsDataSource.get(context).getGroupsCount(language);
         return getLowerPositionBounds() + itemsCount;
     }
 
