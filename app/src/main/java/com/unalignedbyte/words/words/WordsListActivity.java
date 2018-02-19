@@ -2,8 +2,11 @@ package com.unalignedbyte.words.words;
 
 import java.util.*;
 
+import android.graphics.Color;
 import android.os.*;
 import android.app.*;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.*;
 import android.widget.*;
 import android.widget.PopupMenu;
