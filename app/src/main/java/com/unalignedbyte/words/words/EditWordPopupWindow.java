@@ -10,6 +10,7 @@ import android.support.v7.widget.*;
 
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
+import com.unalignedbyte.words.utils.*;
 
 import butterknife.*;
 
@@ -72,9 +73,10 @@ public class EditWordPopupWindow extends PopupWindow
         {
             // Data Title
             String title = group.getLanguage().getWordConfigTitles()[i+1];
+            String translatedTitle = Utils.get().translate(title);
             TextView textView = new TextView(context);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
-            textView.setText(title);
+            textView.setText(translatedTitle);
             dataEntryLayout.addView(textView);
 
             // Data Entry

@@ -2,11 +2,8 @@ package com.unalignedbyte.words.words;
 
 import java.util.*;
 
-import android.graphics.Color;
 import android.os.*;
 import android.app.*;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.*;
 import android.widget.*;
 import android.widget.PopupMenu;
@@ -16,6 +13,7 @@ import android.support.design.widget.*;
 
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
+import com.unalignedbyte.words.utils.*;
 
 import butterknife.*;
 
@@ -86,7 +84,8 @@ public class WordsListActivity extends Activity
     {
         TabLayout tabBar = (TabLayout)findViewById(R.id.words_list_activity_tabBar);
         for(String title: group.getLanguage().getWordConfigTitles()) {
-            tabBar.addTab(tabBar.newTab().setText(title));
+            String translatedTitle = Utils.get().translate(title);
+            tabBar.addTab(tabBar.newTab().setText(translatedTitle));
         }
         tabBar.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

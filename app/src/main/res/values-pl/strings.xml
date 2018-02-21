@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Words</string>
+    <string name="group_name">Nazwa Grupy</string>
+    <string name="group_language">Język Grupy</string>
+    <string name="add_group">Dodaj Grupę</string>
+    <string name="add_word">Dodaj Słowo</string>
+    <string name="save">Zapisz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="menu_edit">Edytuj</string>
+    <string name="menu_delete">Usuń</string>
+    <string name="menu_import">Importuj</string>
+    <string name="menu_export">Eksport</string>
+    <string name="both">Oba</string>
+    <string name="word">Słowo</string>
+    <string name="translation">Tłumaczenie</string>
+    <string name="revision">Powtórka</string>
+    <string name="to_revise">Do Powtórki:</string>
+    <string name="remove_from_revision">Usuń z Powtórki</string>
+    <string name="add_to_revision">Dodaj do Powtórki</string>
+    <string name="generic">Ogólny</string>
+</resources>

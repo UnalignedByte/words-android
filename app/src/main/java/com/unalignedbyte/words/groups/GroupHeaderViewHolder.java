@@ -26,6 +26,6 @@ public class GroupHeaderViewHolder extends RecyclerView.ViewHolder
 
     public void setLanguage(Language language)
     {
-        nameText.setText(language.getName());
+        nameText.setText(language.toString());
     }
 }

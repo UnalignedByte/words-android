@@ -1,5 +1,7 @@
 package com.unalignedbyte.words.model;
 
+import com.unalignedbyte.words.utils.*;
+
 import java.util.*;
 
 /**
@@ -49,7 +51,8 @@ public abstract class Language
     @Override
     public String toString()
     {
-        return name;
+        String tranlatedName = Utils.get().translate(name);
+        return tranlatedName;
     }
 
     @Override

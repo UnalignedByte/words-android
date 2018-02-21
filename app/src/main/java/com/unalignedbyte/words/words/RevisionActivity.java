@@ -8,6 +8,7 @@ import android.support.design.widget.*;
 
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
+import com.unalignedbyte.words.utils.*;
 
 /**
  * Created by rafal on 17/01/2018.
@@ -34,7 +35,7 @@ public class RevisionActivity extends Activity
     private void setupToolbar(Language language)
     {
         String text = language.getName() + " - " + getString(R.string.revision) +
-                "(" + WordsDataSource.get(this).getWordsInRevisionCount(language) + ")";
+                " (" + WordsDataSource.get(this).getWordsInRevisionCount(language) + ")";
         Toolbar toolbar = (Toolbar)findViewById(R.id.revision_activity_toolbar);
         toolbar.setTitle(text);
     }
@@ -51,7 +52,8 @@ public class RevisionActivity extends Activity
     {
         TabLayout tabBar = (TabLayout)findViewById(R.id.revision_activity_tabBar);
         for(String title: language.getWordConfigTitles()) {
-            tabBar.addTab(tabBar.newTab().setText(title));
+            String translatedTitle = Utils.get().translate(title);
+            tabBar.addTab(tabBar.newTab().setText(translatedTitle));
         }
         tabBar.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override

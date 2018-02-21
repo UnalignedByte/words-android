@@ -9,10 +9,10 @@ import android.view.*;
 import android.widget.*;
 import android.support.v7.widget.*;
 import android.support.v7.widget.Toolbar;
-import android.support.design.widget.*;
 
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
+import com.unalignedbyte.words.utils.*;
 
 import butterknife.*;
 import io.github.luizgrp.sectionedrecyclerviewadapter.*;
@@ -40,6 +40,7 @@ public class GroupsListActivity extends Activity
         setContentView(R.layout.groups_list_activity);
         ButterKnife.bind(this);
 
+        Utils.get().setContext(this);
         setupToolbar();
         setupGroupsList();
 
