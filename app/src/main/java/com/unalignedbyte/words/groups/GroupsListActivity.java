@@ -42,6 +42,8 @@ public class GroupsListActivity extends Activity
 
         setupToolbar();
         setupGroupsList();
+
+        WordsImporter.get(this).reloadExternalDirectory();
     }
 
     @Override

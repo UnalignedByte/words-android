@@ -6,8 +6,10 @@ import java.util.*;
 import org.xmlpull.v1.*;
 
 import android.content.*;
+import android.media.*;
 import android.util.*;
 import android.widget.*;
+import android.net.*;
 
 /**
  * Created by rafal on 04/02/2018.
@@ -31,9 +33,37 @@ public class WordsImporter
         return instance;
     }
 
+    public void reloadExternalDirectory()
+    {
+        File filesDir = context.getExternalFilesDir(null);
+
+        if(!filesDir.exists())
+            filesDir.mkdirs();
+
+        // First create a foo file under files/ directory, then scan it, delete, and scan again
+        try {
+            File dummyFile = new File(filesDir, "foo");
+            dummyFile.createNewFile();
+            String[] paths = new String[]{dummyFile.getAbsolutePath()};
+            MediaScannerConnection.scanFile(context, paths, null, new MediaScannerConnection.OnScanCompletedListener() {
+                @Override
+                public void onScanCompleted(String s, Uri uri) {
+                    File fooFile = new File(s);
+                    fooFile.delete();
+                    String[] paths = new String[]{fooFile.getAbsolutePath()};
+                    MediaScannerConnection.scanFile(context, paths, null, null);
+                }
+
+            });
+        } catch(Exception exception) {
+            Log.d("Exception", exception.toString());
+        }
+    }
+
+
     public void importAllWords()
     {
-        File filesDir = context.getFilesDir();
+        File filesDir = context.getExternalFilesDir(null);
         File[] allFiles = filesDir.listFiles();
 
         List<Group> groups = new LinkedList();
@@ -49,6 +79,7 @@ public class WordsImporter
             }
 
             file.delete();
+            MediaScannerConnection.scanFile(context, new String[]{file.getAbsolutePath()}, null, null);
         }
 
         for(Group group : groups)
