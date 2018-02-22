@@ -37,4 +37,14 @@ public class Utils
 
         return string;
     }
+
+    public String translate(String string, int count)
+    {
+        int stringId = context.getResources().getIdentifier(string.toLowerCase(), "plurals",
+                context.getPackageName());
+        if(stringId > 0)
+            return context.getResources().getQuantityString(stringId, count, count);
+
+        return Integer.toString(count) + " " + string;
+    }
 }

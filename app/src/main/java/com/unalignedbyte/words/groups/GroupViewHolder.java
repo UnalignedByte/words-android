@@ -6,6 +6,7 @@ import android.support.v7.widget.*;
 
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
+import com.unalignedbyte.words.utils.*;
 
 import butterknife.*;
 
@@ -50,25 +51,14 @@ public class GroupViewHolder extends RecyclerView.ViewHolder
 
     public void setGroup(Group group, int wordsCount)
     {
-        nameText.setText(group.getName());
-        if(wordsCount == 0) {
-            wordsCountText.setText("No Words");
-        } else if(wordsCount == 1) {
-            wordsCountText.setText("1 Word");
-        } else {
-            wordsCountText.setText(Integer.toString(wordsCount) + " Words");
-        }
+        String translatedString = Utils.get().translate("words", wordsCount);
+        wordsCountText.setText(translatedString);
     }
 
     public void setRevisionWordsCount(int wordsCount)
     {
-        if(wordsCount == 0) {
-            revisionWordsCountText.setText("No Words");
-        } else if(wordsCount == 1) {
-            revisionWordsCountText.setText("1 Word");
-        } else {
-            revisionWordsCountText.setText(Integer.toString(wordsCount) + " Words");
-        }
+        String translatedString = Utils.get().translate("words", wordsCount);
+        revisionWordsCountText.setText(translatedString);
     }
 
     public void showRevisionView(boolean isShowingRevision)

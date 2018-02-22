@@ -8,8 +8,11 @@ import org.xmlpull.v1.*;
 import android.content.*;
 import android.media.*;
 import android.util.*;
-import android.widget.*;
 import android.net.*;
+import android.widget.*;
+
+import com.unalignedbyte.words.R;
+import com.unalignedbyte.words.utils.*;
 
 /**
  * Created by rafal on 04/02/2018.
@@ -87,7 +90,11 @@ public class WordsImporter
         for(Word word : words)
             WordsDataSource.get(context).addWord(word);
 
-        Toast.makeText(context, "Imported "+groups.size()+" group(s) and "+words.size()+" word(s)", Toast.LENGTH_SHORT).show();
+        String groupsPart = Utils.get().translate("groups", groups.size());
+        String wordsPart =  Utils.get().translate("words", groups.size());
+        String toastString = context.getString(R.string.import_toast, groupsPart, wordsPart);
+
+        Toast.makeText(context, toastString, Toast.LENGTH_SHORT).show();
     }
 
     private void importGroupsFromInputStream(InputStream stream, List<Group> groups, List<Word> words) throws Exception

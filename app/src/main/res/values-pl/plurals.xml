@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <plurals name="groups">
+        <item quantity="one">%d Grupa</item>
+        <item quantity="few">%d Grupy</item>
+        <item quantity="other">%d Grup</item>
+    </plurals>
+
+    <plurals name="words">
+        <item quantity="one">%d Słowo</item>
+        <item quantity="few">%d Słowa</item>
+        <item quantity="other">%d Słów</item>
+    </plurals>
+
+</resources>
