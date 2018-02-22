@@ -10,12 +10,15 @@ import android.widget.*;
 import android.support.v7.widget.*;
 import android.support.v7.widget.Toolbar;
 
+import com.unalignedbyte.words.BuildConfig;
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.*;
 import com.unalignedbyte.words.utils.*;
 
 import butterknife.*;
 import io.github.luizgrp.sectionedrecyclerviewadapter.*;
+import io.fabric.sdk.android.*;
+import com.crashlytics.android.*;
 
 /**
  * Created by rafal on 10/12/2017.
@@ -37,14 +40,12 @@ public class GroupsListActivity extends Activity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.groups_list_activity);
-        ButterKnife.bind(this);
 
-        Utils.get().setContext(this);
+        setupAnalytics();
+        setupView();
+        setupUtils();
         setupToolbar();
         setupGroupsList();
-
-        WordsImporter.get(this).reloadExternalDirectory();
     }
 
     @Override
@@ -52,6 +53,25 @@ public class GroupsListActivity extends Activity
     {
         super.onResume();
         adapter.notifyDataSetChanged();
+    }
+
+    private void setupView()
+    {
+        setContentView(R.layout.groups_list_activity);
+        ButterKnife.bind(this);
+    }
+
+    private void setupUtils()
+    {
+        Utils.get().setContext(this);
+        WordsImporter.get(this).reloadExternalDirectory();
+    }
+
+    private void setupAnalytics()
+    {
+        if(!BuildConfig.DEBUG) {
+            Fabric.with(this, new Crashlytics());
+        }
     }
 
     private void setupToolbar()

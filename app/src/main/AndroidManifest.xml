@@ -1,6 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.unalignedbyte.words">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -16,5 +18,8 @@
         </activity>
         <activity android:name=".words.WordsListActivity"/>
         <activity android:name=".words.RevisionActivity"/>
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="a021a108c4f7af7ac61e5074ce2ce6b5b0729c4b"/>
     </application>
 </manifest>
