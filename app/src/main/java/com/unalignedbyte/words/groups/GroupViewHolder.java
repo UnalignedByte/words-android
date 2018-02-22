@@ -53,6 +53,7 @@ public class GroupViewHolder extends RecyclerView.ViewHolder
     {
         String translatedString = Utils.get().translate("words", wordsCount);
         wordsCountText.setText(translatedString);
+        nameText.setText(group.getName());
     }
 
     public void setRevisionWordsCount(int wordsCount)
