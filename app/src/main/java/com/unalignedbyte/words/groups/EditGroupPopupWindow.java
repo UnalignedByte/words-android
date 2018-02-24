@@ -41,7 +41,7 @@ public class EditGroupPopupWindow extends PopupWindow {
     private Context context;
     private Group group;
 
-    EditGroupPopupWindow(Context context, Group group) {
+    public EditGroupPopupWindow(Context context, Group group) {
         super(LayoutInflater.from(context).inflate(R.layout.edit_group, null),
                 RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.MATCH_PARENT);
