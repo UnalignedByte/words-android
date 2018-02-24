@@ -127,7 +127,7 @@ public class WordsListActivity extends Activity
             case R.id.menu_delete:
                 WordsDataSource.get(this).deleteWord(adapter.getSelectedWord());
                 adapter.notifyDataSetChanged();
-                setupToolbar();
+                updateToolbarTitle();
                 return true;
         }
         return false;
