@@ -1,70 +1,64 @@
 package com.unalignedbyte.words.model;
 
-import com.unalignedbyte.words.utils.*;
+import com.unalignedbyte.words.utils.Utils;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by rafal on 11/12/2017.
  */
 
-public abstract class Language
-{
+public abstract class Language {
     private String code;
     private String name;
 
-    public static List<Language> getLanguages()
-    {
+    protected Language(String code, String name) {
+        this.code = code;
+        this.name = name;
+    }
+
+    public static List<Language> getLanguages() {
         List<Language> languages = new LinkedList();
         languages.add(new LanguageGeneric());
         languages.add(new LanguageChinese());
         return languages;
     }
 
-    public static Language getLanguage(String code)
-    {
+    public static Language getLanguage(String code) {
         Language returnLanguage = null;
-        for(Language language: getLanguages())
-            if(language.getCode().equals(code)) {
+        for (Language language : getLanguages())
+            if (language.getCode().equals(code)) {
                 returnLanguage = language;
                 break;
             }
         return returnLanguage;
     }
 
-    protected Language(String code, String name)
-    {
-        this.code = code;
-        this.name = name;
-    }
-
-    public String getCode()
-    {
+    public String getCode() {
         return code;
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         String tranlatedName = Utils.get().translate(name);
         return tranlatedName;
     }
 
     @Override
-    public boolean equals(Object obj)
-    {
-        if(obj instanceof Language) {
-            return getCode() == ((Language)obj).getCode();
+    public boolean equals(Object obj) {
+        if (obj instanceof Language) {
+            return getCode() == ((Language) obj).getCode();
         }
 
         return false;
     }
 
     public abstract String[] getWordConfigTitles();
+
     public abstract String[] getWordDataTitles();
 }
