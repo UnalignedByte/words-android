@@ -75,12 +75,14 @@ public class EditWordPopupWindow extends PopupWindow
             String title = group.getLanguage().getWordConfigTitles()[i+1];
             String translatedTitle = Utils.get().translate(title);
             TextView textView = new TextView(context);
+            textView.setTextSize(12);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
             textView.setText(translatedTitle);
             dataEntryLayout.addView(textView);
 
             // Data Entry
             EditText dataEdit = new EditText(context);
+            dataEdit.setTextSize(12);
             dataEdits.add(dataEdit);
             dataEntryLayout.addView(dataEdit);
             dataEdit.addTextChangedListener(new TextWatcher() {
