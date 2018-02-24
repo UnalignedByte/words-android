@@ -14,27 +14,40 @@
         android:background="@drawable/rounded_rectangle"
         android:elevation="6dp">
 
-        <LinearLayout
-            android:id="@+id/edit_word_dataEntryLayout"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/edit_word_addButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/add_word"
-            android:textSize="12sp"/>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <Button
-            android:id="@+id/edit_word_cancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="@string/cancel"
-            android:textSize="12sp"/>
+                <LinearLayout
+                    android:id="@+id/edit_word_dataEntryLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"/>
+
+                <Button
+                    android:id="@+id/edit_word_addButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/add_word"
+                    android:textSize="12sp"/>
+
+                <Button
+                    android:id="@+id/edit_word_cancelButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/cancel"
+                    android:textSize="12sp"/>
+
+            </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 
