@@ -7,6 +7,7 @@ import org.xmlpull.v1.*;
 
 import android.content.*;
 import android.media.*;
+import android.os.*;
 import android.util.*;
 import android.net.*;
 import android.widget.*;
@@ -38,6 +39,12 @@ public class WordsImporter
 
     public void reloadExternalDirectory()
     {
+        String filesState = Environment.getExternalStorageState();
+        if(!filesState.equals(Environment.MEDIA_MOUNTED)) {
+            return;
+        }
+
+        File fdir = context.getFilesDir();
         File filesDir = context.getExternalFilesDir(null);
 
         if(!filesDir.exists())
@@ -66,29 +73,32 @@ public class WordsImporter
 
     public void importAllWords()
     {
-        File filesDir = context.getExternalFilesDir(null);
-        File[] allFiles = filesDir.listFiles();
-
         List<Group> groups = new LinkedList();
         List<Word> words = new LinkedList();
 
-        for(File file : allFiles) {
-            try {
-                InputStream stream = new FileInputStream(file);
-                importGroupsFromInputStream(stream, groups, words);
-                stream.close();
-            } catch(Exception exception) {
-                Log.d("Exception", exception.toString());
+        String filesState = Environment.getExternalStorageState();
+        if(filesState.equals(Environment.MEDIA_MOUNTED)) {
+            File filesDir = context.getExternalFilesDir(null);
+            File[] allFiles = filesDir.listFiles();
+
+            for (File file : allFiles) {
+                try {
+                    InputStream stream = new FileInputStream(file);
+                    importGroupsFromInputStream(stream, groups, words);
+                    stream.close();
+                } catch (Exception exception) {
+                    Log.d("Exception", exception.toString());
+                }
+
+                file.delete();
+                MediaScannerConnection.scanFile(context, new String[]{file.getAbsolutePath()}, null, null);
             }
 
-            file.delete();
-            MediaScannerConnection.scanFile(context, new String[]{file.getAbsolutePath()}, null, null);
+            for (Group group : groups)
+                WordsDataSource.get(context).addGroup(group);
+            for (Word word : words)
+                WordsDataSource.get(context).addWord(word);
         }
-
-        for(Group group : groups)
-            WordsDataSource.get(context).addGroup(group);
-        for(Word word : words)
-            WordsDataSource.get(context).addWord(word);
 
         String groupsPart = Utils.get().translate("groups", groups.size());
         String wordsPart =  Utils.get().translate("words", groups.size());
