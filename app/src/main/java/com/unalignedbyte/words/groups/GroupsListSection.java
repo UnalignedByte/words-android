@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.unalignedbyte.words.R;
+import com.unalignedbyte.words.MainApplication;
 import com.unalignedbyte.words.model.Group;
 import com.unalignedbyte.words.model.Language;
 import com.unalignedbyte.words.model.WordsDataSource;
@@ -26,7 +27,6 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 public class GroupsListSection extends StatelessSection
         implements GroupViewHolder.Listener {
-    private Context context;
     private SectionedRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
     private Language language;
@@ -34,11 +34,10 @@ public class GroupsListSection extends StatelessSection
     private Listener listener;
     private ItemTouchHelper touchHelper;
     private int firstItemPosition = 0;
-    public GroupsListSection(Context context, SectionedRecyclerViewAdapter adapter,
+    public GroupsListSection(SectionedRecyclerViewAdapter adapter,
                              RecyclerView recyclerView, Language language, boolean isSelected) {
         super(new SectionParameters.Builder(R.layout.group_view_holder)
                 .headerResourceId(R.layout.group_header_view_holder).build());
-        this.context = context;
         this.adapter = adapter;
         this.recyclerView = recyclerView;
         this.language = language;
@@ -108,7 +107,7 @@ public class GroupsListSection extends StatelessSection
     public int getContentItemsTotal() {
         int count = 0;
         if (isSelected)
-            count += WordsDataSource.get(context).getGroupsCount(language);
+            count += WordsDataSource.get(MainApplication.getContext()).getGroupsCount(language);
         if (isSelected && doesContainRevision())
             count += 1;
         return count;
@@ -134,6 +133,7 @@ public class GroupsListSection extends StatelessSection
         }
 
         final GroupViewHolder groupViewHolder = (GroupViewHolder) viewHolder;
+        final Context context = MainApplication.getContext();
 
         if (position == 0 && doesContainRevision()) {
             groupViewHolder.showRevisionView(true);
@@ -197,7 +197,7 @@ public class GroupsListSection extends StatelessSection
     }
 
     private boolean doesContainRevision() {
-        return WordsDataSource.get(context).getWordsInRevisionCount(language) > 0;
+        return WordsDataSource.get(MainApplication.getContext()).getWordsInRevisionCount(language) > 0;
     }
 
     private int getLowerPositionBounds() {
@@ -208,7 +208,7 @@ public class GroupsListSection extends StatelessSection
     }
 
     private int getUpperPositionBounds() {
-        int itemsCount = WordsDataSource.get(context).getGroupsCount(language);
+        int itemsCount = WordsDataSource.get(MainApplication.getContext()).getGroupsCount(language);
         return getLowerPositionBounds() + itemsCount;
     }
 
@@ -219,7 +219,7 @@ public class GroupsListSection extends StatelessSection
         sourceIndex -= getLowerPositionBounds();
         targetIndex -= getLowerPositionBounds();
 
-        List<Group> groups = WordsDataSource.get(context).getGroups(language);
+        List<Group> groups = WordsDataSource.get(MainApplication.getContext()).getGroups(language);
 
         Group updatedGroup = groups.remove(sourceIndex);
         groups.add(targetIndex, updatedGroup);
@@ -228,7 +228,7 @@ public class GroupsListSection extends StatelessSection
             int index = groups.size() - order;
             Group group = groups.get(index);
             group.setOrder(order);
-            WordsDataSource.get(context).updateGroup(group);
+            WordsDataSource.get(MainApplication.getContext()).updateGroup(group);
         }
     }
 

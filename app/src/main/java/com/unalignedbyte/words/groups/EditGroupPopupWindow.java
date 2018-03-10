@@ -17,6 +17,7 @@ import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 
 import com.unalignedbyte.words.R;
+import com.unalignedbyte.words.MainApplication;
 import com.unalignedbyte.words.model.Group;
 import com.unalignedbyte.words.model.Language;
 import com.unalignedbyte.words.model.WordsDataSource;
@@ -38,15 +39,13 @@ public class EditGroupPopupWindow extends PopupWindow {
     TextView languageTitleText;
     @BindView(R.id.edit_group_languageSpinner)
     Spinner languageSpinner;
-    private Context context;
     private Group group;
 
-    public EditGroupPopupWindow(Context context, Group group) {
-        super(LayoutInflater.from(context).inflate(R.layout.edit_group, null),
+    public EditGroupPopupWindow(Group group) {
+        super(LayoutInflater.from(MainApplication.getContext()).inflate(R.layout.edit_group, null),
                 RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.MATCH_PARENT);
 
-        this.context = context;
         this.group = group;
 
         View view = getContentView();
@@ -70,7 +69,7 @@ public class EditGroupPopupWindow extends PopupWindow {
             }
         });
 
-        SpinnerAdapter languageCodesAdapter = new ArrayAdapter<Language>(context,
+        SpinnerAdapter languageCodesAdapter = new ArrayAdapter<Language>(MainApplication.getContext(),
                 R.layout.language_spinner,
                 Language.getLanguages());
         languageSpinner.setAdapter(languageCodesAdapter);
@@ -108,23 +107,23 @@ public class EditGroupPopupWindow extends PopupWindow {
             Language language = (Language) languageSpinner.getSelectedItem();
             setAddLanguage(language);
             Group group = new Group(name, language);
-            WordsDataSource.get(context).addGroup(group);
+            WordsDataSource.get(MainApplication.getContext()).addGroup(group);
         } else {
             group.setName(nameEdit.getText().toString());
-            WordsDataSource.get(context).updateGroup(group);
+            WordsDataSource.get(MainApplication.getContext()).updateGroup(group);
         }
         dismiss();
     }
 
     private Language getAddLanguage() {
-        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences preferences = MainApplication.getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         String selectedLanguageCode = preferences.getString(PREFS_ADD_LANGUAGE, null);
         return Language.getLanguage(selectedLanguageCode);
     }
 
     private void setAddLanguage(Language language) {
         String code = language != null ? language.getCode() : null;
-        SharedPreferences preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
+        SharedPreferences preferences = MainApplication.getContext().getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor preferencesEditor = preferences.edit();
         preferencesEditor.putString(PREFS_ADD_LANGUAGE, code);
         preferencesEditor.apply();
