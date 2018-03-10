@@ -1,37 +1,47 @@
 package com.unalignedbyte.words.words;
 
-import java.util.*;
-
-import android.content.*;
-import android.view.*;
-import android.widget.*;
-import android.text.*;
-import android.support.v7.widget.*;
+import android.content.Context;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.unalignedbyte.words.R;
-import com.unalignedbyte.words.model.*;
-import com.unalignedbyte.words.utils.*;
+import com.unalignedbyte.words.model.Group;
+import com.unalignedbyte.words.model.Word;
+import com.unalignedbyte.words.model.WordsDataSource;
+import com.unalignedbyte.words.utils.Utils;
 
-import butterknife.*;
+import java.util.LinkedList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by rafal on 31/12/2017.
  */
 
-public class EditWordPopupWindow extends PopupWindow
-{
+public class EditWordPopupWindow extends PopupWindow {
+    @BindView(R.id.edit_word_dataEntryLayout)
+    LinearLayout dataEntryLayout;
+    @BindView(R.id.edit_word_addButton)
+    Button addWordButton;
     private Context context;
     private Group group;
     private Word word;
     private List<EditText> dataEdits;
 
-    @BindView(R.id.edit_word_dataEntryLayout)
-    LinearLayout dataEntryLayout;
-    @BindView(R.id.edit_word_addButton)
-    Button addWordButton;
-
-    public EditWordPopupWindow(Context context, Group group, Word word)
-    {
+    public EditWordPopupWindow(Context context, Group group, Word word) {
         super(LayoutInflater.from(context).inflate(R.layout.edit_word, null),
                 RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.MATCH_PARENT);
@@ -48,7 +58,7 @@ public class EditWordPopupWindow extends PopupWindow
 
         setupDataEntry();
 
-        if(word != null)
+        if (word != null)
             addWordButton.setText(R.string.save);
 
         setFocusable(true);
@@ -56,23 +66,19 @@ public class EditWordPopupWindow extends PopupWindow
     }
 
     @OnClick(R.id.edit_word_addButton)
-    void onAddButtonPressed(View view)
-    {
+    void onAddButtonPressed(View view) {
         onAddWord();
     }
 
     @OnClick(R.id.edit_word_cancelButton)
-    void onCancelButtonPressed(View view)
-    {
+    void onCancelButtonPressed(View view) {
         dismiss();
     }
 
-    private void setupDataEntry()
-    {
-        for(int i=0; i<group.getLanguage().getWordDataTitles().length; i++)
-        {
+    private void setupDataEntry() {
+        for (int i = 0; i < group.getLanguage().getWordDataTitles().length; i++) {
             // Data Title
-            String title = group.getLanguage().getWordConfigTitles()[i+1];
+            String title = group.getLanguage().getWordConfigTitles()[i + 1];
             String translatedTitle = Utils.get().translate(title);
             TextView textView = new TextView(context);
             textView.setTextSize(12);
@@ -99,17 +105,16 @@ public class EditWordPopupWindow extends PopupWindow
                 public void afterTextChanged(Editable s) {
                 }
             });
-            if(word != null) {
+            if (word != null) {
                 dataEdit.setText(word.getWordData()[i]);
             }
         }
     }
 
-    private void updateAddButtonStatus()
-    {
-        for(EditText dataEdit : dataEdits) {
+    private void updateAddButtonStatus() {
+        for (EditText dataEdit : dataEdits) {
             int textLenght = dataEdit.getText().length();
-            if(textLenght == 0) {
+            if (textLenght == 0) {
                 addWordButton.setEnabled(false);
                 return;
             }
@@ -118,16 +123,15 @@ public class EditWordPopupWindow extends PopupWindow
         addWordButton.setEnabled(true);
     }
 
-    private void onAddWord()
-    {
+    private void onAddWord() {
         String[] wordData = new String[group.getLanguage().getWordDataTitles().length];
         String[] dataTitles = group.getLanguage().getWordDataTitles();
-        for(int i=0; i<dataTitles.length; i++) {
+        for (int i = 0; i < dataTitles.length; i++) {
             EditText dataEdit = dataEdits.get(i);
             wordData[i] = dataEdit.getText().toString();
         }
 
-        if(word == null) {
+        if (word == null) {
             Word word = new Word(group, wordData);
             WordsDataSource.get(context).addWord(word);
         } else {

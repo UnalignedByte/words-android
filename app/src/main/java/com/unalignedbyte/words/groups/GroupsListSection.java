@@ -1,30 +1,31 @@
 package com.unalignedbyte.words.groups;
 
-import java.util.*;
-
-import android.content.*;
-import android.view.*;
-import android.support.v7.widget.*;
-import android.support.v7.widget.helper.*;
+import android.content.Context;
+import android.content.Intent;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.MotionEvent;
+import android.view.View;
 
 import com.unalignedbyte.words.R;
-import com.unalignedbyte.words.model.*;
-import com.unalignedbyte.words.words.*;
+import com.unalignedbyte.words.model.Group;
+import com.unalignedbyte.words.model.Language;
+import com.unalignedbyte.words.model.WordsDataSource;
+import com.unalignedbyte.words.words.RevisionActivity;
+import com.unalignedbyte.words.words.WordsListActivity;
 
-import io.github.luizgrp.sectionedrecyclerviewadapter.*;
+import java.util.List;
+
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionParameters;
+import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapter;
+import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 /**
  * Created by rafal on 22/01/2018.
  */
 
 public class GroupsListSection extends StatelessSection
-    implements GroupViewHolder.Listener
-{
-    public interface Listener {
-        void selectedGroup(Group group);
-        void selectedSection(Language language);
-    }
-
+        implements GroupViewHolder.Listener {
     private Context context;
     private SectionedRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
@@ -33,10 +34,8 @@ public class GroupsListSection extends StatelessSection
     private Listener listener;
     private ItemTouchHelper touchHelper;
     private int firstItemPosition = 0;
-
     public GroupsListSection(Context context, SectionedRecyclerViewAdapter adapter,
-                             RecyclerView recyclerView, Language language, boolean isSelected)
-    {
+                             RecyclerView recyclerView, Language language, boolean isSelected) {
         super(new SectionParameters.Builder(R.layout.group_view_holder)
                 .headerResourceId(R.layout.group_header_view_holder).build());
         this.context = context;
@@ -47,34 +46,28 @@ public class GroupsListSection extends StatelessSection
         setupDragging();
     }
 
-    public Language getLanguage()
-    {
+    public Language getLanguage() {
         return language;
     }
 
-    public boolean getIsSelected()
-    {
+    public boolean getIsSelected() {
         return isSelected;
     }
 
-    public void setIsSelected(boolean isSelected)
-    {
+    public void setIsSelected(boolean isSelected) {
         this.isSelected = isSelected;
         adapter.notifyDataSetChanged();
     }
 
-    public Listener getListener()
-    {
+    public Listener getListener() {
         return listener;
     }
 
-    public void setListener(Listener listener)
-    {
+    public void setListener(Listener listener) {
         this.listener = listener;
     }
 
-    private void setupDragging()
-    {
+    private void setupDragging() {
         ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
             @Override
             public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
@@ -94,7 +87,7 @@ public class GroupsListSection extends StatelessSection
                 boolean shouldMove = targetPosition >= getLowerPositionBounds() &&
                         targetPosition < getUpperPositionBounds();
 
-                if(shouldMove) {
+                if (shouldMove) {
                     moveGroup(sourcePosition, targetPosition);
                     adapter.notifyItemMoved(sourcePosition, targetPosition);
                 }
@@ -112,19 +105,17 @@ public class GroupsListSection extends StatelessSection
     }
 
     @Override
-    public int getContentItemsTotal()
-    {
+    public int getContentItemsTotal() {
         int count = 0;
-        if(isSelected)
+        if (isSelected)
             count += WordsDataSource.get(context).getGroupsCount(language);
-        if(isSelected && doesContainRevision())
+        if (isSelected && doesContainRevision())
             count += 1;
         return count;
     }
 
     @Override
-    public RecyclerView.ViewHolder getItemViewHolder(View view)
-    {
+    public RecyclerView.ViewHolder getItemViewHolder(View view) {
         GroupViewHolder viewHolder = new GroupViewHolder(view);
         viewHolder.setListener(this);
 
@@ -132,31 +123,27 @@ public class GroupsListSection extends StatelessSection
     }
 
     @Override
-    public RecyclerView.ViewHolder getHeaderViewHolder(View view)
-    {
+    public RecyclerView.ViewHolder getHeaderViewHolder(View view) {
         return new GroupHeaderViewHolder(view);
     }
 
     @Override
-    public void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, int position)
-    {
-        if(position == 0) {
+    public void onBindItemViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
+        if (position == 0) {
             firstItemPosition = viewHolder.getAdapterPosition();
         }
 
         final GroupViewHolder groupViewHolder = (GroupViewHolder) viewHolder;
 
-        if(position == 0 && doesContainRevision()) {
+        if (position == 0 && doesContainRevision()) {
             groupViewHolder.showRevisionView(true);
 
             int wordsCount = WordsDataSource.get(context).getWordsInRevisionCount(language);
             groupViewHolder.setRevisionWordsCount(wordsCount);
 
-            groupViewHolder.itemView.setOnClickListener(new View.OnClickListener()
-            {
+            groupViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(View view)
-                {
+                public void onClick(View view) {
                     Intent intent = new Intent(context, RevisionActivity.class);
                     intent.putExtra("languageCode", language.getCode());
                     context.startActivity(intent);
@@ -165,7 +152,7 @@ public class GroupsListSection extends StatelessSection
         } else {
             groupViewHolder.showRevisionView(false);
 
-            if(doesContainRevision())
+            if (doesContainRevision())
                 position--;
 
             final Group group = WordsDataSource.get(context).getGroups(language).get(position);
@@ -198,9 +185,8 @@ public class GroupsListSection extends StatelessSection
     }
 
     @Override
-    public void onBindHeaderViewHolder(RecyclerView.ViewHolder viewHolder)
-    {
-        GroupHeaderViewHolder headerViewHolder = (GroupHeaderViewHolder)viewHolder;
+    public void onBindHeaderViewHolder(RecyclerView.ViewHolder viewHolder) {
+        GroupHeaderViewHolder headerViewHolder = (GroupHeaderViewHolder) viewHolder;
         headerViewHolder.setLanguage(language);
         headerViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -210,28 +196,24 @@ public class GroupsListSection extends StatelessSection
         });
     }
 
-    private boolean doesContainRevision()
-    {
+    private boolean doesContainRevision() {
         return WordsDataSource.get(context).getWordsInRevisionCount(language) > 0;
     }
 
-    private int getLowerPositionBounds()
-    {
+    private int getLowerPositionBounds() {
         int position = firstItemPosition;
-        if(doesContainRevision())
+        if (doesContainRevision())
             position++;
         return position;
     }
 
-    private int getUpperPositionBounds()
-    {
+    private int getUpperPositionBounds() {
         int itemsCount = WordsDataSource.get(context).getGroupsCount(language);
         return getLowerPositionBounds() + itemsCount;
     }
 
-    private void moveGroup(int sourceIndex, int targetIndex)
-    {
-        if(sourceIndex == targetIndex)
+    private void moveGroup(int sourceIndex, int targetIndex) {
+        if (sourceIndex == targetIndex)
             return;
 
         sourceIndex -= getLowerPositionBounds();
@@ -242,7 +224,7 @@ public class GroupsListSection extends StatelessSection
         Group updatedGroup = groups.remove(sourceIndex);
         groups.add(targetIndex, updatedGroup);
 
-        for(int order=groups.size(); order>0; order--) {
+        for (int order = groups.size(); order > 0; order--) {
             int index = groups.size() - order;
             Group group = groups.get(index);
             group.setOrder(order);
@@ -251,9 +233,14 @@ public class GroupsListSection extends StatelessSection
     }
 
     @Override
-    public void contextMenuShown()
-    {
+    public void contextMenuShown() {
         MotionEvent event = MotionEvent.obtain(0, 0, MotionEvent.ACTION_CANCEL, 0, 0, 0);
         recyclerView.dispatchTouchEvent(event);
+    }
+
+    public interface Listener {
+        void selectedGroup(Group group);
+
+        void selectedSection(Language language);
     }
 }

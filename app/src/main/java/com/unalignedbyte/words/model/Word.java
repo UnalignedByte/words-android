@@ -12,13 +12,11 @@ public class Word {
     private boolean isInReview;
     private int order;
 
-    public Word(Group group, String[] wordData)
-    {
+    public Word(Group group, String[] wordData) {
         this(-1, group, -1, wordData, false, -1);
     }
 
-    public Word(int id, Group group, int wordDataId, String[] wordData, boolean isInReview, int order)
-    {
+    public Word(int id, Group group, int wordDataId, String[] wordData, boolean isInReview, int order) {
         this.id = id;
         this.group = group;
         this.wordDataId = wordDataId;
@@ -27,58 +25,47 @@ public class Word {
         this.order = order;
     }
 
-    public int getId()
-    {
+    public int getId() {
         return id;
     }
 
-    public void setId(int id)
-    {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public Group getGroup()
-    {
+    public Group getGroup() {
         return group;
     }
 
-    public int getWordDataId()
-    {
+    public int getWordDataId() {
         return wordDataId;
     }
 
-    public void setWordDataId(int wordDataId)
-    {
+    public void setWordDataId(int wordDataId) {
         this.wordDataId = wordDataId;
     }
 
-    public String[] getWordData()
-    {
+    public String[] getWordData() {
         return wordData;
     }
 
-    public void setWordData(String[] wordData)
-    {
+    public void setWordData(String[] wordData) {
         this.wordData = wordData;
     }
 
-    public boolean getIsInReview()
-    {
+    public boolean getIsInReview() {
         return isInReview;
     }
 
-    public void setIsInReview(boolean inReview)
-    {
+    public void setIsInReview(boolean inReview) {
         isInReview = inReview;
     }
 
-    public int getOrder()
-    {
+    public int getOrder() {
         return order;
     }
 
-    public void setOrder(int order)
-    {
+    public void setOrder(int order) {
         this.order = order;
     }
 }

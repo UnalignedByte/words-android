@@ -1,21 +1,28 @@
 package com.unalignedbyte.words.words;
 
-import android.content.*;
-import android.view.*;
-import android.graphics.*;
+import android.content.Context;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.PopupMenu;
-import android.support.v7.widget.*;
-import android.support.v7.widget.helper.*;
 
 import com.unalignedbyte.words.R;
-import com.unalignedbyte.words.model.*;
+import com.unalignedbyte.words.model.Group;
+import com.unalignedbyte.words.model.Language;
+import com.unalignedbyte.words.model.Word;
+import com.unalignedbyte.words.model.WordsDataSource;
 
 /**
  * Created by rafal on 27/12/2017.
  */
 
-public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
-{
+public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
     private Context context;
     private RecyclerView recyclerView;
     private Group group;
@@ -23,18 +30,16 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     private int config = 0;
     private PopupMenu.OnMenuItemClickListener menuListener;
 
-    public WordsListAdapter(Context context, RecyclerView recyclerView, Group group, PopupMenu.OnMenuItemClickListener menuListener)
-    {
+    public WordsListAdapter(Context context, RecyclerView recyclerView, Group group, PopupMenu.OnMenuItemClickListener menuListener) {
         this.context = context;
-        this.recyclerView =recyclerView;
+        this.recyclerView = recyclerView;
         this.group = group;
         this.menuListener = menuListener;
         setupDragging();
     }
 
     @Override
-    public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
+    public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int id = viewHolderIdForLanguage(group.getLanguage());
         View view = LayoutInflater.from(context).inflate(id, parent, false);
         WordViewHolder viewHolder = new WordViewHolder(view, false);
@@ -42,8 +47,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(final WordViewHolder viewHolder, int position)
-    {
+    public void onBindViewHolder(final WordViewHolder viewHolder, int position) {
         final Word word = WordsDataSource.get(context).getWords(group).get(position);
         viewHolder.setWord(word);
         viewHolder.setConfig(config);
@@ -64,13 +68,11 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return WordsDataSource.get(context).getWordsCount(group);
     }
 
-    private void setupDragging()
-    {
+    private void setupDragging() {
         ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
             @Override
             public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
@@ -94,7 +96,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
             @Override
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
                                     float dX, float dY, int actionState, boolean isCurrentlyActive) {
-                if(isCurrentlyActive) {
+                if (isCurrentlyActive) {
                     int position = viewHolder.getAdapterPosition();
                     Word word = WordsDataSource.get(context).getWords(group).get(position);
 
@@ -118,14 +120,14 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
                     // Foreground
                     Paint textPaint = new Paint();
                     textPaint.setARGB(255, 255, 255, 255);
-                    textPaint.setFlags(Paint.HINTING_ON|Paint.FAKE_BOLD_TEXT_FLAG);
+                    textPaint.setFlags(Paint.HINTING_ON | Paint.FAKE_BOLD_TEXT_FLAG);
                     float fontScale = context.getResources().getDisplayMetrics().density;
                     textPaint.setTextSize(18 * fontScale);
 
                     Rect textBounds = new Rect();
                     textPaint.getTextBounds(text, 0, text.length(), textBounds);
                     float textX = right - textBounds.width() - 8.0f * fontScale;
-                    float textY = top + (Math.abs(top - bottom) + textBounds.height())/2.0f;
+                    float textY = top + (Math.abs(top - bottom) + textBounds.height()) / 2.0f;
 
                     c.drawText(text, textX, textY, textPaint);
                 }
@@ -138,28 +140,24 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder>
         touchHelper.attachToRecyclerView(recyclerView);
     }
 
-    public Word getSelectedWord()
-    {
+    public Word getSelectedWord() {
         return selectedWord;
     }
 
-    public void setConfig(int config)
-    {
+    public void setConfig(int config) {
         this.config = config;
         notifyDataSetChanged();
     }
 
-    private void showPopupMenu(View view)
-    {
+    private void showPopupMenu(View view) {
         PopupMenu menu = new PopupMenu(context, view, Gravity.BOTTOM);
         menu.inflate(R.menu.edit_delete_menu);
         menu.setOnMenuItemClickListener(menuListener);
         menu.show();
     }
 
-    private int viewHolderIdForLanguage(Language language)
-    {
-        if(language.equals(Language.getLanguage("cn"))) {
+    private int viewHolderIdForLanguage(Language language) {
+        if (language.equals(Language.getLanguage("cn"))) {
             return R.layout.word_view_holder_cn;
         } else {
             return R.layout.word_view_holder_gn;
