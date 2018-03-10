@@ -1,6 +1,7 @@
 package com.unalignedbyte.words;
 
 import android.app.Application;
+import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
 import com.unalignedbyte.words.model.WordsImporter;
@@ -13,12 +14,18 @@ import io.fabric.sdk.android.Fabric;
  */
 
 public class MainApplication extends Application {
+    private static Context context;
+
+    public static Context getContext() {
+        return context;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
         setupAnalytics();
         setupUtils();
+        context = getApplicationContext();
     }
 
     private void setupAnalytics() {
@@ -29,7 +36,6 @@ public class MainApplication extends Application {
 
     private void setupUtils()
     {
-        Utils.get().setContext(this);
         WordsImporter.get(this).reloadExternalDirectory();
     }
 }
