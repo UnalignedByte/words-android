@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.PopupMenu;
 
 import com.unalignedbyte.words.R;
+import com.unalignedbyte.words.MainApplication;
 import com.unalignedbyte.words.model.Group;
 import com.unalignedbyte.words.model.Language;
 import com.unalignedbyte.words.model.Word;
@@ -23,15 +24,13 @@ import com.unalignedbyte.words.model.WordsDataSource;
  */
 
 public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
-    private Context context;
     private RecyclerView recyclerView;
     private Group group;
     private Word selectedWord;
     private int config = 0;
     private PopupMenu.OnMenuItemClickListener menuListener;
 
-    public WordsListAdapter(Context context, RecyclerView recyclerView, Group group, PopupMenu.OnMenuItemClickListener menuListener) {
-        this.context = context;
+    public WordsListAdapter(RecyclerView recyclerView, Group group, PopupMenu.OnMenuItemClickListener menuListener) {
         this.recyclerView = recyclerView;
         this.group = group;
         this.menuListener = menuListener;
@@ -41,14 +40,14 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int id = viewHolderIdForLanguage(group.getLanguage());
-        View view = LayoutInflater.from(context).inflate(id, parent, false);
+        View view = LayoutInflater.from(MainApplication.getContext()).inflate(id, parent, false);
         WordViewHolder viewHolder = new WordViewHolder(view, false);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final WordViewHolder viewHolder, int position) {
-        final Word word = WordsDataSource.get(context).getWords(group).get(position);
+        final Word word = WordsDataSource.get(MainApplication.getContext()).getWords(group).get(position);
         viewHolder.setWord(word);
         viewHolder.setConfig(config);
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -69,10 +68,12 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
 
     @Override
     public int getItemCount() {
-        return WordsDataSource.get(context).getWordsCount(group);
+        return WordsDataSource.get(MainApplication.getContext()).getWordsCount(group);
     }
 
     private void setupDragging() {
+        final Context context = MainApplication.getContext();
+
         ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
             @Override
             public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
@@ -150,7 +151,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
     }
 
     private void showPopupMenu(View view) {
-        PopupMenu menu = new PopupMenu(context, view, Gravity.BOTTOM);
+        PopupMenu menu = new PopupMenu(MainApplication.getContext(), view, Gravity.BOTTOM);
         menu.inflate(R.menu.edit_delete_menu);
         menu.setOnMenuItemClickListener(menuListener);
         menu.show();

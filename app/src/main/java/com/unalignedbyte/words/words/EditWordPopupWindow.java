@@ -15,6 +15,7 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.unalignedbyte.words.R;
+import com.unalignedbyte.words.MainApplication;
 import com.unalignedbyte.words.model.Group;
 import com.unalignedbyte.words.model.Word;
 import com.unalignedbyte.words.model.WordsDataSource;
@@ -36,7 +37,6 @@ public class EditWordPopupWindow extends PopupWindow {
     LinearLayout dataEntryLayout;
     @BindView(R.id.edit_word_addButton)
     Button addWordButton;
-    private Context context;
     private Group group;
     private Word word;
     private List<EditText> dataEdits;
@@ -46,7 +46,6 @@ public class EditWordPopupWindow extends PopupWindow {
                 RecyclerView.LayoutParams.MATCH_PARENT,
                 RecyclerView.LayoutParams.MATCH_PARENT);
 
-        this.context = context;
         this.group = group;
         this.word = word;
         dataEdits = new LinkedList();
@@ -80,14 +79,14 @@ public class EditWordPopupWindow extends PopupWindow {
             // Data Title
             String title = group.getLanguage().getWordConfigTitles()[i + 1];
             String translatedTitle = Utils.get().translate(title);
-            TextView textView = new TextView(context);
+            TextView textView = new TextView(MainApplication.getContext());
             textView.setTextSize(12);
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
             textView.setText(translatedTitle);
             dataEntryLayout.addView(textView);
 
             // Data Entry
-            EditText dataEdit = new EditText(context);
+            EditText dataEdit = new EditText(MainApplication.getContext());
             dataEdit.setTextSize(12);
             dataEdits.add(dataEdit);
             dataEntryLayout.addView(dataEdit);
@@ -133,10 +132,10 @@ public class EditWordPopupWindow extends PopupWindow {
 
         if (word == null) {
             Word word = new Word(group, wordData);
-            WordsDataSource.get(context).addWord(word);
+            WordsDataSource.get(MainApplication.getContext()).addWord(word);
         } else {
             word.setWordData(wordData);
-            WordsDataSource.get(context).updateWord(word);
+            WordsDataSource.get(MainApplication.getContext()).updateWord(word);
         }
         dismiss();
     }

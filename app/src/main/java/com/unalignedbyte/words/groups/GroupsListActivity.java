@@ -84,7 +84,7 @@ public class GroupsListActivity extends Activity
         adapter = new SectionedRecyclerViewAdapter();
 
         for (Language language : Language.getLanguages()) {
-            GroupsListSection section = new GroupsListSection(this, adapter, groupsRecyclerView, language, false);
+            GroupsListSection section = new GroupsListSection(adapter, groupsRecyclerView, language, false);
             section.setListener(this);
             adapter.addSection(section);
         }
@@ -102,7 +102,7 @@ public class GroupsListActivity extends Activity
     }
 
     private void showEditGroupPopup(Group group) {
-        EditGroupPopupWindow popup = new EditGroupPopupWindow(this, group);
+        EditGroupPopupWindow popup = new EditGroupPopupWindow(group);
         popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
