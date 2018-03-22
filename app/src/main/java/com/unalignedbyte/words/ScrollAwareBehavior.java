@@ -1,4 +1,4 @@
-package com.unalignedbyte.words.utils;
+package com.unalignedbyte.words;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;

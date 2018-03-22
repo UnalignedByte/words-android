@@ -1,6 +1,6 @@
 package com.unalignedbyte.words.model;
 
-import com.unalignedbyte.words.utils.Utils;
+import com.unalignedbyte.words.Utils;
 
 import java.util.LinkedList;
 import java.util.List;

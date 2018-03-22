@@ -35,6 +35,6 @@
         android:layout_gravity="center_horizontal|bottom"
         android:layout_margin="16dp"
         android:src="@drawable/add_button"
-        app:layout_behavior="com.unalignedbyte.words.utils.ScrollAwareBehavior"/>
+        app:layout_behavior="com.unalignedbyte.words.ScrollAwareBehavior"/>
 
 </android.support.design.widget.CoordinatorLayout>

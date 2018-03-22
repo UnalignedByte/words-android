@@ -8,7 +8,7 @@ import android.widget.TextView;
 
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.Group;
-import com.unalignedbyte.words.utils.Utils;
+import com.unalignedbyte.words.Utils;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

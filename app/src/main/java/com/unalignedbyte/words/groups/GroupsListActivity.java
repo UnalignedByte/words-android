@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.PopupWindow;
 
 import com.unalignedbyte.words.R;
@@ -58,6 +59,7 @@ public class GroupsListActivity extends Activity
     private void setupView() {
         setContentView(R.layout.groups_list_activity);
         ButterKnife.bind(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
     }
 
     private void setupToolbar() {

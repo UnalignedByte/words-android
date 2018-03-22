@@ -5,7 +5,6 @@ import android.content.Context;
 
 import com.crashlytics.android.Crashlytics;
 import com.unalignedbyte.words.model.WordsImporter;
-import com.unalignedbyte.words.utils.Utils;
 
 import io.fabric.sdk.android.Fabric;
 
