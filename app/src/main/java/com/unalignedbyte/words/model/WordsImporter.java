@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.unalignedbyte.words.R;
-import com.unalignedbyte.words.utils.Utils;
+import com.unalignedbyte.words.Utils;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;

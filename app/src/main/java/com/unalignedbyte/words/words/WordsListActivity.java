@@ -9,6 +9,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 
@@ -16,7 +17,7 @@ import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.Group;
 import com.unalignedbyte.words.model.Word;
 import com.unalignedbyte.words.model.WordsDataSource;
-import com.unalignedbyte.words.utils.Utils;
+import com.unalignedbyte.words.Utils;
 
 import java.util.List;
 
@@ -40,8 +41,8 @@ public class WordsListActivity extends Activity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.words_list_activity);
-        ButterKnife.bind(this);
+
+        setupView();
 
         int groupId = getIntent().getIntExtra("groupId", -1);
         group = WordsDataSource.get(this).getGroup(groupId);
@@ -50,6 +51,13 @@ public class WordsListActivity extends Activity
         setupToolbar();
         updateToolbarTitle();
         setupTab();
+    }
+
+    private void setupView()
+    {
+        setContentView(R.layout.words_list_activity);
+        ButterKnife.bind(this);
+        getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_NOTHING);
     }
 
     private void setupWordsList() {

@@ -10,7 +10,7 @@ import android.support.v7.widget.Toolbar;
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.Language;
 import com.unalignedbyte.words.model.WordsDataSource;
-import com.unalignedbyte.words.utils.Utils;
+import com.unalignedbyte.words.Utils;
 
 /**
  * Created by rafal on 17/01/2018.

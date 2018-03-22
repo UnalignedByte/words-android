@@ -1,8 +1,6 @@
-package com.unalignedbyte.words.utils;
+package com.unalignedbyte.words;
 
 import android.content.Context;
-
-import com.unalignedbyte.words.MainApplication;
 
 /**
  * Created by rafal on 21/02/2018.

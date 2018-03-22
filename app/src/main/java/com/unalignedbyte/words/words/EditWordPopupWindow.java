@@ -19,7 +19,7 @@ import com.unalignedbyte.words.MainApplication;
 import com.unalignedbyte.words.model.Group;
 import com.unalignedbyte.words.model.Word;
 import com.unalignedbyte.words.model.WordsDataSource;
-import com.unalignedbyte.words.utils.Utils;
+import com.unalignedbyte.words.Utils;
 
 import java.util.LinkedList;
 import java.util.List;
