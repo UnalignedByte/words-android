@@ -27,6 +27,6 @@ jobs:
       - run: gradle test
       - store_artifacts:
           path: app/build/reports
-          destination reports
+          destination: reports
       - store_test_results:
           path: app/build/test-restuls
