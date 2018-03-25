@@ -36,10 +36,6 @@ dependencies {
     implementation('com.crashlytics.sdk.android:crashlytics:2.9.0@aar') {
         transitive = true
     }
-}
 
-tasks.whenTaskAdded { task ->
-    if(task.name.contains("Test")) {
-        task.enabled = false
-    }
+    testImplementation 'junit:junit:4.12'
 }
