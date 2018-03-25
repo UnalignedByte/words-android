@@ -19,12 +19,12 @@ jobs:
       - restore_cache:
           keys:
           - v1-dependencies-{{ checksum "build.gradle" }}
-      - run: gradle androidDependencies
+      - run: ./gradlew androidDependencies
       - save_cache:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum "app/build.gradle" }}
-      - run: gradle test
+      - run: ./gradlew test
       - store_artifacts:
           path: app/build/reports
           destination: reports
