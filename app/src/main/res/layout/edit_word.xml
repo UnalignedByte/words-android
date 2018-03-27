@@ -1,54 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#a0000000">
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"
+    android:orientation="vertical"
+    android:padding="16dp">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:layout_margin="16dp"
-        android:background="@drawable/rounded_rectangle"
-        android:elevation="6dp">
+        android:orientation="vertical">
 
-        <ScrollView
+        <LinearLayoutgi
+            android:id="@+id/edit_word_dataEntryLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/edit_word_dataEntryLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
-
-                <Button
-                    android:id="@+id/edit_word_addButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/add_word"
-                    android:textSize="12sp"/>
-
-                <Button
-                    android:id="@+id/edit_word_cancelButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:text="@string/cancel"
-                    android:textSize="12sp"/>
-
-            </LinearLayout>
-
-        </ScrollView>
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
 
     </LinearLayout>
 
-</FrameLayout>
+</LinearLayout>

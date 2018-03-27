@@ -196,6 +196,29 @@ public class WordsDataSource extends SQLiteOpenHelper {
         word.setId(wordId);
     }
 
+    public Word getWord(int wordId, Group group) {
+        String getWord = "select * from " + TABLE_WORDS +
+                " where " + WORDS_ID + "=" + Integer.toString(wordId);
+        Cursor cursor = db.rawQuery(getWord, null);
+
+        if(cursor.moveToFirst()) {
+            int id = cursor.getInt(0);
+            int wordDataId = cursor.getInt(2);
+            String[] wordData = getWordData(wordDataId, group.getLanguage());
+            boolean isInReview = cursor.getInt(3) != 0;
+            int order = cursor.getInt(4);
+
+            cursor.close();
+
+            Word word = new Word(id, group, wordDataId, wordData, isInReview, order);
+            return word;
+        }
+
+        cursor.close();
+
+        return null;
+    }
+
     public List<Word> getWords(Group group) {
         List<Word> words = new LinkedList();
 

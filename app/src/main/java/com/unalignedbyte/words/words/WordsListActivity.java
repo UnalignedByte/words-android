@@ -1,17 +1,16 @@
 package com.unalignedbyte.words.words;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.PopupMenu;
-import android.widget.PopupWindow;
 
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.Group;
@@ -30,7 +29,7 @@ import butterknife.OnClick;
  */
 
 public class WordsListActivity extends Activity
-        implements PopupMenu.OnMenuItemClickListener {
+        implements PopupMenu.OnMenuItemClickListener, EditWordDialog.Listener {
     @BindView(R.id.words_list_activity_toolbar)
     Toolbar toolbar;
     @BindView(R.id.words_list_activity_recyclerView)
@@ -112,15 +111,16 @@ public class WordsListActivity extends Activity
     }
 
     private void showEditWordPopup(Word word) {
-        EditWordPopupWindow popup = new EditWordPopupWindow(this, group, word);
-        popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                adapter.notifyDataSetChanged();
-                updateToolbarTitle();
-            }
-        });
-        popup.showAtLocation(wordsRecyclerView, Gravity.TOP, 0, 0);
+        EditWordDialog dialog = EditWordDialog.dialog(group, word);
+        FragmentManager fragmentManager = getFragmentManager();
+        dialog.show(fragmentManager, null);
+    }
+
+    @Override
+    public void dialogDismissed()
+    {
+        adapter.notifyDataSetChanged();
+        updateToolbarTitle();
     }
 
     @Override
