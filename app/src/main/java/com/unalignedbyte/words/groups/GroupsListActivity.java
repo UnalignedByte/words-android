@@ -1,6 +1,7 @@
 package com.unalignedbyte.words.groups;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -104,7 +105,7 @@ public class GroupsListActivity extends Activity
     }
 
     private void showEditGroupPopup(Group group) {
-        EditGroupPopupWindow popup = new EditGroupPopupWindow(group);
+        /*EditGroupPopupWindow popup = new EditGroupPopupWindow(group);
         popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
             public void onDismiss() {
@@ -112,7 +113,10 @@ public class GroupsListActivity extends Activity
                 adapter.notifyDataSetChanged();
             }
         });
-        popup.showAtLocation(groupsRecyclerView, Gravity.TOP, 0, 0);
+        popup.showAtLocation(groupsRecyclerView, Gravity.TOP, 0, 0);*/
+        EditGroupDialog dialog = EditGroupDialog.dialog(group);
+        FragmentManager fragmentManager = getFragmentManager();
+        dialog.show(fragmentManager, null);
     }
 
     private void updateSectionHeaders() {
