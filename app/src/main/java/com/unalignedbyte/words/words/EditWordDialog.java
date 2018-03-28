@@ -106,8 +106,6 @@ public class EditWordDialog extends DialogFragment
             String translatedTitle = Utils.get().translate(title);
             TextView textView = new TextView(getActivity());
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
-            textView.setTextSize(20.0f);
-            textView.setTypeface(null, Typeface.BOLD);
             textView.setText(translatedTitle);
             dataEntryLayout.addView(textView);
 

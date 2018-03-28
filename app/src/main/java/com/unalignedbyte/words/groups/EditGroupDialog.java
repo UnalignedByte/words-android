@@ -108,7 +108,7 @@ public class EditGroupDialog extends DialogFragment
             }
         });
 
-        SpinnerAdapter languageCodesAdapter = new ArrayAdapter<Language>(MainApplication.getContext(),
+        SpinnerAdapter languageCodesAdapter = new ArrayAdapter<Language>(getActivity(),
                 R.layout.language_spinner,
                 Language.getLanguages());
         languageSpinner.setAdapter(languageCodesAdapter);
