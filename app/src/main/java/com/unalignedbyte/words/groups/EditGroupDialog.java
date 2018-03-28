@@ -11,6 +11,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -62,42 +63,32 @@ public class EditGroupDialog extends DialogFragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
+    public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        super.onCreate(savedInstanceState);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog dialog = builder.create();
 
+        setupArguments();
+        setupView(dialog);
+        setupButtons(dialog);
+
+        return dialog;
+    }
+
+    private void setupArguments()
+    {
         int groupId = getArguments().getInt("groupId", -1);
         if (groupId >= 0) {
             this.group = WordsDataSource.get(getActivity()).getGroup(groupId);
         }
     }
 
-    @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState)
+    private void setupView(AlertDialog dialog)
     {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.edit_group, null);
-        AlertDialog dialog = builder.setView(view).create();
+        dialog.setView(view);
         ButterKnife.bind(this, view);
 
-        setupView();
-        setupButtons(dialog);
-
-        view.setFocusable(true);
-
-        return dialog;
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
-
-        updateAddButtonStatus();
-    }
-
-    private void setupView()
-    {
         nameEdit.addTextChangedListener(new TextWatcher()
         {
             @Override
@@ -133,6 +124,15 @@ public class EditGroupDialog extends DialogFragment
             languageTitleText.setVisibility(View.GONE);
             languageSpinner.setVisibility(View.GONE);
         }
+
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        updateAddButtonStatus();
     }
 
     private void updateAddButtonStatus()
