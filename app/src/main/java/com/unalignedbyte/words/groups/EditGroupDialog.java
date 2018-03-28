@@ -79,7 +79,7 @@ public class EditGroupDialog extends DialogFragment
     {
         int groupId = getArguments().getInt("groupId", -1);
         if (groupId >= 0) {
-            this.group = WordsDataSource.get(getActivity()).getGroup(groupId);
+            this.group = WordsDataSource.get().getGroup(groupId);
         }
     }
 
@@ -179,10 +179,10 @@ public class EditGroupDialog extends DialogFragment
             Language language = (Language) languageSpinner.getSelectedItem();
             setAddLanguage(language);
             Group group = new Group(name, language);
-            WordsDataSource.get(MainApplication.getContext()).addGroup(group);
+            WordsDataSource.get().addGroup(group);
         } else {
             group.setName(nameEdit.getText().toString());
-            WordsDataSource.get(MainApplication.getContext()).updateGroup(group);
+            WordsDataSource.get().updateGroup(group);
         }
 
         if (getActivity() instanceof Listener) {

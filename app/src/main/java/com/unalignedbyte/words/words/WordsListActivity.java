@@ -44,7 +44,7 @@ public class WordsListActivity extends Activity
         setupView();
 
         int groupId = getIntent().getIntExtra("groupId", -1);
-        group = WordsDataSource.get(this).getGroup(groupId);
+        group = WordsDataSource.get().getGroup(groupId);
 
         setupWordsList();
         setupToolbar();
@@ -60,7 +60,7 @@ public class WordsListActivity extends Activity
     }
 
     private void setupWordsList() {
-        adapter = new WordsListAdapter(wordsRecyclerView, group, this);
+        adapter = new WordsListAdapter(this, wordsRecyclerView, group, this);
         wordsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         wordsRecyclerView.setAdapter(adapter);
     }
@@ -85,7 +85,7 @@ public class WordsListActivity extends Activity
     }
 
     private void updateToolbarTitle() {
-        toolbar.setTitle(group.getName() + " (" + WordsDataSource.get(this).getWordsCount(group) + ")");
+        toolbar.setTitle(group.getName() + " (" + WordsDataSource.get().getWordsCount(group) + ")");
     }
 
     private void setupTab() {
@@ -130,7 +130,7 @@ public class WordsListActivity extends Activity
                 showEditWordPopup(adapter.getSelectedWord());
                 return true;
             case R.id.menu_delete:
-                WordsDataSource.get(this).deleteWord(adapter.getSelectedWord());
+                WordsDataSource.get().deleteWord(adapter.getSelectedWord());
                 adapter.notifyDataSetChanged();
                 updateToolbarTitle();
                 return true;
@@ -139,12 +139,12 @@ public class WordsListActivity extends Activity
     }
 
     private void shuffleWords() {
-        List<Word> words = WordsDataSource.get(this).getWords(group);
+        List<Word> words = WordsDataSource.get().getWords(group);
 
         for (Word word : words) {
             int order = (int) (Math.random() * 1000 + 1);
             word.setOrder(order);
-            WordsDataSource.get(this).updateWord(word);
+            WordsDataSource.get().updateWord(word);
         }
 
         adapter.notifyDataSetChanged();

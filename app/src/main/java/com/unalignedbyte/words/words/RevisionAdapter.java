@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.unalignedbyte.words.MainApplication;
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.Language;
 import com.unalignedbyte.words.model.Word;
@@ -42,9 +43,9 @@ public class RevisionAdapter extends RecyclerView.Adapter<WordViewHolder> {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                Word word = WordsDataSource.get(context).getWordsInRevision(language).get(position);
+                Word word = WordsDataSource.get().getWordsInRevision(language).get(position);
                 word.setIsInReview(false);
-                WordsDataSource.get(context).updateWord(word);
+                WordsDataSource.get().updateWord(word);
                 RevisionAdapter.this.notifyItemRemoved(position);
             }
 
@@ -57,7 +58,7 @@ public class RevisionAdapter extends RecyclerView.Adapter<WordViewHolder> {
             public void onChildDraw(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 Paint backgroundColor = new Paint();
                 backgroundColor.setARGB(255, 252, 70, 74);
-                String text = context.getString(R.string.remove_from_revision);
+                String text = MainApplication.getContext().getString(R.string.remove_from_revision);
 
                 // Background
                 float left = viewHolder.itemView.getRight() + dX;
@@ -70,7 +71,7 @@ public class RevisionAdapter extends RecyclerView.Adapter<WordViewHolder> {
                 Paint textPaint = new Paint();
                 textPaint.setARGB(255, 255, 255, 255);
                 textPaint.setFlags(Paint.HINTING_ON | Paint.FAKE_BOLD_TEXT_FLAG);
-                float fontScale = context.getResources().getDisplayMetrics().density;
+                float fontScale = MainApplication.getContext().getResources().getDisplayMetrics().density;
                 textPaint.setTextSize(18 * fontScale);
 
                 Rect textBounds = new Rect();
@@ -98,7 +99,7 @@ public class RevisionAdapter extends RecyclerView.Adapter<WordViewHolder> {
 
     @Override
     public void onBindViewHolder(final WordViewHolder viewHolder, int position) {
-        Word word = WordsDataSource.get(context).getWordsInRevision(language).get(position);
+        Word word = WordsDataSource.get().getWordsInRevision(language).get(position);
         viewHolder.setWord(word);
         viewHolder.setConfig(config);
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -110,7 +111,7 @@ public class RevisionAdapter extends RecyclerView.Adapter<WordViewHolder> {
 
     @Override
     public int getItemCount() {
-        int count = WordsDataSource.get(context).getWordsInRevisionCount(language);
+        int count = WordsDataSource.get().getWordsInRevisionCount(language);
         return count;
     }
 
