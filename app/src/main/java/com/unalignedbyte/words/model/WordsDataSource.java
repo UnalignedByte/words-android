@@ -1,10 +1,11 @@
 package com.unalignedbyte.words.model;
 
 import android.content.ContentValues;
-import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.unalignedbyte.words.MainApplication;
 
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,15 +34,15 @@ public class WordsDataSource extends SQLiteOpenHelper {
     private SQLiteDatabase db;
     private HashMap<Integer, String[]> wordDataCache;
 
-    private WordsDataSource(Context context) {
-        super(context, DB_NAME, null, DB_VERSION);
+    private WordsDataSource() {
+        super(MainApplication.getContext(), DB_NAME, null, DB_VERSION);
         db = getWritableDatabase();
         wordDataCache = new HashMap();
     }
 
-    public static WordsDataSource get(Context context) {
+    public static WordsDataSource get() {
         if (instance == null)
-            instance = new WordsDataSource(context);
+            instance = new WordsDataSource();
 
         return instance;
     }

@@ -7,11 +7,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.PopupWindow;
 
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.model.Group;
@@ -119,7 +117,7 @@ public class GroupsListActivity extends Activity
     private void updateSectionHeaders() {
         int languagesWithWords = 0;
         for (Language language : Language.getLanguages()) {
-            if (WordsDataSource.get(this).getGroupsCount(language) > 0)
+            if (WordsDataSource.get().getGroupsCount(language) > 0)
                 languagesWithWords++;
         }
 
@@ -158,7 +156,7 @@ public class GroupsListActivity extends Activity
             return true;
         } else if (item.getTitle().equals(getResources().getString(R.string.menu_delete))) {
             updateSectionHeaders();
-            WordsDataSource.get(this).deleteGroup(selectedGroup);
+            WordsDataSource.get().deleteGroup(selectedGroup);
             updateSectionHeaders();
             adapter.notifyDataSetChanged();
             return true;

@@ -94,9 +94,9 @@ public class WordsImporter {
             }
 
             for (Group group : groups)
-                WordsDataSource.get(context).addGroup(group);
+                WordsDataSource.get().addGroup(group);
             for (Word word : words)
-                WordsDataSource.get(context).addWord(word);
+                WordsDataSource.get().addWord(word);
         }
 
         String groupsPart = Utils.get().translate("groups", groups.size());

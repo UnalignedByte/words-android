@@ -49,7 +49,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
 
     @Override
     public void onBindViewHolder(final WordViewHolder viewHolder, int position) {
-        final Word word = WordsDataSource.get(MainApplication.getContext()).getWords(group).get(position);
+        final Word word = WordsDataSource.get().getWords(group).get(position);
         viewHolder.setWord(word);
         viewHolder.setConfig(config);
         viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
@@ -70,7 +70,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
 
     @Override
     public int getItemCount() {
-        return WordsDataSource.get(MainApplication.getContext()).getWordsCount(group);
+        return WordsDataSource.get().getWordsCount(group);
     }
 
     private void setupDragging() {
@@ -83,9 +83,9 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                Word word = WordsDataSource.get(MainApplication.getContext()).getWords(group).get(position);
+                Word word = WordsDataSource.get().getWords(group).get(position);
                 word.setIsInReview(!word.getIsInReview());
-                WordsDataSource.get(MainApplication.getContext()).updateWord(word);
+                WordsDataSource.get().updateWord(word);
                 WordsListAdapter.this.notifyItemChanged(position);
             }
 
@@ -99,7 +99,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
                                     float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 if (isCurrentlyActive) {
                     int position = viewHolder.getAdapterPosition();
-                    Word word = WordsDataSource.get(MainApplication.getContext()).getWords(group).get(position);
+                    Word word = WordsDataSource.get().getWords(group).get(position);
 
                     Paint backgroundColor = new Paint();
                     String text;

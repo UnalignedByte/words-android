@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -16,7 +15,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.unalignedbyte.words.MainApplication;
 import com.unalignedbyte.words.R;
 import com.unalignedbyte.words.Utils;
 import com.unalignedbyte.words.model.Group;
@@ -79,11 +77,11 @@ public class EditWordDialog extends DialogFragment
     {
         int groupId = getArguments().getInt("groupId", -1);
         if (groupId >= 0) {
-            this.group = WordsDataSource.get(getActivity()).getGroup(groupId);
+            this.group = WordsDataSource.get().getGroup(groupId);
         }
         int wordId = getArguments().getInt("wordId", -1);
         if(wordId >= 0) {
-            this.word = WordsDataSource.get(getActivity()).getWord(wordId, this.group);
+            this.word = WordsDataSource.get().getWord(wordId, this.group);
         }
 
         dataEdits = new LinkedList();
@@ -195,10 +193,10 @@ public class EditWordDialog extends DialogFragment
 
         if (word == null) {
             Word word = new Word(group, wordData);
-            WordsDataSource.get(MainApplication.getContext()).addWord(word);
+            WordsDataSource.get().addWord(word);
         } else {
             word.setWordData(wordData);
-            WordsDataSource.get(MainApplication.getContext()).updateWord(word);
+            WordsDataSource.get().updateWord(word);
         }
         dismiss();
     }
