@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -63,7 +64,19 @@ public class EditWordDialog extends DialogFragment
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState)
     {
-        super.onCreateDialog(savedInstanceState);
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog dialog = builder.create();
+
+        setupArguments();
+        setupView(dialog);
+        setupDataEntry();
+        setupButtons(dialog);
+
+        return dialog;
+    }
+
+    private void setupArguments()
+    {
         int groupId = getArguments().getInt("groupId", -1);
         if (groupId >= 0) {
             this.group = WordsDataSource.get(getActivity()).getGroup(groupId);
@@ -74,16 +87,15 @@ public class EditWordDialog extends DialogFragment
         }
 
         dataEdits = new LinkedList();
+    }
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+    private void setupView(AlertDialog dialog)
+    {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.edit_word, null);
-        AlertDialog dialog = builder.setView(view).create();
+        dialog.setView(view);
         ButterKnife.bind(this, view);
 
-        setupDataEntry();
-        setupButtons(dialog);
-
-        return dialog;
+        dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
     private void setupDataEntry()
