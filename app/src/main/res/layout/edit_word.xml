@@ -8,16 +8,9 @@
     android:padding="16dp">
 
     <LinearLayout
+        android:id="@+id/edit_word_dataEntryLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <LinearLayoutgi
-            android:id="@+id/edit_word_dataEntryLayout"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"/>
-
-    </LinearLayout>
+        android:orientation="vertical"/>
 
 </LinearLayout>

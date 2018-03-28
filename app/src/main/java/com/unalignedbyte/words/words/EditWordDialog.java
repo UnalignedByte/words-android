@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -91,15 +92,18 @@ public class EditWordDialog extends DialogFragment
             // Data Title
             String title = group.getLanguage().getWordConfigTitles()[i + 1];
             String translatedTitle = Utils.get().translate(title);
-            TextView textView = new TextView(MainApplication.getContext());
+            TextView textView = new TextView(getActivity());
             textView.setGravity(Gravity.CENTER_HORIZONTAL);
+            textView.setTextSize(20.0f);
+            textView.setTypeface(null, Typeface.BOLD);
             textView.setText(translatedTitle);
             dataEntryLayout.addView(textView);
 
             // Data Entry
-            EditText dataEdit = new EditText(MainApplication.getContext());
+            EditText dataEdit = new EditText(getActivity());
             dataEdits.add(dataEdit);
             dataEntryLayout.addView(dataEdit);
+            dataEdit.setTextSize(18.0f);
             dataEdit.addTextChangedListener(new TextWatcher()
             {
                 @Override
