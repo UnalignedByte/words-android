@@ -1,6 +1,7 @@
 package com.unalignedbyte.words.groups;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -31,7 +32,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.SectionedRecyclerViewAdapt
  */
 
 public class GroupsListActivity extends Activity
-        implements GroupsListSection.Listener {
+        implements GroupsListSection.Listener, EditGroupDialog.Listener {
     private final static String PREFS_NAME = "Words";
     private final static String PREFS_SELECTED_LANGUAGE = "SelectedLanguage";
 
@@ -100,19 +101,19 @@ public class GroupsListActivity extends Activity
 
     @OnClick(R.id.groups_list_activity_addButton)
     void onAddButtonPressed(View view) {
-        showEditGroupPopup(null);
+        showEditGroup(null);
     }
 
-    private void showEditGroupPopup(Group group) {
-        EditGroupPopupWindow popup = new EditGroupPopupWindow(group);
-        popup.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                updateSectionHeaders();
-                adapter.notifyDataSetChanged();
-            }
-        });
-        popup.showAtLocation(groupsRecyclerView, Gravity.TOP, 0, 0);
+    private void showEditGroup(Group group) {
+        EditGroupDialog dialog = EditGroupDialog.dialog(group);
+        FragmentManager fragmentManager = getFragmentManager();
+        dialog.show(fragmentManager, null);
+    }
+
+    @Override
+    public void dialogDismissed() {
+        updateSectionHeaders();
+        adapter.notifyDataSetChanged();
     }
 
     private void updateSectionHeaders() {
@@ -153,7 +154,7 @@ public class GroupsListActivity extends Activity
     @Override
     public boolean onMenuItemSelected(int featureId, MenuItem item) {
         if (item.getTitle().equals(getResources().getString(R.string.menu_edit))) {
-            showEditGroupPopup(selectedGroup);
+            showEditGroup(selectedGroup);
             return true;
         } else if (item.getTitle().equals(getResources().getString(R.string.menu_delete))) {
             updateSectionHeaders();
