@@ -24,13 +24,15 @@ import com.unalignedbyte.words.model.WordsDataSource;
  */
 
 public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
+    private Context context;
     private RecyclerView recyclerView;
     private Group group;
     private Word selectedWord;
     private int config = 0;
     private PopupMenu.OnMenuItemClickListener menuListener;
 
-    public WordsListAdapter(RecyclerView recyclerView, Group group, PopupMenu.OnMenuItemClickListener menuListener) {
+    public WordsListAdapter(Context context, RecyclerView recyclerView, Group group, PopupMenu.OnMenuItemClickListener menuListener) {
+        this.context = context;
         this.recyclerView = recyclerView;
         this.group = group;
         this.menuListener = menuListener;
@@ -40,7 +42,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
     @Override
     public WordViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         int id = viewHolderIdForLanguage(group.getLanguage());
-        View view = LayoutInflater.from(MainApplication.getContext()).inflate(id, parent, false);
+        View view = LayoutInflater.from(context).inflate(id, parent, false);
         WordViewHolder viewHolder = new WordViewHolder(view, false);
         return viewHolder;
     }
@@ -72,8 +74,6 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
     }
 
     private void setupDragging() {
-        final Context context = MainApplication.getContext();
-
         ItemTouchHelper.Callback callback = new ItemTouchHelper.Callback() {
             @Override
             public int getMovementFlags(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
@@ -83,9 +83,9 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 int position = viewHolder.getAdapterPosition();
-                Word word = WordsDataSource.get(context).getWords(group).get(position);
+                Word word = WordsDataSource.get(MainApplication.getContext()).getWords(group).get(position);
                 word.setIsInReview(!word.getIsInReview());
-                WordsDataSource.get(context).updateWord(word);
+                WordsDataSource.get(MainApplication.getContext()).updateWord(word);
                 WordsListAdapter.this.notifyItemChanged(position);
             }
 
@@ -99,16 +99,16 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
                                     float dX, float dY, int actionState, boolean isCurrentlyActive) {
                 if (isCurrentlyActive) {
                     int position = viewHolder.getAdapterPosition();
-                    Word word = WordsDataSource.get(context).getWords(group).get(position);
+                    Word word = WordsDataSource.get(MainApplication.getContext()).getWords(group).get(position);
 
                     Paint backgroundColor = new Paint();
                     String text;
                     if (word.getIsInReview()) {
                         backgroundColor.setARGB(255, 252, 70, 74);
-                        text = context.getString(R.string.remove_from_revision);
+                        text = MainApplication.getContext().getString(R.string.remove_from_revision);
                     } else {
                         backgroundColor.setARGB(255, 154, 202, 39);
-                        text = context.getString(R.string.add_to_revision);
+                        text = MainApplication.getContext().getString(R.string.add_to_revision);
                     }
 
                     // Background
@@ -122,7 +122,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
                     Paint textPaint = new Paint();
                     textPaint.setARGB(255, 255, 255, 255);
                     textPaint.setFlags(Paint.HINTING_ON | Paint.FAKE_BOLD_TEXT_FLAG);
-                    float fontScale = context.getResources().getDisplayMetrics().density;
+                    float fontScale = MainApplication.getContext().getResources().getDisplayMetrics().density;
                     textPaint.setTextSize(18 * fontScale);
 
                     Rect textBounds = new Rect();
@@ -151,7 +151,7 @@ public class WordsListAdapter extends RecyclerView.Adapter<WordViewHolder> {
     }
 
     private void showPopupMenu(View view) {
-        PopupMenu menu = new PopupMenu(MainApplication.getContext(), view, Gravity.BOTTOM);
+        PopupMenu menu = new PopupMenu(context, view, Gravity.BOTTOM);
         menu.inflate(R.menu.edit_delete_menu);
         menu.setOnMenuItemClickListener(menuListener);
         menu.show();

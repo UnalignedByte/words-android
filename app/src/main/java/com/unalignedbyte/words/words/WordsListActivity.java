@@ -60,7 +60,7 @@ public class WordsListActivity extends Activity
     }
 
     private void setupWordsList() {
-        adapter = new WordsListAdapter(wordsRecyclerView, group, this);
+        adapter = new WordsListAdapter(this, wordsRecyclerView, group, this);
         wordsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         wordsRecyclerView.setAdapter(adapter);
     }

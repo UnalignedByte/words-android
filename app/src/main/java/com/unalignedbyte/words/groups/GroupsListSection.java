@@ -27,6 +27,7 @@ import io.github.luizgrp.sectionedrecyclerviewadapter.StatelessSection;
 
 public class GroupsListSection extends StatelessSection
         implements GroupViewHolder.Listener {
+    private Context context;
     private SectionedRecyclerViewAdapter adapter;
     private RecyclerView recyclerView;
     private Language language;
@@ -34,10 +35,11 @@ public class GroupsListSection extends StatelessSection
     private Listener listener;
     private ItemTouchHelper touchHelper;
     private int firstItemPosition = 0;
-    public GroupsListSection(SectionedRecyclerViewAdapter adapter,
+    public GroupsListSection(Context context, SectionedRecyclerViewAdapter adapter,
                              RecyclerView recyclerView, Language language, boolean isSelected) {
         super(new SectionParameters.Builder(R.layout.group_view_holder)
                 .headerResourceId(R.layout.group_header_view_holder).build());
+        this.context = context;
         this.adapter = adapter;
         this.recyclerView = recyclerView;
         this.language = language;
@@ -133,12 +135,11 @@ public class GroupsListSection extends StatelessSection
         }
 
         final GroupViewHolder groupViewHolder = (GroupViewHolder) viewHolder;
-        final Context context = MainApplication.getContext();
 
         if (position == 0 && doesContainRevision()) {
             groupViewHolder.showRevisionView(true);
 
-            int wordsCount = WordsDataSource.get(context).getWordsInRevisionCount(language);
+            int wordsCount = WordsDataSource.get(MainApplication.getContext()).getWordsInRevisionCount(language);
             groupViewHolder.setRevisionWordsCount(wordsCount);
 
             groupViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -155,8 +156,8 @@ public class GroupsListSection extends StatelessSection
             if (doesContainRevision())
                 position--;
 
-            final Group group = WordsDataSource.get(context).getGroups(language).get(position);
-            int wordsCount = WordsDataSource.get(context).getWordsCount(group);
+            final Group group = WordsDataSource.get(MainApplication.getContext()).getGroups(language).get(position);
+            int wordsCount = WordsDataSource.get(MainApplication.getContext()).getWordsCount(group);
             groupViewHolder.setGroup(group, wordsCount);
             groupViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
