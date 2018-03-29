@@ -112,6 +112,7 @@ public class EditWordDialog extends DialogFragment
             dataEdits.add(dataEdit);
             dataEntryLayout.addView(dataEdit);
             dataEdit.setTextSize(18.0f);
+            dataEdit.setSingleLine(true);
             dataEdit.addTextChangedListener(new TextWatcher()
             {
                 @Override
