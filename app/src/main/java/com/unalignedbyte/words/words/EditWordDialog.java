@@ -8,9 +8,11 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -98,7 +100,10 @@ public class EditWordDialog extends DialogFragment
 
     private void setupDataEntry()
     {
-        for (int i = 0; i < group.getLanguage().getWordDataTitles().length; i++) {
+        int titlesCount = group.getLanguage().getWordDataTitles().length;
+        for (int i = 0; i < titlesCount; i++) {
+            boolean isLast = (i == titlesCount-1);
+
             // Data Title
             String title = group.getLanguage().getWordConfigTitles()[i + 1];
             String translatedTitle = Utils.get().translate(title);
@@ -112,6 +117,8 @@ public class EditWordDialog extends DialogFragment
             dataEdits.add(dataEdit);
             dataEntryLayout.addView(dataEdit);
             dataEdit.setTextSize(18.0f);
+            dataEdit.setSingleLine(true);
+            dataEdit.setImeOptions(isLast ? EditorInfo.IME_ACTION_DONE : EditorInfo.IME_ACTION_NEXT);
             dataEdit.addTextChangedListener(new TextWatcher()
             {
                 @Override
@@ -130,6 +137,21 @@ public class EditWordDialog extends DialogFragment
                 {
                 }
             });
+
+            if(isLast) {
+                dataEdit.setOnEditorActionListener(new TextView.OnEditorActionListener()
+                {
+                    @Override
+                    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
+                    {
+                        if(isAddButtonEnabled()) {
+                            addWord();
+                        }
+                        return true;
+                    }
+                });
+            }
+
             if (word != null) {
                 dataEdit.setText(word.getWordData()[i]);
             }
@@ -154,7 +176,7 @@ public class EditWordDialog extends DialogFragment
         updateAddButtonState();
     }
 
-    private void updateAddButtonState()
+    private boolean isAddButtonEnabled()
     {
         boolean isEnabled = true;
 
@@ -166,6 +188,12 @@ public class EditWordDialog extends DialogFragment
             }
         }
 
+        return isEnabled;
+    }
+
+    private void updateAddButtonState()
+    {
+        boolean isEnabled = isAddButtonEnabled();
         AlertDialog dialog = (AlertDialog)getDialog();
         if(dialog != null) {
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(isEnabled);
@@ -175,14 +203,10 @@ public class EditWordDialog extends DialogFragment
     @Override
     public void onClick(DialogInterface dialogInterface, int i)
     {
-        onAddWord();
-
-        if(getActivity() instanceof Listener) {
-            ((Listener)getActivity()).dialogDismissed();
-        }
+        addWord();
     }
 
-    private void onAddWord()
+    private void addWord()
     {
         String[] wordData = new String[group.getLanguage().getWordDataTitles().length];
         String[] dataTitles = group.getLanguage().getWordDataTitles();
@@ -198,6 +222,10 @@ public class EditWordDialog extends DialogFragment
             word.setWordData(wordData);
             WordsDataSource.get().updateWord(word);
         }
+
         dismiss();
+        if(getActivity() instanceof Listener) {
+            ((Listener)getActivity()).dialogDismissed();
+        }
     }
 }

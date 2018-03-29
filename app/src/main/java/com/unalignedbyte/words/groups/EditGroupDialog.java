@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -94,7 +95,7 @@ public class EditGroupDialog extends DialogFragment
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2)
             {
-                updateAddButtonStatus();
+                updateAddButtonState();
             }
 
             @Override
@@ -105,6 +106,18 @@ public class EditGroupDialog extends DialogFragment
             @Override
             public void afterTextChanged(Editable editable)
             {
+            }
+        });
+
+        nameEdit.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
+            {
+                if(isAddButtonEnabled()) {
+                    onClick(getDialog(), 0);
+                }
+                return true;
             }
         });
 
@@ -132,12 +145,17 @@ public class EditGroupDialog extends DialogFragment
     public void onResume()
     {
         super.onResume();
-        updateAddButtonStatus();
+        updateAddButtonState();
     }
 
-    private void updateAddButtonStatus()
+    private boolean isAddButtonEnabled()
     {
-        boolean isEnabled = nameEdit.getText().length() > 0;
+        return nameEdit.getText().length() > 0;
+    }
+
+    private void updateAddButtonState()
+    {
+        boolean isEnabled = isAddButtonEnabled();
         AlertDialog dialog = (AlertDialog)getDialog();
         if(dialog != null) {
             dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(isEnabled);
@@ -174,6 +192,11 @@ public class EditGroupDialog extends DialogFragment
     @Override
     public void onClick(DialogInterface dialogInterface, int i)
     {
+        addGroup();
+    }
+
+    private void addGroup()
+    {
         if (group == null) {
             String name = nameEdit.getText().toString();
             Language language = (Language) languageSpinner.getSelectedItem();
@@ -185,6 +208,7 @@ public class EditGroupDialog extends DialogFragment
             WordsDataSource.get().updateGroup(group);
         }
 
+        dismiss();
         if (getActivity() instanceof Listener) {
             ((Listener) getActivity()).dialogDismissed();
         }
