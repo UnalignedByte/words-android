@@ -144,6 +144,13 @@ public class EditGroupDialog extends DialogFragment
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        updateAddButtonState();
+    }
+
     private void restoreState(Bundle savedInstanceState)
     {
         if(savedInstanceState == null)

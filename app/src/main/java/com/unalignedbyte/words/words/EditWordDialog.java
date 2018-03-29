@@ -71,6 +71,7 @@ public class EditWordDialog extends DialogFragment
         setupView(dialog);
         setupDataEntry();
         setupButtons(dialog);
+        restoreState(savedInstanceState);
 
         return dialog;
     }
@@ -177,6 +178,29 @@ public class EditWordDialog extends DialogFragment
     {
         super.onResume();
         updateAddButtonState();
+    }
+
+    private void restoreState(Bundle savedInstanceState)
+    {
+        if(savedInstanceState == null)
+            return;
+
+        int titlesCount = group.getLanguage().getWordDataTitles().length;
+        for(int i=0; i< titlesCount; i++) {
+            String data = savedInstanceState.getString("data"+i);
+            dataEdits.get(i).setText(data);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        int titlesCount = group.getLanguage().getWordDataTitles().length;
+        for(int i=0; i< titlesCount; i++) {
+            outState.putString("data"+i, dataEdits.get(i).getText().toString());
+        }
     }
 
     private boolean isAddButtonEnabled()
