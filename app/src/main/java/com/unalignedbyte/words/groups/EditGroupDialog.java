@@ -116,8 +116,10 @@ public class EditGroupDialog extends DialogFragment
             {
                 if(isAddButtonEnabled()) {
                     onClick(getDialog(), 0);
+                    return true;
                 }
-                return true;
+
+                return false;
             }
         });
 

@@ -118,6 +118,7 @@ public class EditWordDialog extends DialogFragment
             dataEntryLayout.addView(dataEdit);
             dataEdit.setTextSize(18.0f);
             dataEdit.setSingleLine(true);
+            dataEdit.setHint(translatedTitle);
             dataEdit.setImeOptions(isLast ? EditorInfo.IME_ACTION_DONE : EditorInfo.IME_ACTION_NEXT);
             dataEdit.addTextChangedListener(new TextWatcher()
             {
@@ -146,8 +147,10 @@ public class EditWordDialog extends DialogFragment
                     {
                         if(isAddButtonEnabled()) {
                             addWord();
+                            return true;
                         }
-                        return true;
+
+                        return false;
                     }
                 });
             }
