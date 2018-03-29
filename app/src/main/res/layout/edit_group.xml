@@ -18,7 +18,8 @@
         android:id="@+id/edit_group_nameEdit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:singleLine="true"/>
+        android:singleLine="true"
+        android:imeOptions="actionDone"/>
 
     <TextView
         android:id="@+id/edit_group_languageTitleText"
