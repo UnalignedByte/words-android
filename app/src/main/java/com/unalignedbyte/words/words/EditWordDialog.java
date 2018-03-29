@@ -71,6 +71,7 @@ public class EditWordDialog extends DialogFragment
         setupView(dialog);
         setupDataEntry();
         setupButtons(dialog);
+        restoreState(savedInstanceState);
 
         return dialog;
     }
@@ -118,6 +119,7 @@ public class EditWordDialog extends DialogFragment
             dataEntryLayout.addView(dataEdit);
             dataEdit.setTextSize(18.0f);
             dataEdit.setSingleLine(true);
+            dataEdit.setHint(translatedTitle);
             dataEdit.setImeOptions(isLast ? EditorInfo.IME_ACTION_DONE : EditorInfo.IME_ACTION_NEXT);
             dataEdit.addTextChangedListener(new TextWatcher()
             {
@@ -146,8 +148,10 @@ public class EditWordDialog extends DialogFragment
                     {
                         if(isAddButtonEnabled()) {
                             addWord();
+                            return true;
                         }
-                        return true;
+
+                        return false;
                     }
                 });
             }
@@ -174,6 +178,39 @@ public class EditWordDialog extends DialogFragment
     {
         super.onResume();
         updateAddButtonState();
+    }
+
+    private void restoreState(Bundle savedInstanceState)
+    {
+        if(savedInstanceState == null)
+            return;
+
+        int titlesCount = group.getLanguage().getWordDataTitles().length;
+        for(int i=0; i< titlesCount; i++) {
+            String data = savedInstanceState.getString("data"+i);
+            dataEdits.get(i).setText(data);
+        }
+        int focusIndex = savedInstanceState.getInt("focusIndex", -1);
+        if(focusIndex >= 0) {
+            dataEdits.get(focusIndex).requestFocus();
+        } else {
+            //getView().clearFocus();
+            dataEntryLayout.clearFocus();
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+
+        int titlesCount = group.getLanguage().getWordDataTitles().length;
+        for(int i=0; i< titlesCount; i++) {
+            outState.putString("data"+i, dataEdits.get(i).getText().toString());
+            if(dataEdits.get(i).hasFocus()) {
+                outState.putInt("focusIndex", i);
+            }
+        }
     }
 
     private boolean isAddButtonEnabled()

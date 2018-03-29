@@ -18,6 +18,7 @@ import com.unalignedbyte.words.Utils;
 
 public class RevisionActivity extends Activity {
     private RevisionAdapter adapter;
+    TabLayout tabBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +31,7 @@ public class RevisionActivity extends Activity {
         setupToolbar(language);
         setupList(language);
         setupTabBar(language);
+        restoreState(savedInstanceState);
     }
 
     private void setupToolbar(Language language) {
@@ -47,7 +49,7 @@ public class RevisionActivity extends Activity {
     }
 
     private void setupTabBar(Language language) {
-        TabLayout tabBar = (TabLayout) findViewById(R.id.revision_activity_tabBar);
+        tabBar = (TabLayout) findViewById(R.id.revision_activity_tabBar);
         for (String title : language.getWordConfigTitles()) {
             String translatedTitle = Utils.get().translate(title);
             tabBar.addTab(tabBar.newTab().setText(translatedTitle));
@@ -66,5 +68,21 @@ public class RevisionActivity extends Activity {
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
+
+    private void restoreState(Bundle savedInstanceState)
+    {
+        if(savedInstanceState == null)
+            return;
+
+        int tabIndex = savedInstanceState.getInt("tabIndex", 0);
+        tabBar.getTabAt(tabIndex).select();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putInt("tabIndex", tabBar.getSelectedTabPosition());
     }
 }
