@@ -72,6 +72,7 @@ public class EditGroupDialog extends DialogFragment
         setupArguments();
         setupView(dialog);
         setupButtons(dialog);
+        restoreState(savedInstanceState);
 
         return dialog;
     }
@@ -143,11 +144,28 @@ public class EditGroupDialog extends DialogFragment
         dialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE);
     }
 
-    @Override
-    public void onResume()
+    private void restoreState(Bundle savedInstanceState)
     {
-        super.onResume();
-        updateAddButtonState();
+        if(savedInstanceState == null)
+            return;
+
+        String groupName = savedInstanceState.getString("groupName", "");
+        nameEdit.setText(groupName);
+        String languageCode = savedInstanceState.getString("languageCode", null);
+        Language language = Language.getLanguage(languageCode);
+        if(language != null) {
+            int index = Language.getLanguages().indexOf(language);
+            languageSpinner.setSelection(index);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putString("groupName", nameEdit.getText().toString());
+        Language language = (Language)languageSpinner.getSelectedItem();
+        outState.putString("languageCode", language.getCode());
     }
 
     private boolean isAddButtonEnabled()
