@@ -190,6 +190,13 @@ public class EditWordDialog extends DialogFragment
             String data = savedInstanceState.getString("data"+i);
             dataEdits.get(i).setText(data);
         }
+        int focusIndex = savedInstanceState.getInt("focusIndex", -1);
+        if(focusIndex >= 0) {
+            dataEdits.get(focusIndex).requestFocus();
+        } else {
+            //getView().clearFocus();
+            dataEntryLayout.clearFocus();
+        }
     }
 
     @Override
@@ -200,6 +207,9 @@ public class EditWordDialog extends DialogFragment
         int titlesCount = group.getLanguage().getWordDataTitles().length;
         for(int i=0; i< titlesCount; i++) {
             outState.putString("data"+i, dataEdits.get(i).getText().toString());
+            if(dataEdits.get(i).hasFocus()) {
+                outState.putInt("focusIndex", i);
+            }
         }
     }
 
