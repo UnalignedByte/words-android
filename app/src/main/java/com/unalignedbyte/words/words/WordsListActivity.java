@@ -34,6 +34,8 @@ public class WordsListActivity extends Activity
     Toolbar toolbar;
     @BindView(R.id.words_list_activity_recyclerView)
     RecyclerView wordsRecyclerView;
+    @BindView(R.id.words_list_activity_tabBar)
+    TabLayout tabBar;
     private WordsListAdapter adapter;
     private Group group;
 
@@ -50,6 +52,7 @@ public class WordsListActivity extends Activity
         setupToolbar();
         updateToolbarTitle();
         setupTab();
+        restoreState(savedInstanceState);
     }
 
     private void setupView()
@@ -89,7 +92,6 @@ public class WordsListActivity extends Activity
     }
 
     private void setupTab() {
-        TabLayout tabBar = (TabLayout) findViewById(R.id.words_list_activity_tabBar);
         for (String title : group.getLanguage().getWordConfigTitles()) {
             String translatedTitle = Utils.get().translate(title);
             tabBar.addTab(tabBar.newTab().setText(translatedTitle));
@@ -108,6 +110,22 @@ public class WordsListActivity extends Activity
             public void onTabReselected(TabLayout.Tab tab) {
             }
         });
+    }
+
+    private void restoreState(Bundle savedInstanceState)
+    {
+        if(savedInstanceState == null)
+            return;
+
+        int tabIndex = savedInstanceState.getInt("tabIndex", 0);
+        tabBar.getTabAt(tabIndex).select();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putInt("tabIndex", tabBar.getSelectedTabPosition());
     }
 
     private void showEditWordPopup(Word word) {
