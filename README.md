@@ -3,10 +3,12 @@
 [![Latest Release](https://img.shields.io/github/release/UnalignedByte/words-android.svg?style=plastic&label=GitHub)](https://github.com/UnalignedByte/words-android/releases/latest)
 [![Platform](https://img.shields.io/badge/Google_Play-Download-lightgrey.svg?style=plastic&colorA=green)](https://play.google.com/store/apps/details?id=com.unalignedbyte.words)
 
-Words is an app that allows you to create lists of flashcards that will help you to memorize vocabulary.
+Words is an app that allows you to create lists of vocabulary that will help you with memorization.
+
+The app is written in Java and uses SQLite for persistance. It also uses [Butter Knife](https://github.com/JakeWharton/butterknife), [SectionedRecyclerViewAdapter](https://github.com/luizgrp/SectionedRecyclerViewAdapter), and Fabric.
 
 ## Background
-This project was a kind of vehicle to learn the whole process of creating and releasing an Android app. It is a conversion of [Words for iOS](https://github.com/UnalignedByte/words-ios), which has equivalent functionality, but was created in Swift.
+This project was a kind of vehicle to learn the whole process of creating and releasing an Android app. It is a conversion of [Words for iOS](https://github.com/UnalignedByte/words-ios). Both of these apps have equivalen feature set.
 
 ## Source
 The app is split into three subpackages:
@@ -27,3 +29,6 @@ There is a plenty of room for changes and improvements:
 * Unit test the model
 * Introduce RxJava
 * Introduce Kotlin
+
+## Author
+The project has been created by Rafał Grodziński.
